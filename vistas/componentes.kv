@@ -1,0 +1,505 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+#:import T vistas.tema
+#:import mezcla vistas.componentes.mezcla
+#:import glifo vistas.componentes.glifo
+
+# Aspecto de los componentes de `componentes.py`. Se carga una sola vez desde WynikApp.build().
+
+<Etiqueta>:
+    font_name: T.FUENTE_TEXTO
+    font_size: sp(T.T_CUERPO)
+    color: T.TINTA
+    disabled_color: self.color
+    halign: "left"
+    valign: "top"
+    size_hint_y: None
+    text_size: self.width, None
+    height: self.texture_size[1]
+    max_lines: int(self.lineas)
+    shorten: self.lineas == 1
+    shorten_from: "right"
+
+<Rotulo@Etiqueta>:
+    font_name: T.FUENTE_ROTULO
+    font_size: sp(T.T_ETIQUETA)
+    color: T.TINTA_SUAVE
+
+<Seccion@Etiqueta>:
+    font_name: T.FUENTE_ROTULO
+    font_size: sp(T.T_SUBTITULO)
+    bold: True
+    color: T.TINTA
+
+<Secundario@Etiqueta>:
+    font_size: sp(T.T_SECUNDARIO)
+    color: T.TINTA_SUAVE
+
+<Icono>:
+    font_name: "Icons"
+    text: glifo(self.icono)
+    font_size: sp(22)
+    color: T.TINTA_SUAVE
+    disabled_color: self.color
+    halign: "center"
+    valign: "middle"
+    text_size: self.size
+
+<IconoCirculo>:
+    size_hint: None, None
+    size: dp(44), dp(44)
+    color: T.PRIMARIO
+    canvas.before:
+        Color:
+            rgba: self.fondo
+        Ellipse:
+            pos: self.pos
+            size: self.size
+
+# ---------------------------------------------------------------------------- botones
+<Boton>:
+    markup: True
+    text: self.contenido(self.texto, self.icono, sp(20))
+    font_name: T.FUENTE_ROTULO
+    font_size: sp(15)
+    halign: "center"
+    valign: "middle"
+    color: self.tinta
+    disabled_color: self.tinta
+    size_hint_y: None
+    height: max(dp(T.ALTO_BOTON), self.texture_size[1] + dp(16))
+    text_size: (None, None) if self.ajustar else (max(1, self.width - 2 * self.relleno_x), None)
+    opacity: 0.45 if self.disabled else 1
+    canvas.before:
+        Color:
+            rgba: self.fondo
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [min(self.height / 2, dp(16))]
+        Color:
+            rgba: self.tinta[:3] + [0.14 * self.capa]
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [min(self.height / 2, dp(16))]
+        Color:
+            rgba: self.borde
+        Line:
+            rounded_rectangle: (self.x, self.y, max(2, self.width), max(2, self.height), max(1, min(self.height / 2 - 1, dp(16))))
+            width: dp(1)
+
+<BotonAjustado@Boton>:
+    ajustar: True
+    size_hint_x: None
+    width: self.texture_size[0] + 2 * self.relleno_x
+
+<BotonIcono>:
+    font_name: "Icons"
+    text: glifo(self.icono)
+    font_size: sp(22)
+    halign: "center"
+    valign: "middle"
+    text_size: self.size
+    size_hint: None, None
+    size: dp(T.ALTO_TOQUE), dp(T.ALTO_TOQUE)
+    color: self.tinta
+    disabled_color: self.tinta
+    opacity: 0.35 if self.disabled else 1
+    canvas.before:
+        Color:
+            rgba: self.fondo
+        Ellipse:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: self.tinta[:3] + [0.12 * self.capa]
+        Ellipse:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: self.borde
+        Line:
+            ellipse: (self.x + 0.5, self.y + 0.5, self.width - 1, self.height - 1)
+            width: dp(1)
+
+# ---------------------------------------------------------------------------- superficies
+<Superficie>:
+    canvas.before:
+        Color:
+            rgba: T.SOMBRA if self.sombra else (0, 0, 0, 0)
+        RoundedRectangle:
+            pos: self.x, self.y - dp(3)
+            size: self.size
+            radius: [self.radio + dp(1)]
+        Color:
+            rgba: self.fondo
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.radio]
+        Color:
+            rgba: self.borde
+        Line:
+            rounded_rectangle: (self.x, self.y, max(2, self.width), max(2, self.height), max(1, min(self.radio, self.height / 2 - 1, self.width / 2 - 1)))
+            width: dp(1)
+
+<TarjetaPulsable>:
+    canvas.after:
+        Color:
+            rgba: T.TINTA[:3] + (0.06 * self.capa,)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.radio]
+
+<Tarjeta@Superficie>:
+    orientation: "vertical"
+    padding: dp(16)
+    spacing: dp(12)
+    size_hint_y: None
+    height: self.minimum_height
+
+# Tarjeta de un grupo de ajustes: icono, título y (opcional) una línea de ayuda; los hijos
+# de cada instancia van debajo.
+<TarjetaAjuste@Tarjeta>:
+    titulo: ""
+    icono: ""
+    ayuda: ""
+    BoxLayout:
+        size_hint_y: None
+        height: max(dp(40), cabecera.height)
+        spacing: dp(12)
+        IconoCirculo:
+            icono: root.icono
+            size: dp(40), dp(40)
+            font_size: sp(20)
+            pos_hint: {"center_y": .5}
+        BoxLayout:
+            id: cabecera
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            pos_hint: {"center_y": .5}
+            Seccion:
+                text: root.titulo
+            Secundario:
+                text: root.ayuda
+                visible: bool(root.ayuda)
+
+<Contenido@BoxLayout>:
+    ancho_max: dp(T.ANCHO_CONTENIDO)
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.minimum_height
+    spacing: dp(16)
+    padding: [max(dp(16), (self.width - self.ancho_max) / 2), dp(8), max(dp(16), (self.width - self.ancho_max) / 2), dp(28)]
+
+<Columnas>:
+    size_hint_y: None
+    height: self.minimum_height
+    spacing: dp(16)
+
+<Columna@BoxLayout>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.minimum_height
+    spacing: dp(16)
+    pos_hint: {"top": 1}
+
+# ---------------------------------------------------------------------------- opciones
+<Opcion>:
+    orientation: "vertical"
+    padding: dp(12), dp(12)
+    spacing: dp(4)
+    opacity: 1 if self.habilitada else 0.45
+    disabled: not self.habilitada
+    canvas.before:
+        Color:
+            rgba: mezcla(T.SUPERFICIE, T.PRIMARIO_SUAVE, self.t_activa)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(14)]
+        Color:
+            rgba: T.TINTA[:3] + (0.06 * self.capa,)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(14)]
+        Color:
+            rgba: mezcla(T.BORDE, T.PRIMARIO, self.t_activa)
+        Line:
+            rounded_rectangle: (self.x, self.y, max(2, self.width), max(2, self.height), max(1, min(dp(14), self.height / 2 - 1)))
+            width: dp(1) + dp(0.7) * self.t_activa
+    canvas.after:
+        Color:
+            rgba: T.PRIMARIO[:3] + (self.t_activa,)
+        Ellipse:
+            pos: self.right - dp(24), self.top - dp(24)
+            size: dp(16), dp(16)
+        Color:
+            rgba: 1, 1, 1, self.t_activa
+        Line:
+            points: [self.right - dp(20), self.top - dp(16.5), self.right - dp(17), self.top - dp(19.5), self.right - dp(12), self.top - dp(13.5)]
+            width: dp(1.1)
+    AnchorLayout:
+        size_hint_y: None
+        height: dp(40) if (root.icono or root.dibujo) else 0
+        opacity: 1 if (root.icono or root.dibujo) else 0
+        Icono:
+            icono: root.icono if not root.dibujo else ""
+            size_hint: None, None
+            size: dp(32), dp(32)
+            font_size: sp(24)
+            color: mezcla(T.TINTA_SUAVE, T.PRIMARIO, root.t_activa)
+        DibujoInstrumento:
+            instrumento: root.dibujo or "partitura"
+            size_hint: None, None
+            size: (dp(40), dp(40)) if root.dibujo else (0, 0)
+            color: mezcla(T.TINTA_SUAVE, T.PRIMARIO, root.t_activa)
+    Etiqueta:
+        text: root.texto
+        halign: "center"
+        font_name: T.FUENTE_TEXTO
+        font_size: sp(14)
+        bold: root.activa
+        color: mezcla(T.TINTA, T.PRIMARIO_OSCURO, root.t_activa)
+        padding: dp(10), 0
+    Etiqueta:
+        text: root.detalle
+        halign: "center"
+        font_size: sp(12)
+        color: T.TINTA_SUAVE
+        visible: bool(root.detalle)
+
+<GrupoOpciones>:
+    cols: 2
+    spacing: dp(8)
+    size_hint_y: None
+    height: self.minimum_height
+    row_force_default: True
+    row_default_height: dp(48)
+
+# Paso: [−] valor [+]
+<Paso@BoxLayout>:
+    texto: ""
+    menos: None
+    mas: None
+    size_hint_y: None
+    height: dp(52)
+    spacing: dp(8)
+    BotonIcono:
+        icono: "minus"
+        variante: "contorno"
+        pos_hint: {"center_y": .5}
+        on_release: root.menos() if root.menos else None
+    Label:
+        text: root.texto
+        font_name: T.FUENTE_TEXTO
+        font_size: sp(T.T_SUBTITULO + 2)
+        bold: True
+        color: T.TINTA
+        halign: "center"
+        valign: "middle"
+        text_size: self.size
+        shorten: True
+    BotonIcono:
+        icono: "plus"
+        variante: "contorno"
+        pos_hint: {"center_y": .5}
+        on_release: root.mas() if root.mas else None
+
+# ---------------------------------------------------------------------------- chips y barras
+<Chip>:
+    size_hint: None, None
+    height: dp(30)
+    width: self.minimum_width
+    padding: dp(10), 0
+    spacing: dp(6)
+    canvas.before:
+        Color:
+            rgba: self.fondo
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.height / 2]
+    Icono:
+        icono: root.icono
+        font_size: sp(16)
+        size_hint: None, None
+        size: (dp(18), dp(18)) if root.icono else (0, 0)
+        pos_hint: {"center_y": .5}
+        color: root.color
+    Label:
+        text: root.texto
+        font_name: T.FUENTE_TEXTO
+        font_size: sp(13)
+        color: root.color
+        size_hint_x: None
+        width: self.texture_size[0]
+
+<EstadoPildora>:
+    height: dp(32)
+
+<BarraSuperior>:
+    size_hint_y: None
+    height: dp(T.ALTO_BARRA)
+    padding: dp(8), dp(8)
+    spacing: dp(4)
+    canvas.before:
+        Color:
+            rgba: T.FONDO
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BotonIcono:
+        icono: "arrow-left"
+        variante: "plano"
+        pos_hint: {"center_y": .5}
+        opacity: 1 if root.atras else 0
+        disabled: not root.atras
+        width: dp(T.ALTO_TOQUE) if root.atras else 0
+        on_release: root.on_atras_pulsado()
+    Label:
+        text: root.titulo
+        font_name: root.fuente
+        font_size: sp(T.T_TITULO)
+        bold: root.fuente == T.FUENTE_TEXTO
+        color: T.TINTA
+        halign: "left"
+        valign: "middle"
+        text_size: self.size
+        shorten: True
+        shorten_from: "right"
+        max_lines: 1
+        padding: (dp(8) if not root.atras else dp(2)), 0
+
+# Barra inferior fija (acción principal de la pantalla).
+<BarraAccion@BoxLayout>:
+    ancho_max: dp(T.ANCHO_CONTENIDO)
+    size_hint_y: None
+    height: dp(76)
+    padding: [max(dp(16), (self.width - self.ancho_max) / 2), dp(14)]
+    spacing: dp(10)
+    canvas.before:
+        Color:
+            rgba: T.SUPERFICIE
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: T.BORDE
+        Line:
+            points: [self.x, self.top, self.right, self.top]
+            width: dp(1)
+
+<Mosaico@TarjetaPulsable>:
+    icono: ""
+    texto: ""
+    detalle: ""
+    orientation: "vertical"
+    padding: dp(16)
+    spacing: dp(10)
+    IconoCirculo:
+        icono: root.icono
+    Etiqueta:
+        text: root.texto
+        font_name: T.FUENTE_ROTULO
+        font_size: sp(T.T_SUBTITULO)
+    Secundario:
+        text: root.detalle
+        lineas: 2
+        visible: bool(root.detalle)
+
+<FilaPartitura>:
+    orientation: "horizontal"
+    padding: dp(14), dp(12)
+    spacing: dp(14)
+    Widget:
+        size_hint: None, None
+        size: dp(48), dp(48)
+        pos_hint: {"center_y": .5}
+        canvas.before:
+            Color:
+                rgba: T.PRIMARIO_SUAVE if root.existe else T.NEUTRO_SUAVE
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [dp(12)]
+        DibujoInstrumento:
+            instrumento: root.instrumento
+            color: T.PRIMARIO if root.existe else T.NEUTRO
+            pos: self.parent.x + dp(6), self.parent.y + dp(6)
+            size: dp(36), dp(36)
+    BoxLayout:
+        orientation: "vertical"
+        size_hint_y: None
+        height: self.minimum_height
+        pos_hint: {"center_y": .5}
+        spacing: dp(2)
+        Etiqueta:
+            text: root.titulo
+            lineas: 2
+            bold: True
+            color: T.TINTA if root.existe else T.TINTA_SUAVE
+        Secundario:
+            text: root.detalle
+            lineas: 2
+            color: T.TINTA_SUAVE if root.existe else T.ERROR
+    Icono:
+        icono: "chevron-right" if root.existe else "alert-circle-outline"
+        color: T.TINTA_TENUE if root.existe else T.ERROR
+        size_hint: None, None
+        size: dp(28), dp(28)
+        pos_hint: {"center_y": .5}
+
+<FilaSesion>:
+    orientation: "horizontal"
+    padding: dp(14), dp(10)
+    spacing: dp(14)
+    Label:
+        text: "{} %".format(int(round(100 * root.porcentaje)))
+        font_name: T.FUENTE_TEXTO
+        bold: True
+        font_size: sp(14)
+        size_hint: None, None
+        size: dp(56), dp(36)
+        pos_hint: {"center_y": .5}
+        color: T.CORRECTO if root.porcentaje >= 0.8 else (T.DESAFINADO if root.porcentaje >= 0.5 else T.ERROR)
+        canvas.before:
+            Color:
+                rgba: T.CORRECTO_SUAVE if root.porcentaje >= 0.8 else (T.DESAFINADO_SUAVE if root.porcentaje >= 0.5 else T.ERROR_SUAVE)
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [dp(10)]
+    BoxLayout:
+        orientation: "vertical"
+        size_hint_y: None
+        height: self.minimum_height
+        pos_hint: {"center_y": .5}
+        spacing: dp(2)
+        Etiqueta:
+            text: root.titulo
+            lineas: 1
+            bold: True
+        Secundario:
+            text: root.detalle
+            lineas: 2
+
+<FilaPartituraProgreso>:
+    orientation: "vertical"
+    padding: dp(14), dp(12)
+    spacing: dp(8)
+    Etiqueta:
+        text: root.titulo
+        lineas: 1
+        bold: True
+    BarraProgreso:
+        valor: root.mejor
+        size_hint_y: None
+        height: dp(8)
+    Secundario:
+        text: root.detalle
+        lineas: 1

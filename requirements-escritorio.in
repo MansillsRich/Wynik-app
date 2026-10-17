@@ -1,0 +1,12 @@
+# Dependencias directas de Wynik para escritorio (macOS, Windows 10/11 y Linux) con Python 3.13.
+# Solo lo que importa el código de producción, con las versiones de la línea base (commit c349f1f).
+# Ciclo 2: la detección usa el YIN de NumPy (audio/) y la app ya no importa librosa; librosa
+# (pYIN, la referencia de escritorio) pasa a requirements-referencia.in, que solo usan las
+# pruebas y la comparación de estimadores (requirements-desarrollo.txt).
+# El conjunto completo fijado está en requirements-escritorio.txt, generado con:
+#   uv pip compile requirements-escritorio.in -c requirements.txt --universal --python-version 3.13 -o requirements-escritorio.txt
+kivy==2.3.1
+kivymd==2.0.0
+numpy==2.5.3
+sounddevice==0.5.6
+music21==10.5.0

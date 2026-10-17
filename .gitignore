@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.DS_Store
+.idea/
+.vscode/
+.env
+# Datos locales de cada usuario
+historial_partituras.json
+ajustes_wynik.json
+progreso_sesiones.json
+temp_guia.wav
+*.wav
