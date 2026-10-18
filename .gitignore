@@ -7,6 +7,7 @@ venv/
 .idea/
 .vscode/
 .env
+.graphify-out/
 # Datos locales de cada usuario
 historial_partituras.json
 ajustes_wynik.json

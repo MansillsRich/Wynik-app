@@ -15,6 +15,16 @@ if ESCRITORIO:
     Config.set("graphics", "height", "720")
     Config.set("graphics", "resizable", "1")
 
+    # En Linux/escritorio, inicializar los proveedores de audio antes de crear la ventana
+    # evita un interbloqueo (GIL deadlock) entre el filtro de eventos SDL2 de Kivy
+    # y la detección de dispositivos de PulseAudio/PipeWire al cargar la guía de audio.
+    from kivy.core.audio import SoundLoader  # noqa: E402
+    for _cls in getattr(SoundLoader, "_classes", []):
+        try:
+            _cls.extensions()
+        except Exception:
+            pass
+
 from kivy.core.window import Window  # noqa: E402
 from vistas import WynikApp  # noqa: E402
 

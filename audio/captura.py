@@ -130,6 +130,7 @@ class CapturaBase:
         self.frecuencia_muestreo: Optional[float] = None
         self.estadisticas = EstadisticasCaptura()
         self._indice = 0
+        self._dc_estimado: Optional[float] = None
 
     def _callback(self, indata, frames, time_info, status) -> None:
         """Callback del flujo de entrada: copiar, anotar y encolar. Nada más."""
@@ -137,6 +138,14 @@ class CapturaBase:
         t = self.reloj()
         datos = indata[:, 0] if getattr(indata, "ndim", 1) == 2 else indata
         copia = np.array(datos, dtype=np.float32, copy=True)
+        if len(copia):
+            media = float(np.mean(copia))
+            if self._dc_estimado is None:
+                self._dc_estimado = media
+            else:
+                alpha = min(0.05, len(copia) / (self.frecuencia_muestreo or 48000.0) * 2.0)
+                self._dc_estimado = (1.0 - alpha) * self._dc_estimado + alpha * media
+            copia -= np.float32(self._dc_estimado)
         estado = str(status) if status else ""
         if estado:
             self.estadisticas.desbordes += 1
@@ -149,6 +158,7 @@ class CapturaBase:
 
     def reiniciar_indices(self) -> None:
         self._indice = 0
+        self._dc_estimado = None
 
     def abrir(self) -> None:  # pragma: no cover - lo implementan las subclases
         raise NotImplementedError
@@ -246,10 +256,19 @@ def dispositivos_de_entrada(modulo_sounddevice=None) -> List[dict]:
         predeterminado = sd.default.device[0] if hasattr(sd, "default") else None
     except Exception:  # noqa: BLE001
         return []
+    import re
+    descartes = ("playback", "speaker", "altavoz", "sink", "output", "salida", "monitor", "loopback")
     resultado = []
     for indice, info in enumerate(dispositivos):
-        if info.get("max_input_channels", 0) > 0:
-            resultado.append({"indice": indice, "nombre": info.get("name", f"Entrada {indice}"),
-                              "frecuencia": info.get("default_samplerate"),
-                              "predeterminado": indice == predeterminado})
+        if info.get("max_input_channels", 0) <= 0:
+            continue
+        nombre = info.get("name", f"Entrada {indice}")
+        nombre_lower = nombre.lower()
+        if any(palabra in nombre_lower for palabra in descartes):
+            continue
+        if re.search(r"\[.*\]", nombre):
+            continue
+        resultado.append({"indice": indice, "nombre": nombre,
+                          "frecuencia": info.get("default_samplerate"),
+                          "predeterminado": indice == predeterminado})
     return resultado

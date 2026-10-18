@@ -36,10 +36,10 @@ def nivel_dbfs(muestras) -> float:
     x = np.asarray(muestras, dtype=np.float64)
     if x.size == 0:
         return NIVEL_MINIMO_REPRESENTABLE_DBFS
-    rms = math.sqrt(float(np.mean(x * x)))
-    if rms <= 10 ** (NIVEL_MINIMO_REPRESENTABLE_DBFS / 20):
+    var = float(np.var(x))
+    if var <= 10 ** (NIVEL_MINIMO_REPRESENTABLE_DBFS / 10):
         return NIVEL_MINIMO_REPRESENTABLE_DBFS
-    return 20.0 * math.log10(rms)
+    return 10.0 * math.log10(var)
 
 
 def niveles_por_ventana(muestras, tam_ventana: int) -> np.ndarray:
@@ -48,7 +48,8 @@ def niveles_por_ventana(muestras, tam_ventana: int) -> np.ndarray:
     n = len(x) // tam_ventana
     if n == 0:
         return np.zeros(0)
-    potencia = np.mean(x[: n * tam_ventana].reshape(n, tam_ventana) ** 2, axis=1)
+    ventanas = x[: n * tam_ventana].reshape(n, tam_ventana)
+    potencia = np.mean((ventanas - np.mean(ventanas, axis=1, keepdims=True)) ** 2, axis=1)
     with np.errstate(divide="ignore"):
         niveles = 10.0 * np.log10(potencia)
     return np.maximum(niveles, NIVEL_MINIMO_REPRESENTABLE_DBFS)
@@ -127,6 +128,8 @@ def calibrar(muestras, frecuencia_muestreo: float, estimador=None,
     (±15 cents), esa altura se guarda como tono del fondo.
     """
     x = np.asarray(muestras, dtype=np.float64)
+    if x.size:
+        x = x - np.mean(x)
     sr = float(frecuencia_muestreo)
     ventana = max(1, int(round(0.010 * sr)))
     niveles = niveles_por_ventana(x, ventana)
