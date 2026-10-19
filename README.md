@@ -15,7 +15,7 @@ pip install -r requirements-escritorio.txt
 ## Ejecución
 
 ```bash
-python main.py
+python main.py o ./.venv/bin/python main.py
 ```
 
 Los datos del usuario (historial, ajustes, progreso) se guardan junto a la aplicación; `WYNIK_DATOS=<carpeta>` cambia dónde.
