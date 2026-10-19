@@ -40,9 +40,11 @@ _texturas = {}
 
 
 def textura(texto: str, tam: float, negrita: bool = False):
-    clave = (texto, round(tam, 1), negrita)
+    from kivy.metrics import Metrics
+    tam_real = tam * getattr(Metrics, "fontscale", 1.0)
+    clave = (texto, round(tam_real, 1), negrita)
     if clave not in _texturas:
-        etiqueta = CoreLabel(text=texto, font_size=tam, font_name=FUENTE_TEXTO, bold=negrita)
+        etiqueta = CoreLabel(text=texto, font_size=tam_real, font_name=FUENTE_TEXTO, bold=negrita)
         etiqueta.refresh()
         _texturas[clave] = etiqueta.texture
         if len(_texturas) > 512:

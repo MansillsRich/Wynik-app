@@ -61,15 +61,16 @@ from .screens import (
     InterpreteScreen,
     AjustesScreen,
     ProgresoScreen,
+    PartituraSimpleScreen,
 )
-from .widgets import PartituraWidget, GuiaInstrumentoWidget
+from .widgets import PartituraWidget, GuiaInstrumentoWidget, PartituraSimpleWidget
 from .dialogs import abrir_selector_de_archivo
 
 KV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "wynik.kv")
 KV_COMPONENTES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "componentes.kv")
 # Profundidad de cada pantalla: decide el sentido de la transición (adelante / atrás).
 PROFUNDIDAD = {"menu": 0, "elegir_partitura": 1, "progreso": 1, "ajustes": 2,
-               "ajustes_inicio": 2, "interprete": 3}
+               "ajustes_inicio": 2, "interprete": 3, "partitura_simple": 3}
 INTERVALO_TICK_S = 1.0 / 30.0
 # Tiempo que se espera tras detener la guía de audio antes de abrir el micrófono: lo que tarda
 # en apagarse el altavoz y la sala. El reproductor no informa cuándo termina de sonar (con SDL2
@@ -124,6 +125,8 @@ class WynikApp(MDApp):
     pantalla_anterior = StringProperty("menu")
     convencion_guitarra = StringProperty("auto")     # auto | sonora | escrita_octava_alta
     convencion_elegible = BooleanProperty(False)     # la guitarra ambigua deja elegir
+    usar_vista_simple = BooleanProperty(False)       # usar PartituraSimpleScreen en lugar de InterpreteScreen
+    escala_fuente = NumericProperty(1.0)             # escala del tamaño de fuente (1.0 = normal, 1.15 = grande, 1.3 = muy grande)
 
     # Práctica
     estado_practica = StringProperty("lista")
@@ -315,7 +318,7 @@ class WynikApp(MDApp):
             if self._confirmar_atras("Pulsa Atrás otra vez para salir de Wynik."):
                 self.stop()
             return
-        if actual == "interprete":
+        if actual in ("interprete", "partitura_simple"):
             if self.estado_practica in ("calibrando", "cuenta", "escuchando", "pausada"):
                 dialogo = {"titulo": "¿Dejar la práctica?",
                            "mensaje": "Se perderá el avance de esta sesión.",
@@ -369,6 +372,25 @@ class WynikApp(MDApp):
         self.pulsos_cuenta = ajustes.pulsos_cuenta
         self.dispositivo_entrada = ajustes.dispositivo
         self.volumen_audio = ajustes.volumen_guia
+        self.usar_vista_simple = getattr(ajustes, "vista_simple", False)
+        self.escala_fuente = float(getattr(ajustes, "escala_fuente", 1.0))
+        from kivy.metrics import Metrics
+        Metrics.fontscale = self.escala_fuente
+
+        # Leer configuración de vista desde config/settings.json (si existe)
+        try:
+            import json
+            import os
+            config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'settings.json')
+            if os.path.exists(config_path):
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    config = json.load(f)
+                    start_view = config.get('start_view', {})
+                    if "simple" in start_view:
+                        self.usar_vista_simple = bool(start_view.get('simple', False))
+        except Exception:
+            pass
+
         self._actualizar_textos_configuracion()
 
     def _guardar_ajustes(self):
@@ -380,7 +402,24 @@ class WynikApp(MDApp):
             notacion_solfeo=bool(self.notacion_solfeo),
             calibrar_al_empezar=bool(self.calibrar_al_iniciar),
             pulsos_cuenta=int(self.pulsos_cuenta), dispositivo=self.dispositivo_entrada,
-            volumen_guia=float(self.volumen_audio)))
+            volumen_guia=float(self.volumen_audio),
+            vista_simple=bool(self.usar_vista_simple),
+            escala_fuente=float(self.escala_fuente)))
+        try:
+            import json
+            import os
+            config_dir = os.path.join(os.path.dirname(__file__), '..', 'config')
+            os.makedirs(config_dir, exist_ok=True)
+            config_path = os.path.join(config_dir, 'settings.json')
+            with open(config_path, 'w', encoding='utf-8') as f:
+                json.dump({
+                    "start_view": {
+                        "simple": bool(self.usar_vista_simple),
+                        "advanced": not bool(self.usar_vista_simple),
+                    }
+                }, f, indent=4)
+        except Exception:
+            pass
 
     def _perfil(self):
         from nucleo.instrumentos import PERFILES, perfil_de_guitarra
@@ -463,6 +502,26 @@ class WynikApp(MDApp):
     def cambiar_calibracion(self, al_empezar: bool):
         self.calibrar_al_iniciar = bool(al_empezar)
         self._ajuste_cambiado()
+
+    def cambiar_vista_simple(self, simple: bool):
+        """Alterna entre la vista estándar de pentagrama y la vista simplificada."""
+        self.usar_vista_simple = bool(simple)
+        self._guardar_ajustes()
+
+    def alternar_vista_practica(self):
+        """Cambia entre la vista de pentagrama y la vista simplificada durante la práctica."""
+        self.cambiar_vista_simple(not self.usar_vista_simple)
+        if self.root and self.root.current in ("interprete", "partitura_simple"):
+            self.root.current = "partitura_simple" if self.usar_vista_simple else "interprete"
+
+    def cambiar_escala_fuente(self, escala: float):
+        """Cambia la escala del tamaño de fuente en toda la aplicación."""
+        self.escala_fuente = float(escala)
+        from kivy.metrics import Metrics
+        Metrics.fontscale = self.escala_fuente
+        from .widgets import dibujo
+        dibujo._texturas.clear()
+        self._guardar_ajustes()
 
     # =========================================================================
     #  Micrófono y calibración
@@ -949,12 +1008,21 @@ class WynikApp(MDApp):
     # =========================================================================
 
     def preparar_practica(self):
-        """Botón «Ir a practicar» de la pantalla de preparación."""
+        """Botón «Ir a practicar» de la pantalla de preparación.
+
+        La pantalla de práctica a usar depende de la configuración `start_view` en
+        config/settings.json:
+        - `simple: true` → PartituraSimpleScreen (vista alternativa simplificada)
+        - `simple: false` (o ausente) → InterpreteScreen (vista por defecto con pentagrama completo)
+        """
         if not self.notas_partitura:
             self._mensaje("Primero elige una partitura.")
             return
         self.iniciar_interpretacion()
-        self.root.current = "interprete"
+        if self.usar_vista_simple:
+            self.root.current = "partitura_simple"
+        else:
+            self.root.current = "interprete"
 
     def iniciar_interpretacion(self):
         """Deja la práctica preparada (sin escuchar todavía) y genera la guía de audio."""

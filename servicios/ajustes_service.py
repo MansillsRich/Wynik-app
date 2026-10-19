@@ -31,6 +31,8 @@ class AjustesPractica:
     pulsos_cuenta: int = 3
     dispositivo: Optional[int] = None    # índice del dispositivo de entrada (None: predeterminado)
     volumen_guia: float = 0.8
+    vista_simple: bool = False
+    escala_fuente: float = 1.0
 
     def corregidos(self) -> "AjustesPractica":
         if self.instrumento not in PERFILES or PERFILES[self.instrumento].experimental:
@@ -51,6 +53,8 @@ class AjustesPractica:
             self.dispositivo = None
         self.notacion_solfeo = bool(self.notacion_solfeo)
         self.calibrar_al_empezar = bool(self.calibrar_al_empezar)
+        self.vista_simple = bool(self.vista_simple)
+        self.escala_fuente = round(float(min(max(float(self.escala_fuente), 0.8), 1.6)), 2)
         return self
 
 

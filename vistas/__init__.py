@@ -10,8 +10,9 @@ from .screens import (
     InterpreteScreen,
     AjustesScreen,
     ProgresoScreen,
+    PartituraSimpleScreen,
 )
-from .widgets import PartituraWidget, GuiaInstrumentoWidget
+from .widgets import PartituraWidget, GuiaInstrumentoWidget, PartituraSimpleWidget
 from .dialogs import abrir_selector_de_archivo
 from .app import WynikApp, KV_PATH
 
@@ -22,8 +23,10 @@ __all__ = [
     "InterpreteScreen",
     "AjustesScreen",
     "ProgresoScreen",
+    "PartituraSimpleScreen",
     "PartituraWidget",
     "GuiaInstrumentoWidget",
+    "PartituraSimpleWidget",
     "abrir_selector_de_archivo",
     "WynikApp",
     "KV_PATH",

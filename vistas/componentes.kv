@@ -8,7 +8,7 @@
 
 <Etiqueta>:
     font_name: T.FUENTE_TEXTO
-    font_size: sp(T.T_CUERPO)
+    font_size: sp(T.T_CUERPO * app.escala_fuente)
     color: T.TINTA
     disabled_color: self.color
     halign: "left"
@@ -22,17 +22,17 @@
 
 <Rotulo@Etiqueta>:
     font_name: T.FUENTE_ROTULO
-    font_size: sp(T.T_ETIQUETA)
+    font_size: sp(T.T_ETIQUETA * app.escala_fuente)
     color: T.TINTA_SUAVE
 
 <Seccion@Etiqueta>:
     font_name: T.FUENTE_ROTULO
-    font_size: sp(T.T_SUBTITULO)
+    font_size: sp(T.T_SUBTITULO * app.escala_fuente)
     bold: True
     color: T.TINTA
 
 <Secundario@Etiqueta>:
-    font_size: sp(T.T_SECUNDARIO)
+    font_size: sp(T.T_SECUNDARIO * app.escala_fuente)
     color: T.TINTA_SUAVE
 
 <Icono>:
@@ -59,15 +59,15 @@
 # ---------------------------------------------------------------------------- botones
 <Boton>:
     markup: True
-    text: self.contenido(self.texto, self.icono, sp(20))
+    text: self.contenido(self.texto, self.icono, sp(20 * app.escala_fuente))
     font_name: T.FUENTE_ROTULO
-    font_size: sp(15)
+    font_size: sp(15 * app.escala_fuente)
     halign: "center"
     valign: "middle"
     color: self.tinta
     disabled_color: self.tinta
     size_hint_y: None
-    height: max(dp(T.ALTO_BOTON), self.texture_size[1] + dp(16))
+    height: max(dp(T.ALTO_BOTON) * app.escala_fuente, self.texture_size[1] + dp(16))
     text_size: (None, None) if self.ajustar else (max(1, self.width - 2 * self.relleno_x), None)
     opacity: 0.45 if self.disabled else 1
     canvas.before:
@@ -262,14 +262,14 @@
         text: root.texto
         halign: "center"
         font_name: T.FUENTE_TEXTO
-        font_size: sp(14)
+        font_size: sp(14 * app.escala_fuente)
         bold: root.activa
         color: mezcla(T.TINTA, T.PRIMARIO_OSCURO, root.t_activa)
         padding: dp(10), 0
     Etiqueta:
         text: root.detalle
         halign: "center"
-        font_size: sp(12)
+        font_size: sp(12 * app.escala_fuente)
         color: T.TINTA_SUAVE
         visible: bool(root.detalle)
 
@@ -279,7 +279,7 @@
     size_hint_y: None
     height: self.minimum_height
     row_force_default: True
-    row_default_height: dp(48)
+    row_default_height: max(dp(48), dp(48) * app.escala_fuente)
 
 # Paso: [−] valor [+]
 <Paso@BoxLayout>:

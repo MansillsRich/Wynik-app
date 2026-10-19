@@ -15,6 +15,7 @@ ScreenManager:
     InterpreteScreen:
     AjustesScreen:
     ProgresoScreen:
+    PartituraSimpleScreen:
 
 <Screen>:
     canvas.before:
@@ -403,6 +404,23 @@ ScreenManager:
                                     texto: "Do Re Mi Fa…"
                                     activa: app.notacion_solfeo
                                     on_release: app.cambiar_notacion(True)
+                        Tarjeta:
+                            Seccion:
+                                text: "Vista de partitura"
+                            GrupoOpciones:
+                                ancho_minimo: dp(130)
+                                Opcion:
+                                    icono: "music-clef-treble"
+                                    texto: "Pentagrama"
+                                    detalle: "partitura completa"
+                                    activa: not app.usar_vista_simple
+                                    on_release: app.cambiar_vista_simple(False)
+                                Opcion:
+                                    icono: "chart-timeline-variant"
+                                    texto: "Simplificada"
+                                    detalle: "cinta de notas"
+                                    activa: app.usar_vista_simple
+                                    on_release: app.cambiar_vista_simple(True)
         BarraAccion:
             ancho_max: dp(560)
             Boton:
@@ -425,6 +443,10 @@ ScreenManager:
                 icono: "help-circle-outline"
                 pos_hint: {"center_y": .5}
                 on_release: app.mostrar_leyenda()
+            BotonIcono:
+                icono: "chart-timeline-variant"
+                pos_hint: {"center_y": .5}
+                on_release: app.alternar_vista_practica()
             BotonIcono:
                 icono: "tune-variant"
                 pos_hint: {"center_y": .5}
@@ -645,6 +667,200 @@ ScreenManager:
                             on_release: app.toggle_reproduccion_audio()
 
 # ==========================================================================================
+#  Partitura simple
+# ==========================================================================================
+
+<PartituraSimpleScreen>:
+    name: "partitura_simple"
+    BoxLayout:
+        orientation: "vertical"
+        BarraSuperior:
+            titulo: app.nombre_partitura
+            fuente: T.FUENTE_TEXTO
+            BotonIcono:
+                icono: "help-circle-outline"
+                pos_hint: {"center_y": .5}
+                on_release: app.mostrar_leyenda()
+            BotonIcono:
+                icono: "music-clef-treble"
+                pos_hint: {"center_y": .5}
+                on_release: app.alternar_vista_practica()
+            BotonIcono:
+                icono: "tune-variant"
+                pos_hint: {"center_y": .5}
+                on_release: app.atras()
+        ScrollView:
+            do_scroll_x: False
+            Contenido:
+                ancho_max: dp(1040)
+                Columnas:
+                    ancho_corte: dp(820)
+                    Columna:
+                        # Partitura simple
+                        Tarjeta:
+                            Seccion:
+                                text: "Partitura simplificada"
+                            PartituraSimpleWidget:
+                                id: partitura_simple_widget
+                                size_hint_y: None
+                                height: dp(140)
+                                notas: app.notas_partitura
+                                estados: app.resultados_notas
+                                indice: app.indice_actual
+                                solfeo: app.notacion_solfeo
+                        # Nota esperada y resultado
+                        Tarjeta:
+                            Seccion:
+                                text: "Nota esperada"
+                            BoxLayout:
+                                size_hint_y: None
+                                height: dp(68)
+                                spacing: dp(12)
+                                BoxLayout:
+                                    orientation: "vertical"
+                                    size_hint_x: None
+                                    width: max(dp(84), nota_esperada.texture_size[0])
+                                    Rotulo:
+                                        text: "Toca"
+                                    Label:
+                                        id: nota_esperada
+                                        text: app.texto_esperada
+                                        font_name: T.FUENTE_TEXTO
+                                        font_size: sp(T.T_NOTA - 8)
+                                        bold: True
+                                        color: T.PRIMARIO
+                                        halign: "left"
+                                        valign: "middle"
+                                        size_hint_x: None
+                                        width: self.texture_size[0]
+                                Widget:
+                                    size_hint_x: None
+                                    width: dp(1)
+                                    canvas:
+                                        Color:
+                                            rgba: T.BORDE
+                                        Rectangle:
+                                            pos: self.x, self.y + dp(6)
+                                            size: dp(1), self.height - dp(12)
+                                BoxLayout:
+                                    orientation: "vertical"
+                                    Rotulo:
+                                        text: "Oído"
+                                    Label:
+                                        text: app.nota_detectada or "—"
+                                        font_name: T.FUENTE_TEXTO
+                                        font_size: sp(26)
+                                        bold: True
+                                        color: app.color_resultado if app.nota_detectada else T.TINTA_TENUE
+                                        halign: "left"
+                                        valign: "middle"
+                                        text_size: self.size
+                                        shorten: True
+                            EstadoPildora:
+                                clave: app.clave_resultado
+                                pos_hint: {"center_y": .5}
+                            Etiqueta:
+                                text: app.texto_resultado
+                                color: app.color_resultado
+                                font_size: sp(T.T_CUERPO)
+                                lineas: 2
+                            Etiqueta:
+                                text: app.texto_aviso
+                                color: T.DESAFINADO
+                                font_size: sp(T.T_SECUNDARIO)
+                                lineas: 2
+                                visible: bool(app.texto_aviso)
+                            Secundario:
+                                text: app.texto_esperada_detalle
+                                lineas: 2
+                                visible: bool(app.texto_esperada_detalle)
+                        # Guía del instrumento
+                        Tarjeta:
+                            Seccion:
+                                text: "Guía"
+                            GuiaInstrumentoWidget:
+                                id: guia_widget
+                                modelo: app.modelo_guia
+                                solfeo: app.notacion_solfeo
+                            Secundario:
+                                text: app.texto_guia
+                                halign: "center"
+                                lineas: 2
+                                font_size: sp(T.T_ETIQUETA)
+                                padding: dp(8), 0
+                    Columna:
+                        # Progreso y controles
+                        Tarjeta:
+                            Seccion:
+                                text: "Progreso"
+                            TiraResultados:
+                                estados: app.resultados_notas
+                                indice: app.indice_actual
+                                size_hint_y: None
+                                height: dp(12)
+                            Etiqueta:
+                                text: app.texto_progreso
+                                font_name: T.FUENTE_TEXTO
+                                font_size: sp(T.T_ETIQUETA + 1)
+                                color: T.TINTA
+                                halign: "left"
+                                valign: "middle"
+                                text_size: self.size
+                                shorten: True
+                        # Referencia sonando (solo mientras suena o está en pausa)
+                        Tarjeta:
+                            visible: app.reproduciendo_audio or app.audio_pausado
+                            Seccion:
+                                text: "Audio de referencia"
+                            BoxLayout:
+                                size_hint_y: None
+                                height: dp(52)
+                                spacing: dp(12)
+                                BotonIcono:
+                                    icono: ("pause" if app.audio_pausa else "stop") if app.reproduciendo_audio else "play"
+                                    variante: "primario"
+                                    size: dp(52), dp(52)
+                                    font_size: sp(26)
+                                    on_release: app.toggle_reproduccion_audio()
+                                BarraProgreso:
+                                    valor: app.posicion_audio_actual / app.duracion_audio_total if app.duracion_audio_total > 0 else 0
+                                    buscable: app.audio_busqueda
+                                    al_buscar: lambda f: app.cambiar_posicion_audio(f * app.duracion_audio_total)
+                                Label:
+                                    text: app.tiempo_actual_str + " / " + app.duracion_total_str
+                                    font_name: T.FUENTE_TEXTO
+                                    font_size: sp(12)
+                                    color: T.TINTA_SUAVE
+                                    size_hint_x: None
+                                    width: self.texture_size[0]
+                            Secundario:
+                                text: app.texto_audio_info
+                                lineas: 1
+                                font_size: sp(T.T_SECUNDARIO)
+        BarraAccion:
+            ancho_max: dp(560)
+            Boton:
+                texto: app.texto_boton_principal
+                icono: app.icono_boton_principal
+                height: dp(52)
+                pos_hint: {"center_y": .5}
+                on_release: app.boton_principal()
+            BotonIcono:
+                icono: "stop"
+                variante: "contorno"
+                disabled: app.estado_practica in ("lista", "terminada")
+                on_release: app.detener_escucha()
+            BotonIcono:
+                icono: "restart"
+                variante: "contorno"
+                on_release: app.reiniciar_practica()
+            BotonIcono:
+                icono: "headphones"
+                variante: "contorno"
+                activo: app.reproduciendo_audio
+                on_release: app.toggle_reproduccion_audio()
+
+# ==========================================================================================
 #  Ajustes
 # ==========================================================================================
 
@@ -787,6 +1003,20 @@ ScreenManager:
                                     color: T.TINTA_SUAVE
                                     size_hint_x: None
                                     width: dp(44)
+                        TarjetaAjuste:
+                            icono: "music-box-outline"
+                            titulo: "Vista de partitura"
+                            ayuda: "Pentagrama tradicional o vista simplificada con notas y avance"
+                            GrupoOpciones:
+                                ancho_minimo: dp(140)
+                                Opcion:
+                                    texto: "Pentagrama"
+                                    activa: not app.usar_vista_simple
+                                    on_release: app.cambiar_vista_simple(False)
+                                Opcion:
+                                    texto: "Simplificada"
+                                    activa: app.usar_vista_simple
+                                    on_release: app.cambiar_vista_simple(True)
 
 # ==========================================================================================
 #  Progreso

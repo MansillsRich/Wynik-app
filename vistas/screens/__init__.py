@@ -8,6 +8,7 @@ from .ajustes_inicio_screen import AjustesInicioScreen
 from .interprete_screen import InterpreteScreen
 from .ajustes_screen import AjustesScreen
 from .progreso_screen import ProgresoScreen
+from .partitura_simple_screen import PartituraSimpleScreen
 
 __all__ = [
     "MenuScreen",
@@ -16,4 +17,5 @@ __all__ = [
     "InterpreteScreen",
     "AjustesScreen",
     "ProgresoScreen",
+    "PartituraSimpleScreen",
 ]
