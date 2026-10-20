@@ -8,9 +8,14 @@ venv/
 .vscode/
 .env
 .graphify-out/
-# Datos locales de cada usuario
+graphify-out/
+# Datos locales y temporales de usuario
 historial_partituras.json
 ajustes_wynik.json
 progreso_sesiones.json
 temp_guia.wav
 *.wav
+.cache/
+data/
+# Archivos de asistentes de desarrollo
+.aider*

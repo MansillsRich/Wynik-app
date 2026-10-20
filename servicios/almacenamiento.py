@@ -33,6 +33,13 @@ def ruta_dato(nombre: str) -> str:
     return os.path.join(directorio_datos(), nombre)
 
 
+def ruta_cache(nombre: str) -> str:
+    """Devuelve la ruta dentro de la carpeta .cache de datos, creándola si no existe."""
+    directorio = os.path.join(directorio_datos(), ".cache")
+    os.makedirs(directorio, exist_ok=True)
+    return os.path.join(directorio, nombre)
+
+
 def leer_json(nombre: str, por_defecto: Any) -> Any:
     ruta = ruta_dato(nombre)
     if not os.path.exists(ruta):

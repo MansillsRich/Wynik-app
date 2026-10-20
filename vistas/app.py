@@ -377,20 +377,6 @@ class WynikApp(MDApp):
         from kivy.metrics import Metrics
         Metrics.fontscale = self.escala_fuente
 
-        # Leer configuración de vista desde config/settings.json (si existe)
-        try:
-            import json
-            import os
-            config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'settings.json')
-            if os.path.exists(config_path):
-                with open(config_path, 'r', encoding='utf-8') as f:
-                    config = json.load(f)
-                    start_view = config.get('start_view', {})
-                    if "simple" in start_view:
-                        self.usar_vista_simple = bool(start_view.get('simple', False))
-        except Exception:
-            pass
-
         self._actualizar_textos_configuracion()
 
     def _guardar_ajustes(self):
@@ -405,21 +391,6 @@ class WynikApp(MDApp):
             volumen_guia=float(self.volumen_audio),
             vista_simple=bool(self.usar_vista_simple),
             escala_fuente=float(self.escala_fuente)))
-        try:
-            import json
-            import os
-            config_dir = os.path.join(os.path.dirname(__file__), '..', 'config')
-            os.makedirs(config_dir, exist_ok=True)
-            config_path = os.path.join(config_dir, 'settings.json')
-            with open(config_path, 'w', encoding='utf-8') as f:
-                json.dump({
-                    "start_view": {
-                        "simple": bool(self.usar_vista_simple),
-                        "advanced": not bool(self.usar_vista_simple),
-                    }
-                }, f, indent=4)
-        except Exception:
-            pass
 
     def _perfil(self):
         from nucleo.instrumentos import PERFILES, perfil_de_guitarra
@@ -804,8 +775,8 @@ class WynikApp(MDApp):
     # =========================================================================
 
     def _ruta_guia(self) -> str:
-        from servicios.almacenamiento import ruta_dato
-        return ruta_dato("temp_guia.wav")
+        from servicios.almacenamiento import ruta_cache
+        return ruta_cache("temp_guia.wav")
 
     def _timbre_guia(self) -> str:
         return self.instrumento if self.instrumento in ("piano", "guitarra") else "seno"
@@ -1010,10 +981,10 @@ class WynikApp(MDApp):
     def preparar_practica(self):
         """Botón «Ir a practicar» de la pantalla de preparación.
 
-        La pantalla de práctica a usar depende de la configuración `start_view` en
-        config/settings.json:
-        - `simple: true` → PartituraSimpleScreen (vista alternativa simplificada)
-        - `simple: false` (o ausente) → InterpreteScreen (vista por defecto con pentagrama completo)
+        La pantalla de práctica a usar depende del ajuste `vista_simple` en
+        `ajustes_wynik.json`:
+        - `true` → PartituraSimpleScreen (vista alternativa simplificada)
+        - `false` (o ausente) → InterpreteScreen (vista por defecto con pentagrama completo)
         """
         if not self.notas_partitura:
             self._mensaje("Primero elige una partitura.")
