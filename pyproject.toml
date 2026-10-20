@@ -33,7 +33,6 @@ exclude = [
     "venv",
     ".git",
     "__pycache__",
-    "graphify-out",
 ]
 
 [tool.ruff.lint]
