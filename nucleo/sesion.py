@@ -502,7 +502,7 @@ class SesionProgreso:
     cents_medios: Optional[float] = None
     desfase_medio_s: Optional[float] = None
 
-    # Propiedades semánticas (compatibilidad con la nomenclatura del informe técnico)
+    # Propiedades semánticas (compatibilidad con la nomenclatura del informe técnico), hola
     @property
     def nombre_partitura(self) -> str:
         return self.partitura
