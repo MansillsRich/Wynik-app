@@ -36,7 +36,10 @@ _ORIGEN = {
     "cargar_ajustes": "ajustes_service",
     "guardar_ajustes": "ajustes_service",
     "cargar_progreso": "progreso_service",
+    "cargar_sesiones": "progreso_service",
     "registrar_sesion": "progreso_service",
+    "registrar_sesion_practica": "progreso_service",
+    "SesionProgreso": "progreso_service",
     "resumen_por_partitura": "progreso_service",
 }
 

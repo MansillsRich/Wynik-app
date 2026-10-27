@@ -3,6 +3,14 @@ Wynik 🎵
 Punto de entrada de la aplicación de práctica musical con reconocimiento en tiempo real.
 """
 
+import sys
+from pathlib import Path
+
+# Garantiza que el directorio raíz del proyecto forme parte de sys.path
+RAIZ_PROYECTO = Path(__file__).resolve().parent
+if str(RAIZ_PROYECTO) not in sys.path:
+    sys.path.insert(0, str(RAIZ_PROYECTO))
+
 from kivy.utils import platform
 
 ESCRITORIO = platform not in ("android", "ios")

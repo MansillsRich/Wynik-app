@@ -62,9 +62,10 @@ Solo usa la biblioteca estándar.
 
 from __future__ import annotations
 
+import datetime
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .eventos import EventoInterpretacion, TipoEvento
 from .musica import LA4_HZ, EstadoAltura, ResultadoAltura, comparar_frecuencia
@@ -484,5 +485,77 @@ def describir_estado(estado: EstadoNota) -> str:
     }[estado]
 
 
+@dataclass
+class SesionProgreso:
+    """Clase formal POO de dominio que modela el resultado de una sesión de práctica."""
+    partitura: str
+    instrumento: str = "piano"
+    modo: str = "seguir_tempo"
+    factor_tempo: float = 1.0
+    total: int = 0
+    aciertos: int = 0
+    precision: float = 0.0
+    fecha: str = field(
+        default_factory=lambda: datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+    )
+    estados: Dict[str, int] = field(default_factory=dict)
+    cents_medios: Optional[float] = None
+    desfase_medio_s: Optional[float] = None
+
+    # Propiedades semánticas (compatibilidad con la nomenclatura del informe técnico)
+    @property
+    def nombre_partitura(self) -> str:
+        return self.partitura
+
+    @property
+    def precision_media(self) -> float:
+        return self.precision
+
+    @property
+    def notas_correctas(self) -> int:
+        return self.aciertos
+
+    @property
+    def total_notas(self) -> int:
+        return self.total
+
+    @property
+    def timestamp(self) -> str:
+        return self.fecha
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Serializa la instancia POO a un diccionario primitivo para persistencia JSON."""
+        return {
+            "fecha": self.fecha,
+            "partitura": self.partitura,
+            "instrumento": self.instrumento,
+            "modo": self.modo,
+            "factor_tempo": self.factor_tempo,
+            "total": self.total,
+            "aciertos": self.aciertos,
+            "precision": round(float(self.precision), 4),
+            "estados": dict(self.estados),
+            "cents_medios": self.cents_medios,
+            "desfase_medio_s": self.desfase_medio_s,
+        }
+
+    @classmethod
+    def from_dict(cls, datos: Dict[str, Any]) -> "SesionProgreso":
+        """Reconstruye una instancia POO de dominio a partir de un diccionario cargado de JSON."""
+        return cls(
+            fecha=str(datos.get("fecha", "")),
+            partitura=str(datos.get("partitura", "?")),
+            instrumento=str(datos.get("instrumento", "piano")),
+            modo=str(datos.get("modo", "seguir_tempo")),
+            factor_tempo=float(datos.get("factor_tempo", 1.0)),
+            total=int(datos.get("total", 0)),
+            aciertos=int(datos.get("aciertos", 0)),
+            precision=float(datos.get("precision", 0.0)),
+            estados=dict(datos.get("estados", {})),
+            cents_medios=float(datos["cents_medios"]) if datos.get("cents_medios") is not None else None,
+            desfase_medio_s=float(datos["desfase_medio_s"]) if datos.get("desfase_medio_s") is not None else None,
+        )
+
+
 __all__ = ["Cambio", "ConfiguracionSesion", "EstadoNota", "ModoPractica", "NotaEsperada",
-           "ResultadoNota", "SesionDePractica", "describir_estado", "notas_esperadas"]
+           "ResultadoNota", "SesionDePractica", "SesionProgreso", "describir_estado", "notas_esperadas"]

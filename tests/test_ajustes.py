@@ -1,4 +1,9 @@
+import sys
 import unittest
+from pathlib import Path
+
+# Permitir ejecución directa del archivo de test
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from servicios.ajustes_service import AjustesPractica
 

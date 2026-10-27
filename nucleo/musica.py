@@ -669,3 +669,10 @@ def _ligadura_abierta(abiertas, sonidos, clave, inicio) -> Optional[int]:
         if abs(sonidos[indice].fin - inicio) < 1e-6:
             return indice
     return None
+
+
+def __getattr__(nombre: str):
+    if nombre == "SesionProgreso":
+        from .sesion import SesionProgreso
+        return SesionProgreso
+    raise AttributeError(f"module {__name__!r} has no attribute {nombre!r}")
