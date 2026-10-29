@@ -1,5 +1,5 @@
 """
-Wynik 🎵
+Wynik 
 Punto de entrada de la aplicación de práctica musical con reconocimiento en tiempo real.
 """
 
