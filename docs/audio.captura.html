@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module audio.captura</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="audio.html" class="white">audio</a>.captura</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/audio/captura.py">/home/benja/Documentos/WynikApp/Wynik-app/audio/captura.py</a></td></tr></table>
+    <p><span class="code">Captura&nbsp;de&nbsp;audio&nbsp;desacoplada&nbsp;del&nbsp;análisis.<br>
+&nbsp;<br>
+El&nbsp;callback&nbsp;del&nbsp;micrófono&nbsp;solo&nbsp;copia&nbsp;el&nbsp;bloque,&nbsp;anota&nbsp;el&nbsp;instante&nbsp;y&nbsp;su&nbsp;número&nbsp;de&nbsp;muestra&nbsp;y<br>
+lo&nbsp;deja&nbsp;en&nbsp;una&nbsp;cola&nbsp;acotada&nbsp;(`<a href="#ColaDeBloques">ColaDeBloques</a>`).&nbsp;Ningún&nbsp;cálculo&nbsp;de&nbsp;altura&nbsp;se&nbsp;hace&nbsp;dentro&nbsp;del<br>
+callback:&nbsp;el&nbsp;análisis&nbsp;corre&nbsp;en&nbsp;otro&nbsp;hilo&nbsp;(`audio.escucha.MotorDeEscucha`).<br>
+&nbsp;<br>
+-&nbsp;Si&nbsp;la&nbsp;cola&nbsp;se&nbsp;llena&nbsp;(el&nbsp;análisis&nbsp;no&nbsp;da&nbsp;abasto),&nbsp;se&nbsp;descarta&nbsp;el&nbsp;bloque&nbsp;más&nbsp;antiguo&nbsp;y&nbsp;se<br>
+&nbsp;&nbsp;cuenta:&nbsp;el&nbsp;analizador&nbsp;detecta&nbsp;el&nbsp;hueco&nbsp;por&nbsp;el&nbsp;número&nbsp;de&nbsp;muestra&nbsp;y&nbsp;se&nbsp;reinicia&nbsp;en&nbsp;lugar<br>
+&nbsp;&nbsp;de&nbsp;unir&nbsp;audio&nbsp;discontinuo.<br>
+-&nbsp;Los&nbsp;desbordes&nbsp;que&nbsp;informa&nbsp;el&nbsp;sistema&nbsp;de&nbsp;audio&nbsp;(`status`&nbsp;de&nbsp;PortAudio)&nbsp;se&nbsp;cuentan.<br>
+-&nbsp;La&nbsp;frecuencia&nbsp;de&nbsp;muestreo&nbsp;es&nbsp;la&nbsp;real&nbsp;del&nbsp;flujo&nbsp;abierto,&nbsp;no&nbsp;una&nbsp;constante.<br>
+&nbsp;<br>
+`<a href="#CapturaSounddevice">CapturaSounddevice</a>`&nbsp;es&nbsp;el&nbsp;adaptador&nbsp;de&nbsp;escritorio&nbsp;(macOS,&nbsp;Windows&nbsp;y&nbsp;Linux)&nbsp;e&nbsp;importa<br>
+sounddevice&nbsp;solo&nbsp;al&nbsp;abrir&nbsp;el&nbsp;micrófono.&nbsp;Android&nbsp;necesitará&nbsp;un&nbsp;adaptador&nbsp;propio<br>
+(AudioRecord&nbsp;con&nbsp;pyjnius)&nbsp;con&nbsp;la&nbsp;misma&nbsp;interfaz:&nbsp;`abrir`,&nbsp;`cerrar`,&nbsp;`activa`,<br>
+`frecuencia_muestreo`,&nbsp;`cola`&nbsp;y&nbsp;`estadisticas`.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="statistics.html">statistics</a><br>
+</td><td class="multicolumn"><a href="threading.html">threading</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#Exception">builtins.Exception</a>(<a href="builtins.html#BaseException">builtins.BaseException</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="audio.captura.html#MicrofonoNoDisponibleError">MicrofonoNoDisponibleError</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="audio.captura.html#BloqueAudio">BloqueAudio</a>
+</dt><dt class="heading-text"><a href="audio.captura.html#CapturaBase">CapturaBase</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="audio.captura.html#CapturaManual">CapturaManual</a>
+</dt><dt class="heading-text"><a href="audio.captura.html#CapturaSounddevice">CapturaSounddevice</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="audio.captura.html#ColaDeBloques">ColaDeBloques</a>
+</dt><dt class="heading-text"><a href="audio.captura.html#EstadisticasCaptura">EstadisticasCaptura</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="BloqueAudio">class <strong>BloqueAudio</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#BloqueAudio">BloqueAudio</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;muestras:&nbsp;'np.ndarray',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;indice_inicial:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;t_captura:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;estado:&nbsp;'str'&nbsp;=&nbsp;''<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Bloque&nbsp;capturado:&nbsp;muestras&nbsp;mono&nbsp;(copia),&nbsp;número&nbsp;de&nbsp;su&nbsp;primera&nbsp;muestra&nbsp;en&nbsp;la&nbsp;captura,<br>
+instante&nbsp;(reloj&nbsp;de&nbsp;la&nbsp;sesión)&nbsp;en&nbsp;que&nbsp;se&nbsp;recibió&nbsp;y&nbsp;estado&nbsp;del&nbsp;sistema&nbsp;de&nbsp;audio.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="BloqueAudio-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="BloqueAudio-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="BloqueAudio-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="BloqueAudio-__init__"><strong>__init__</strong></a>(
+    self,
+    muestras: 'np.ndarray',
+    indice_inicial: 'int',
+    t_captura: 'float',
+    estado: 'str' = ''
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="BloqueAudio-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="BloqueAudio-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="BloqueAudio-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'estado': 'str', 'indice_inicial': 'int', 'muestras': 'np.ndarray', 't_captura': 'float'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'estado': Field(name='estado',type='str',default='',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD), 'indice_inicial': Field(name='indice_inicial',type='int',default=&lt;...appingproxy({}),kw_only=False,_field_type=_FIELD), 'muestras': Field(name='muestras',type='np.ndarray',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 't_captura': Field(name='t_captura',type='float',default=&lt;dat...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('muestras', 'indice_inicial', 't_captura', 'estado')</dl>
+
+<dl><dt><strong>estado</strong> = ''</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="CapturaBase">class <strong>CapturaBase</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#CapturaBase">CapturaBase</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cola:&nbsp;'Optional[<a href="#ColaDeBloques">ColaDeBloques</a>]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;reloj:&nbsp;'Callable[[],&nbsp;float]'&nbsp;=&nbsp;&amp;lt;built-in&nbsp;function&nbsp;monotonic&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tam_bloque:&nbsp;'int'&nbsp;=&nbsp;1024<br>
+)<br>
+&nbsp;<br>
+Lógica&nbsp;común&nbsp;de&nbsp;captura:&nbsp;el&nbsp;callback&nbsp;y&nbsp;la&nbsp;cola.&nbsp;Las&nbsp;subclases&nbsp;abren&nbsp;el&nbsp;dispositivo.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="CapturaBase-__init__"><strong>__init__</strong></a>(
+    self,
+    cola: 'Optional[ColaDeBloques]' = None,
+    reloj: 'Callable[[], float]' = &lt;built-in function monotonic&gt;,
+    tam_bloque: 'int' = 1024
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="CapturaBase-abrir"><strong>abrir</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<dl><dt><a name="CapturaBase-cerrar"><strong>cerrar</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<dl><dt><a name="CapturaBase-reiniciar_indices"><strong>reiniciar_indices</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>activa</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="CapturaManual">class <strong>CapturaManual</strong></a>(<a href="audio.captura.html#CapturaBase">CapturaBase</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#CapturaManual">CapturaManual</a>(frecuencia_muestreo:&nbsp;'float',&nbsp;**kwargs)<br>
+&nbsp;<br>
+Captura&nbsp;sin&nbsp;dispositivo:&nbsp;los&nbsp;bloques&nbsp;llegan&nbsp;llamando&nbsp;a&nbsp;`_callback`&nbsp;(pruebas,<br>
+simulaciones,&nbsp;archivos).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="audio.captura.html#CapturaManual">CapturaManual</a></dd>
+<dd><a href="audio.captura.html#CapturaBase">CapturaBase</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="CapturaManual-__init__"><strong>__init__</strong></a>(self, frecuencia_muestreo: 'float', **kwargs)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="CapturaManual-abrir"><strong>abrir</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<dl><dt><a name="CapturaManual-cerrar"><strong>cerrar</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>activa</strong></dt>
+</dl>
+<hr>
+Methods inherited from <a href="audio.captura.html#CapturaBase">CapturaBase</a>:<br>
+<dl><dt><a name="CapturaManual-reiniciar_indices"><strong>reiniciar_indices</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="audio.captura.html#CapturaBase">CapturaBase</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="CapturaSounddevice">class <strong>CapturaSounddevice</strong></a>(<a href="audio.captura.html#CapturaBase">CapturaBase</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#CapturaSounddevice">CapturaSounddevice</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dispositivo=None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;frecuencia_muestreo:&nbsp;'Optional[float]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;modulo_sounddevice=None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;**kwargs<br>
+)<br>
+&nbsp;<br>
+Micrófono&nbsp;de&nbsp;escritorio&nbsp;con&nbsp;sounddevice&nbsp;(PortAudio).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="audio.captura.html#CapturaSounddevice">CapturaSounddevice</a></dd>
+<dd><a href="audio.captura.html#CapturaBase">CapturaBase</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="CapturaSounddevice-__init__"><strong>__init__</strong></a>(
+    self,
+    dispositivo=None,
+    frecuencia_muestreo: 'Optional[float]' = None,
+    modulo_sounddevice=None,
+    **kwargs
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="CapturaSounddevice-abrir"><strong>abrir</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<dl><dt><a name="CapturaSounddevice-cerrar"><strong>cerrar</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>activa</strong></dt>
+</dl>
+<hr>
+Methods inherited from <a href="audio.captura.html#CapturaBase">CapturaBase</a>:<br>
+<dl><dt><a name="CapturaSounddevice-reiniciar_indices"><strong>reiniciar_indices</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="audio.captura.html#CapturaBase">CapturaBase</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ColaDeBloques">class <strong>ColaDeBloques</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ColaDeBloques">ColaDeBloques</a>(capacidad:&nbsp;'int'&nbsp;=&nbsp;64)<br>
+&nbsp;<br>
+Cola&nbsp;acotada&nbsp;y&nbsp;segura&nbsp;entre&nbsp;hilos.&nbsp;Llena,&nbsp;descarta&nbsp;el&nbsp;bloque&nbsp;más&nbsp;antiguo.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="ColaDeBloques-__init__"><strong>__init__</strong></a>(self, capacidad: 'int' = 64)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ColaDeBloques-__len__"><strong>__len__</strong></a>(self) -&gt; 'int'</dt></dl>
+
+<dl><dt><a name="ColaDeBloques-poner"><strong>poner</strong></a>(self, bloque: 'BloqueAudio') -&gt; 'bool'</dt><dd><span class="code">Añade&nbsp;un&nbsp;bloque.&nbsp;Devuelve&nbsp;False&nbsp;si&nbsp;tuvo&nbsp;que&nbsp;descartar&nbsp;uno&nbsp;antiguo.</span></dd></dl>
+
+<dl><dt><a name="ColaDeBloques-sacar_todos"><strong>sacar_todos</strong></a>(self) -&gt; 'List[BloqueAudio]'</dt></dl>
+
+<dl><dt><a name="ColaDeBloques-vaciar"><strong>vaciar</strong></a>(self) -&gt; 'int'</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="EstadisticasCaptura">class <strong>EstadisticasCaptura</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#EstadisticasCaptura">EstadisticasCaptura</a>(maximo_muestras:&nbsp;'int'&nbsp;=&nbsp;100000)<br>
+&nbsp;<br>
+Coste&nbsp;del&nbsp;callback&nbsp;y&nbsp;continuidad&nbsp;del&nbsp;flujo&nbsp;(para&nbsp;pruebas&nbsp;y&nbsp;mediciones&nbsp;de&nbsp;hardware).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="EstadisticasCaptura-__init__"><strong>__init__</strong></a>(self, maximo_muestras: 'int' = 100000)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="EstadisticasCaptura-resumen"><strong>resumen</strong></a>(self) -&gt; 'dict'</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="MicrofonoNoDisponibleError">class <strong>MicrofonoNoDisponibleError</strong></a>(<a href="builtins.html#Exception">builtins.Exception</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">No&nbsp;se&nbsp;pudo&nbsp;abrir&nbsp;el&nbsp;dispositivo&nbsp;de&nbsp;entrada&nbsp;de&nbsp;audio.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="audio.captura.html#MicrofonoNoDisponibleError">MicrofonoNoDisponibleError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="MicrofonoNoDisponibleError-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#Exception">builtins.Exception</a>:<br>
+<dl><dt><a name="MicrofonoNoDisponibleError-__new__"><strong>__new__</strong></a>(*args, **kwargs)<span class="grey"><span class="heading-text"> class method of <a href="builtins.html#Exception">builtins.Exception</a></span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="MicrofonoNoDisponibleError-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><span class="code">Return&nbsp;getattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="MicrofonoNoDisponibleError-__reduce__"><strong>__reduce__</strong></a>(self, /)</dt><dd><span class="code">Helper&nbsp;for&nbsp;pickle.</span></dd></dl>
+
+<dl><dt><a name="MicrofonoNoDisponibleError-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="MicrofonoNoDisponibleError-__setstate__"><strong>__setstate__</strong></a>(self, object, /)</dt></dl>
+
+<dl><dt><a name="MicrofonoNoDisponibleError-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;str(self).</span></dd></dl>
+
+<dl><dt><a name="MicrofonoNoDisponibleError-add_note"><strong>add_note</strong></a>(self, object, /)</dt><dd><span class="code"><a href="builtins.html#Exception">Exception</a>.<a href="#MicrofonoNoDisponibleError-add_note">add_note</a>(note)&nbsp;--<br>
+add&nbsp;a&nbsp;note&nbsp;to&nbsp;the&nbsp;exception</span></dd></dl>
+
+<dl><dt><a name="MicrofonoNoDisponibleError-with_traceback"><strong>with_traceback</strong></a>(self, object, /)</dt><dd><span class="code"><a href="builtins.html#Exception">Exception</a>.<a href="#MicrofonoNoDisponibleError-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><span class="code">exception&nbsp;cause</span></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><span class="code">exception&nbsp;context</span></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-dispositivos_de_entrada"><strong>dispositivos_de_entrada</strong></a>(modulo_sounddevice=None) -&gt; 'List[dict]'</dt><dd><span class="code">Dispositivos&nbsp;con&nbsp;canales&nbsp;de&nbsp;entrada:&nbsp;índice,&nbsp;nombre,&nbsp;frecuencia&nbsp;y&nbsp;si&nbsp;es&nbsp;el<br>
+predeterminado.&nbsp;Lista&nbsp;vacía&nbsp;si&nbsp;el&nbsp;sistema&nbsp;de&nbsp;audio&nbsp;no&nbsp;está&nbsp;disponible.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>CAPACIDAD_COLA_BLOQUES</strong> = 64<br>
+<strong>Callable</strong> = typing.Callable<br>
+<strong>Deque</strong> = typing.Deque<br>
+<strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>TAM_BLOQUE</strong> = 1024</td></tr></table>
+</body>
+</html>

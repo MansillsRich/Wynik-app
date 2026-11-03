@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module vistas.dialogs</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="vistas.html" class="white">vistas</a>.dialogs</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/vistas/dialogs.py">/home/benja/Documentos/WynikApp/Wynik-app/vistas/dialogs.py</a></td></tr></table>
+    <p><span class="code">Diálogos&nbsp;de&nbsp;Wynik:&nbsp;confirmaciones,&nbsp;errores,&nbsp;resumen&nbsp;de&nbsp;la&nbsp;práctica&nbsp;y&nbsp;selector&nbsp;de&nbsp;archivos.<br>
+&nbsp;<br>
+Todos&nbsp;comparten&nbsp;el&nbsp;mismo&nbsp;aspecto&nbsp;(`mostrar_dialogo`):&nbsp;tarjeta&nbsp;centrada&nbsp;sobre&nbsp;un&nbsp;velo,&nbsp;título<br>
+con&nbsp;icono,&nbsp;mensaje&nbsp;y&nbsp;botones.&nbsp;Atrás&nbsp;(Esc)&nbsp;los&nbsp;cierra&nbsp;como&nbsp;«cancelar»;&nbsp;ver&nbsp;`WynikApp._tecla`.<br>
+&nbsp;<br>
+Las&nbsp;importaciones&nbsp;de&nbsp;Kivy&nbsp;están&nbsp;dentro&nbsp;de&nbsp;las&nbsp;funciones:&nbsp;este&nbsp;módulo&nbsp;se&nbsp;importa&nbsp;también&nbsp;en<br>
+las&nbsp;simulaciones&nbsp;sin&nbsp;interfaz,&nbsp;que&nbsp;nunca&nbsp;abren&nbsp;un&nbsp;diálogo.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="os.html">os</a><br>
+</td><td class="multicolumn"><a href="vistas.tema.html">vistas.tema</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-abrir_selector_de_archivo"><strong>abrir_selector_de_archivo</strong></a>(
+    callback_ruta_seleccionada: Callable[[Optional[str]], NoneType]
+) -&gt; None</dt><dd><span class="code">Abre&nbsp;el&nbsp;selector&nbsp;de&nbsp;archivos&nbsp;MusicXML&nbsp;(.xml,&nbsp;.musicxml,&nbsp;.mxl).<br>
+Llama&nbsp;a&nbsp;`callback_ruta_seleccionada`&nbsp;con&nbsp;la&nbsp;ruta&nbsp;absoluta&nbsp;o&nbsp;None&nbsp;si&nbsp;se&nbsp;cancela.</span></dd></dl>
+ <dl><dt><a name="-cerrar_dialogo"><strong>cerrar_dialogo</strong></a>() -&gt; bool</dt></dl>
+ <dl><dt><a name="-dialogo_abierto"><strong>dialogo_abierto</strong></a>()</dt><dd><span class="code">El&nbsp;diálogo&nbsp;visible&nbsp;más&nbsp;reciente&nbsp;(o&nbsp;None).</span></dd></dl>
+ <dl><dt><a name="-mostrar_dialogo"><strong>mostrar_dialogo</strong></a>(
+    titulo: str,
+    mensaje: str = '',
+    icono: str = '',
+    color_icono=None,
+    botones: Sequence[Tuple[str, str, Optional[Callable[[], NoneType]]]] = (('Entendido', 'primario', None),),
+    contenido=None,
+    ancho_max_dp: float = 460,
+    al_cerrar: Optional[Callable[[], NoneType]] = None
+)</dt><dd><span class="code">Abre&nbsp;un&nbsp;diálogo&nbsp;modal.&nbsp;`botones`:&nbsp;(texto,&nbsp;variante&nbsp;de&nbsp;`Boton`,&nbsp;acción&nbsp;o&nbsp;None);&nbsp;cada<br>
+botón&nbsp;ejecuta&nbsp;su&nbsp;acción&nbsp;y&nbsp;cierra&nbsp;el&nbsp;diálogo.&nbsp;Devuelve&nbsp;la&nbsp;ModalView.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Callable</strong> = typing.Callable<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>Sequence</strong> = typing.Sequence<br>
+<strong>Tuple</strong> = typing.Tuple</td></tr></table>
+</body>
+</html>

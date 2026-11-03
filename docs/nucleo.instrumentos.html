@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module nucleo.instrumentos</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="nucleo.html" class="white">nucleo</a>.instrumentos</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/nucleo/instrumentos.py">/home/benja/Documentos/WynikApp/Wynik-app/nucleo/instrumentos.py</a></td></tr></table>
+    <p><span class="code">Perfiles&nbsp;de&nbsp;instrumento:&nbsp;rango&nbsp;sonoro,&nbsp;convención&nbsp;de&nbsp;escritura,&nbsp;afinaciones&nbsp;y&nbsp;parámetros&nbsp;de<br>
+detección.<br>
+&nbsp;<br>
+Los&nbsp;rangos&nbsp;son&nbsp;criterios&nbsp;iniciales&nbsp;de&nbsp;diseño&nbsp;(configurables),&nbsp;no&nbsp;resultados&nbsp;medidos:<br>
+-&nbsp;Guitarra:&nbsp;E2–E6&nbsp;(MIDI&nbsp;40–88),&nbsp;seis&nbsp;cuerdas&nbsp;en&nbsp;afinación&nbsp;estándar&nbsp;hasta&nbsp;el&nbsp;traste&nbsp;24.<br>
+&nbsp;&nbsp;Se&nbsp;escribe&nbsp;una&nbsp;octava&nbsp;por&nbsp;encima&nbsp;de&nbsp;como&nbsp;suena&nbsp;(convención&nbsp;habitual).<br>
+-&nbsp;Piano:&nbsp;A0–C8&nbsp;(MIDI&nbsp;21–108),&nbsp;rango&nbsp;aprobado&nbsp;para&nbsp;el&nbsp;piano&nbsp;monofónico.<br>
+-&nbsp;Flauta:&nbsp;C4–C7&nbsp;(MIDI&nbsp;60–96),&nbsp;experimental:&nbsp;no&nbsp;tiene&nbsp;parámetros&nbsp;ni&nbsp;pruebas&nbsp;propias&nbsp;todavía.<br>
+&nbsp;<br>
+El&nbsp;detector&nbsp;busca&nbsp;la&nbsp;altura&nbsp;en&nbsp;un&nbsp;rango&nbsp;algo&nbsp;más&nbsp;amplio&nbsp;que&nbsp;el&nbsp;del&nbsp;instrumento&nbsp;(`margen_*`)<br>
+para&nbsp;poder&nbsp;informar&nbsp;de&nbsp;una&nbsp;nota&nbsp;fuera&nbsp;de&nbsp;rango&nbsp;como&nbsp;tal,&nbsp;en&nbsp;lugar&nbsp;de&nbsp;confundirla&nbsp;con&nbsp;la<br>
+nota&nbsp;más&nbsp;cercana&nbsp;al&nbsp;límite&nbsp;o&nbsp;con&nbsp;uno&nbsp;de&nbsp;sus&nbsp;armónicos.<br>
+&nbsp;<br>
+Solo&nbsp;usa&nbsp;la&nbsp;biblioteca&nbsp;estándar.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="re.html">re</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.instrumentos.html#ParametrosDeteccion">ParametrosDeteccion</a>
+</dt><dt class="heading-text"><a href="nucleo.instrumentos.html#PerfilInstrumento">PerfilInstrumento</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ParametrosDeteccion">class <strong>ParametrosDeteccion</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ParametrosDeteccion">ParametrosDeteccion</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;umbral_yin:&nbsp;'float'&nbsp;=&nbsp;0.3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aperiodicidad_max:&nbsp;'float'&nbsp;=&nbsp;0.3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;margen_inferior_semitonos:&nbsp;'int'&nbsp;=&nbsp;12,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;margen_superior_semitonos:&nbsp;'int'&nbsp;=&nbsp;12,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tramas_confirmacion:&nbsp;'int'&nbsp;=&nbsp;3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;confirmacion_max_s:&nbsp;'float'&nbsp;=&nbsp;0.15,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;subida_ataque_db:&nbsp;'float'&nbsp;=&nbsp;6.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;flujo_relativo:&nbsp;'float'&nbsp;=&nbsp;2.5,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;flujo_minimo:&nbsp;'float'&nbsp;=&nbsp;15.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;histeresis_semitonos:&nbsp;'float'&nbsp;=&nbsp;0.75,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;separacion_minima_s:&nbsp;'float'&nbsp;=&nbsp;0.06,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;refinar_fundamental:&nbsp;'bool'&nbsp;=&nbsp;False,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nivel_silencio_dbfs:&nbsp;'float'&nbsp;=&nbsp;-65.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nivel_minimo_dbfs:&nbsp;'float'&nbsp;=&nbsp;-50.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tolerancia_interferencia_cents:&nbsp;'float'&nbsp;=&nbsp;20.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;frecuencias_interferencia_hz:&nbsp;'Tuple[float,&nbsp;...]'&nbsp;=&nbsp;(50.0,&nbsp;60.0,&nbsp;100.0,&nbsp;120.0,&nbsp;150.0,&nbsp;180.0)<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Parámetros&nbsp;del&nbsp;detector&nbsp;para&nbsp;un&nbsp;perfil.&nbsp;Son&nbsp;valores&nbsp;iniciales&nbsp;de&nbsp;diseño,&nbsp;ajustados&nbsp;con<br>
+señales&nbsp;sintéticas;&nbsp;su&nbsp;validez&nbsp;con&nbsp;instrumentos&nbsp;reales&nbsp;está&nbsp;pendiente&nbsp;de&nbsp;medición.<br>
+&nbsp;<br>
+Estimación&nbsp;de&nbsp;altura&nbsp;(YIN)<br>
+-&nbsp;`umbral_yin`:&nbsp;umbral&nbsp;absoluto&nbsp;de&nbsp;la&nbsp;diferencia&nbsp;normalizada&nbsp;(paso&nbsp;4&nbsp;de&nbsp;YIN).<br>
+-&nbsp;`aperiodicidad_max`:&nbsp;por&nbsp;encima,&nbsp;la&nbsp;trama&nbsp;no&nbsp;tiene&nbsp;una&nbsp;altura&nbsp;fiable.<br>
+-&nbsp;`margen_inferior_semitonos`,&nbsp;`margen_superior_semitonos`:&nbsp;búsqueda&nbsp;fuera&nbsp;del&nbsp;rango.<br>
+&nbsp;<br>
+Segmentación&nbsp;en&nbsp;eventos<br>
+-&nbsp;`tramas_confirmacion`:&nbsp;tramas&nbsp;de&nbsp;10&nbsp;ms&nbsp;con&nbsp;la&nbsp;misma&nbsp;altura&nbsp;que&nbsp;confirman&nbsp;un&nbsp;ataque.<br>
+-&nbsp;`confirmacion_max_s`:&nbsp;tiempo&nbsp;máximo&nbsp;para&nbsp;confirmar&nbsp;un&nbsp;ataque&nbsp;antes&nbsp;de&nbsp;descartarlo.<br>
+-&nbsp;`subida_ataque_db`:&nbsp;subida&nbsp;de&nbsp;nivel&nbsp;que&nbsp;marca&nbsp;un&nbsp;ataque&nbsp;(respecto&nbsp;del&nbsp;mínimo&nbsp;reciente).<br>
+-&nbsp;`flujo_relativo`,&nbsp;`flujo_minimo`:&nbsp;detección&nbsp;de&nbsp;ataques&nbsp;por&nbsp;flujo&nbsp;espectral.<br>
+-&nbsp;`histeresis_semitonos`:&nbsp;cambio&nbsp;de&nbsp;altura&nbsp;mínimo&nbsp;para&nbsp;considerar&nbsp;otra&nbsp;nota&nbsp;sin&nbsp;ataque.<br>
+-&nbsp;`separacion_minima_s`:&nbsp;intervalo&nbsp;mínimo&nbsp;entre&nbsp;dos&nbsp;ataques.<br>
+-&nbsp;`refinar_fundamental`:&nbsp;tras&nbsp;YIN,&nbsp;busca&nbsp;la&nbsp;fundamental&nbsp;en&nbsp;el&nbsp;espectro.&nbsp;Las&nbsp;cuerdas&nbsp;rígidas<br>
+&nbsp;&nbsp;del&nbsp;piano&nbsp;son&nbsp;inarmónicas&nbsp;(f_n&nbsp;=&nbsp;n·f1·√(1&nbsp;+&nbsp;B·n²)):&nbsp;el&nbsp;periodo&nbsp;común&nbsp;de&nbsp;sus&nbsp;parciales<br>
+&nbsp;&nbsp;da&nbsp;una&nbsp;altura&nbsp;más&nbsp;aguda&nbsp;que&nbsp;la&nbsp;fundamental&nbsp;(≈&nbsp;+16&nbsp;cents&nbsp;con&nbsp;B&nbsp;típico),&nbsp;y&nbsp;esa&nbsp;diferencia<br>
+&nbsp;&nbsp;convierte&nbsp;notas&nbsp;afinadas&nbsp;en&nbsp;«desafinadas».<br>
+&nbsp;<br>
+Niveles&nbsp;sin&nbsp;calibración&nbsp;(dBFS&nbsp;RMS&nbsp;en&nbsp;ventanas&nbsp;de&nbsp;10&nbsp;ms)<br>
+-&nbsp;`nivel_silencio_dbfs`:&nbsp;por&nbsp;debajo,&nbsp;silencio.<br>
+-&nbsp;`nivel_minimo_dbfs`:&nbsp;nivel&nbsp;mínimo&nbsp;para&nbsp;evaluar&nbsp;una&nbsp;nota&nbsp;(por&nbsp;debajo:&nbsp;señal&nbsp;débil).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="ParametrosDeteccion-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="ParametrosDeteccion-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="ParametrosDeteccion-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="ParametrosDeteccion-__init__"><strong>__init__</strong></a>(
+    self,
+    umbral_yin: 'float' = 0.3,
+    aperiodicidad_max: 'float' = 0.3,
+    margen_inferior_semitonos: 'int' = 12,
+    margen_superior_semitonos: 'int' = 12,
+    tramas_confirmacion: 'int' = 3,
+    confirmacion_max_s: 'float' = 0.15,
+    subida_ataque_db: 'float' = 6.0,
+    flujo_relativo: 'float' = 2.5,
+    flujo_minimo: 'float' = 15.0,
+    histeresis_semitonos: 'float' = 0.75,
+    separacion_minima_s: 'float' = 0.06,
+    refinar_fundamental: 'bool' = False,
+    nivel_silencio_dbfs: 'float' = -65.0,
+    nivel_minimo_dbfs: 'float' = -50.0,
+    tolerancia_interferencia_cents: 'float' = 20.0,
+    frecuencias_interferencia_hz: 'Tuple[float, ...]' = (50.0, 60.0, 100.0, 120.0, 150.0, 180.0)
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ParametrosDeteccion-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="ParametrosDeteccion-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="ParametrosDeteccion-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'aperiodicidad_max': 'float', 'confirmacion_max_s': 'float', 'flujo_minimo': 'float', 'flujo_relativo': 'float', 'frecuencias_interferencia_hz': 'Tuple[float, ...]', 'histeresis_semitonos': 'float', 'margen_inferior_semitonos': 'int', 'margen_superior_semitonos': 'int', 'nivel_minimo_dbfs': 'float', 'nivel_silencio_dbfs': 'float', ...}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'aperiodicidad_max': Field(name='aperiodicidad_max',type='float',defa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'confirmacion_max_s': Field(name='confirmacion_max_s',type='float',def...appingproxy({}),kw_only=False,_field_type=_FIELD), 'flujo_minimo': Field(name='flujo_minimo',type='float',default=1...appingproxy({}),kw_only=False,_field_type=_FIELD), 'flujo_relativo': Field(name='flujo_relativo',type='float',default...appingproxy({}),kw_only=False,_field_type=_FIELD), 'frecuencias_interferencia_hz': Field(name='frecuencias_interferencia_hz',type='...appingproxy({}),kw_only=False,_field_type=_FIELD), 'histeresis_semitonos': Field(name='histeresis_semitonos',type='float',d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'margen_inferior_semitonos': Field(name='margen_inferior_semitonos',type='int...appingproxy({}),kw_only=False,_field_type=_FIELD), 'margen_superior_semitonos': Field(name='margen_superior_semitonos',type='int...appingproxy({}),kw_only=False,_field_type=_FIELD), 'nivel_minimo_dbfs': Field(name='nivel_minimo_dbfs',type='float',defa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'nivel_silencio_dbfs': Field(name='nivel_silencio_dbfs',type='float',de...appingproxy({}),kw_only=False,_field_type=_FIELD), ...}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('umbral_yin', 'aperiodicidad_max', 'margen_inferior_semitonos', 'margen_superior_semitonos', 'tramas_confirmacion', 'confirmacion_max_s', 'subida_ataque_db', 'flujo_relativo', 'flujo_minimo', 'histeresis_semitonos', 'separacion_minima_s', 'refinar_fundamental', 'nivel_silencio_dbfs', 'nivel_minimo_dbfs', 'tolerancia_interferencia_cents', 'frecuencias_interferencia_hz')</dl>
+
+<dl><dt><strong>aperiodicidad_max</strong> = 0.3</dl>
+
+<dl><dt><strong>confirmacion_max_s</strong> = 0.15</dl>
+
+<dl><dt><strong>flujo_minimo</strong> = 15.0</dl>
+
+<dl><dt><strong>flujo_relativo</strong> = 2.5</dl>
+
+<dl><dt><strong>frecuencias_interferencia_hz</strong> = (50.0, 60.0, 100.0, 120.0, 150.0, 180.0)</dl>
+
+<dl><dt><strong>histeresis_semitonos</strong> = 0.75</dl>
+
+<dl><dt><strong>margen_inferior_semitonos</strong> = 12</dl>
+
+<dl><dt><strong>margen_superior_semitonos</strong> = 12</dl>
+
+<dl><dt><strong>nivel_minimo_dbfs</strong> = -50.0</dl>
+
+<dl><dt><strong>nivel_silencio_dbfs</strong> = -65.0</dl>
+
+<dl><dt><strong>refinar_fundamental</strong> = False</dl>
+
+<dl><dt><strong>separacion_minima_s</strong> = 0.06</dl>
+
+<dl><dt><strong>subida_ataque_db</strong> = 6.0</dl>
+
+<dl><dt><strong>tolerancia_interferencia_cents</strong> = 20.0</dl>
+
+<dl><dt><strong>tramas_confirmacion</strong> = 3</dl>
+
+<dl><dt><strong>umbral_yin</strong> = 0.3</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="PerfilInstrumento">class <strong>PerfilInstrumento</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#PerfilInstrumento">PerfilInstrumento</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;clave:&nbsp;'str',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nombre:&nbsp;'str',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;midi_min:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;midi_max:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;transposicion_escritura:&nbsp;'int'&nbsp;=&nbsp;0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;estado:&nbsp;'str'&nbsp;=&nbsp;'disponible',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;afinaciones:&nbsp;'Dict[str,&nbsp;Tuple[int,&nbsp;...]]'&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;deteccion:&nbsp;'<a href="#ParametrosDeteccion">ParametrosDeteccion</a>'&nbsp;=&nbsp;&amp;lt;factory&amp;gt;<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Rango&nbsp;sonoro&nbsp;(MIDI),&nbsp;transposición&nbsp;habitual&nbsp;de&nbsp;escritura&nbsp;(escrita&nbsp;→&nbsp;sonora),&nbsp;estado&nbsp;de<br>
+soporte,&nbsp;afinaciones&nbsp;disponibles&nbsp;(cuerdas&nbsp;al&nbsp;aire,&nbsp;de&nbsp;la&nbsp;1.ª&nbsp;a&nbsp;la&nbsp;6.ª)&nbsp;y&nbsp;parámetros&nbsp;de<br>
+detección.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="PerfilInstrumento-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="PerfilInstrumento-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="PerfilInstrumento-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="PerfilInstrumento-__init__"><strong>__init__</strong></a>(
+    self,
+    clave: 'str',
+    nombre: 'str',
+    midi_min: 'int',
+    midi_max: 'int',
+    transposicion_escritura: 'int' = 0,
+    estado: 'str' = 'disponible',
+    afinaciones: 'Dict[str, Tuple[int, ...]]' = &lt;factory&gt;,
+    deteccion: 'ParametrosDeteccion' = &lt;factory&gt;
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="PerfilInstrumento-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="PerfilInstrumento-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="PerfilInstrumento-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<dl><dt><a name="PerfilInstrumento-con_rango"><strong>con_rango</strong></a>(self, midi_min: 'int', midi_max: 'int') -&gt; "'PerfilInstrumento'"</dt><dd><span class="code">El&nbsp;mismo&nbsp;perfil&nbsp;con&nbsp;otro&nbsp;rango&nbsp;(afinaciones&nbsp;alternativas,&nbsp;instrumentos&nbsp;concretos).</span></dd></dl>
+
+<dl><dt><a name="PerfilInstrumento-contiene"><strong>contiene</strong></a>(self, midi) -&gt; 'bool'</dt></dl>
+
+<dl><dt><a name="PerfilInstrumento-rango_busqueda_hz"><strong>rango_busqueda_hz</strong></a>(
+    self,
+    la4: 'float' = 440.0,
+    frecuencia_muestreo: 'Optional[float]' = None
+) -&gt; 'Tuple[float, float]'</dt><dd><span class="code">Rango&nbsp;de&nbsp;frecuencias&nbsp;en&nbsp;que&nbsp;el&nbsp;detector&nbsp;busca&nbsp;la&nbsp;altura&nbsp;(rango&nbsp;±&nbsp;márgenes).<br>
+&nbsp;<br>
+Se&nbsp;limita&nbsp;a&nbsp;20&nbsp;Hz&nbsp;por&nbsp;abajo&nbsp;y&nbsp;al&nbsp;45&nbsp;%&nbsp;de&nbsp;la&nbsp;frecuencia&nbsp;de&nbsp;muestreo&nbsp;por&nbsp;arriba.</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>experimental</strong></dt>
+</dl>
+<dl><dt><strong>rango_texto</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'afinaciones': 'Dict[str, Tuple[int, ...]]', 'clave': 'str', 'deteccion': 'ParametrosDeteccion', 'estado': 'str', 'midi_max': 'int', 'midi_min': 'int', 'nombre': 'str', 'transposicion_escritura': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'afinaciones': Field(name='afinaciones',type='Dict[str, Tuple[i...appingproxy({}),kw_only=False,_field_type=_FIELD), 'clave': Field(name='clave',type='str',default=&lt;dataclass...appingproxy({}),kw_only=False,_field_type=_FIELD), 'deteccion': Field(name='deteccion',type='ParametrosDeteccion...appingproxy({}),kw_only=False,_field_type=_FIELD), 'estado': Field(name='estado',type='str',default='disponib...appingproxy({}),kw_only=False,_field_type=_FIELD), 'midi_max': Field(name='midi_max',type='int',default=&lt;datacl...appingproxy({}),kw_only=False,_field_type=_FIELD), 'midi_min': Field(name='midi_min',type='int',default=&lt;datacl...appingproxy({}),kw_only=False,_field_type=_FIELD), 'nombre': Field(name='nombre',type='str',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD), 'transposicion_escritura': Field(name='transposicion_escritura',type='int',...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('clave', 'nombre', 'midi_min', 'midi_max', 'transposicion_escritura', 'estado', 'afinaciones', 'deteccion')</dl>
+
+<dl><dt><strong>estado</strong> = 'disponible'</dl>
+
+<dl><dt><strong>transposicion_escritura</strong> = 0</dl>
+
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-perfil_de_guitarra"><strong>perfil_de_guitarra</strong></a>(afinacion: 'str' = 'estandar', trastes: 'int' = 24) -&gt; 'PerfilInstrumento'</dt><dd><span class="code">Perfil&nbsp;de&nbsp;guitarra&nbsp;con&nbsp;el&nbsp;rango&nbsp;de&nbsp;una&nbsp;afinación&nbsp;concreta:&nbsp;desde&nbsp;la&nbsp;6.ª&nbsp;cuerda&nbsp;al&nbsp;aire<br>
+hasta&nbsp;el&nbsp;último&nbsp;traste&nbsp;de&nbsp;la&nbsp;1.ª.</span></dd></dl>
+ <dl><dt><a name="-perfil_por_nombre"><strong>perfil_por_nombre</strong></a>(*textos: 'Optional[str]') -&gt; 'Optional[PerfilInstrumento]'</dt><dd><span class="code">Perfil&nbsp;que&nbsp;corresponde&nbsp;a&nbsp;un&nbsp;nombre&nbsp;de&nbsp;parte&nbsp;o&nbsp;de&nbsp;instrumento&nbsp;('Guitarra',&nbsp;'Piano'…).</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>AFINACIONES_GUITARRA</strong> = {'estandar': (64, 59, 55, 50, 45, 40), 'medio_tono_abajo': (63, 58, 54, 49, 44, 39), 're_abierta': (62, 57, 54, 50, 45, 38), 're_grave': (64, 59, 55, 50, 45, 38)}<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>FLAUTA</strong> = PerfilInstrumento(clave='flauta', nombre='Flauta...cia_hz=(50.0, 60.0, 100.0, 120.0, 150.0, 180.0)))<br>
+<strong>FRECUENCIAS_RED_HZ</strong> = (50.0, 60.0, 100.0, 120.0, 150.0, 180.0)<br>
+<strong>GUITARRA</strong> = PerfilInstrumento(clave='guitarra', nombre='Guit...cia_hz=(50.0, 60.0, 100.0, 120.0, 150.0, 180.0)))<br>
+<strong>LA4_HZ</strong> = 440.0<br>
+<strong>NOMBRES_AFINACION</strong> = {'estandar': 'Estándar (E A D G B E)', 'medio_tono_abajo': 'Medio tono abajo (E♭ A♭ D♭ G♭ B♭ E♭)', 're_abierta': 'Re abierta (D A D F♯ A D)', 're_grave': 'Re grave / drop D (D A D G B E)'}<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>PERFILES</strong> = {'flauta': PerfilInstrumento(clave='flauta', nombre='Flauta...cia_hz=(50.0, 60.0, 100.0, 120.0, 150.0, 180.0))), 'guitarra': PerfilInstrumento(clave='guitarra', nombre='Guit...cia_hz=(50.0, 60.0, 100.0, 120.0, 150.0, 180.0))), 'piano': PerfilInstrumento(clave='piano', nombre='Piano',...cia_hz=(50.0, 60.0, 100.0, 120.0, 150.0, 180.0)))}<br>
+<strong>PIANO</strong> = PerfilInstrumento(clave='piano', nombre='Piano',...cia_hz=(50.0, 60.0, 100.0, 120.0, 150.0, 180.0)))<br>
+<strong>Tuple</strong> = typing.Tuple<br>
+<strong>__annotations__</strong> = {'AFINACIONES_GUITARRA': 'Dict[str, Tuple[int, ...]]', 'PERFILES': 'Dict[str, PerfilInstrumento]'}</td></tr></table>
+</body>
+</html>

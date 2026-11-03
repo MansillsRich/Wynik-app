@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module nucleo.sesion</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="nucleo.html" class="white">nucleo</a>.sesion</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/nucleo/sesion.py">/home/benja/Documentos/WynikApp/Wynik-app/nucleo/sesion.py</a></td></tr></table>
+    <p><span class="code">Sesión&nbsp;de&nbsp;práctica:&nbsp;compara&nbsp;los&nbsp;eventos&nbsp;de&nbsp;interpretación&nbsp;con&nbsp;la&nbsp;partitura&nbsp;en&nbsp;el&nbsp;tiempo.<br>
+&nbsp;<br>
+Independiente&nbsp;de&nbsp;Kivy&nbsp;y&nbsp;del&nbsp;audio:&nbsp;recibe&nbsp;`EventoInterpretacion`&nbsp;(de&nbsp;`audio.analizador`&nbsp;o&nbsp;de<br>
+una&nbsp;prueba)&nbsp;y&nbsp;la&nbsp;línea&nbsp;de&nbsp;práctica&nbsp;de&nbsp;la&nbsp;partitura,&nbsp;y&nbsp;decide&nbsp;el&nbsp;estado&nbsp;de&nbsp;cada&nbsp;nota.<br>
+&nbsp;<br>
+Modos<br>
+-&nbsp;SEGUIR_TEMPO:&nbsp;la&nbsp;partitura&nbsp;avanza&nbsp;sola&nbsp;con&nbsp;el&nbsp;tempo.&nbsp;Cada&nbsp;nota&nbsp;tiene&nbsp;una&nbsp;ventana&nbsp;de<br>
+&nbsp;&nbsp;±`tolerancia_s`&nbsp;(150&nbsp;ms)&nbsp;alrededor&nbsp;de&nbsp;su&nbsp;inicio&nbsp;esperado.<br>
+-&nbsp;ESPERAR_NOTA:&nbsp;la&nbsp;partitura&nbsp;espera&nbsp;en&nbsp;cada&nbsp;nota&nbsp;hasta&nbsp;que&nbsp;se&nbsp;toca&nbsp;la&nbsp;correcta.<br>
+&nbsp;<br>
+Alineación&nbsp;(C8)<br>
+-&nbsp;Antes&nbsp;del&nbsp;primer&nbsp;ataque,&nbsp;la&nbsp;sesión&nbsp;no&nbsp;sabe&nbsp;cuándo&nbsp;empezará&nbsp;el&nbsp;usuario:&nbsp;la&nbsp;primera&nbsp;nota<br>
+&nbsp;&nbsp;admite&nbsp;ataques&nbsp;hasta&nbsp;`alineacion_inicial_max_s`&nbsp;(500&nbsp;ms)&nbsp;tarde.&nbsp;El&nbsp;primer&nbsp;ataque&nbsp;fija&nbsp;el<br>
+&nbsp;&nbsp;desfase&nbsp;entre&nbsp;el&nbsp;reloj&nbsp;y&nbsp;la&nbsp;partitura&nbsp;(por&nbsp;ejemplo,&nbsp;200&nbsp;ms&nbsp;de&nbsp;tiempo&nbsp;de&nbsp;reacción)&nbsp;y&nbsp;todas<br>
+&nbsp;&nbsp;las&nbsp;ventanas&nbsp;siguientes&nbsp;se&nbsp;desplazan&nbsp;con&nbsp;él;&nbsp;las&nbsp;tolerancias&nbsp;no&nbsp;se&nbsp;amplían.<br>
+-&nbsp;Después,&nbsp;si&nbsp;los&nbsp;tres&nbsp;últimos&nbsp;ataques&nbsp;asignados&nbsp;llegan&nbsp;desplazados&nbsp;en&nbsp;el&nbsp;mismo&nbsp;sentido&nbsp;(el<br>
+&nbsp;&nbsp;intérprete&nbsp;va&nbsp;algo&nbsp;más&nbsp;lento&nbsp;o&nbsp;más&nbsp;rápido&nbsp;que&nbsp;la&nbsp;partitura),&nbsp;el&nbsp;desfase&nbsp;se&nbsp;corrige&nbsp;con&nbsp;la<br>
+&nbsp;&nbsp;media&nbsp;de&nbsp;esos&nbsp;tres&nbsp;errores.&nbsp;Las&nbsp;desviaciones&nbsp;alternas&nbsp;(imprecisión&nbsp;de&nbsp;cada&nbsp;nota)&nbsp;no&nbsp;lo<br>
+&nbsp;&nbsp;mueven:&nbsp;una&nbsp;nota&nbsp;que&nbsp;estaba&nbsp;dentro&nbsp;de&nbsp;la&nbsp;tolerancia&nbsp;no&nbsp;sale&nbsp;de&nbsp;su&nbsp;ventana&nbsp;por&nbsp;las&nbsp;notas<br>
+&nbsp;&nbsp;vecinas.&nbsp;Con&nbsp;negras&nbsp;a&nbsp;120&nbsp;por&nbsp;minuto&nbsp;sigue&nbsp;desviaciones&nbsp;de&nbsp;tempo&nbsp;de&nbsp;hasta&nbsp;≈&nbsp;7&nbsp;%.<br>
+&nbsp;<br>
+Latencia&nbsp;de&nbsp;entrega&nbsp;(DET-01)<br>
+-&nbsp;Un&nbsp;evento&nbsp;lleva&nbsp;el&nbsp;instante&nbsp;del&nbsp;ATAQUE&nbsp;(`t`,&nbsp;reloj&nbsp;de&nbsp;captura),&nbsp;pero&nbsp;llega&nbsp;a&nbsp;la&nbsp;sesión&nbsp;más<br>
+&nbsp;&nbsp;tarde:&nbsp;el&nbsp;detector&nbsp;necesita&nbsp;audio&nbsp;posterior&nbsp;para&nbsp;confirmarlo&nbsp;(hasta&nbsp;`confirmacion_max_s`<br>
+&nbsp;&nbsp;más&nbsp;la&nbsp;trama),&nbsp;el&nbsp;hilo&nbsp;de&nbsp;análisis&nbsp;lo&nbsp;procesa&nbsp;y&nbsp;la&nbsp;interfaz&nbsp;lo&nbsp;recoge&nbsp;en&nbsp;su&nbsp;siguiente&nbsp;tick.<br>
+&nbsp;&nbsp;Cerrar&nbsp;la&nbsp;ventana&nbsp;de&nbsp;una&nbsp;nota&nbsp;con&nbsp;el&nbsp;reloj&nbsp;actual&nbsp;en&nbsp;`esperado&nbsp;+&nbsp;tolerancia`&nbsp;descartaba&nbsp;como<br>
+&nbsp;&nbsp;«no&nbsp;se&nbsp;tocó»&nbsp;ataques&nbsp;correctos&nbsp;y&nbsp;dentro&nbsp;de&nbsp;la&nbsp;tolerancia&nbsp;que&nbsp;aún&nbsp;iban&nbsp;de&nbsp;camino.&nbsp;La<br>
+&nbsp;&nbsp;tolerancia&nbsp;se&nbsp;aplica&nbsp;al&nbsp;instante&nbsp;del&nbsp;ataque&nbsp;y&nbsp;no&nbsp;cambia;&nbsp;la&nbsp;ventana&nbsp;solo&nbsp;se&nbsp;cierra&nbsp;cuando<br>
+&nbsp;&nbsp;ya&nbsp;no&nbsp;puede&nbsp;llegar&nbsp;ningún&nbsp;evento&nbsp;cuyo&nbsp;ataque&nbsp;cayera&nbsp;dentro&nbsp;(`margen_cierre_s`).<br>
+-&nbsp;La&nbsp;alineación&nbsp;(C8)&nbsp;solo&nbsp;la&nbsp;fijan&nbsp;y&nbsp;la&nbsp;corrigen&nbsp;los&nbsp;aciertos&nbsp;(DET-02):&nbsp;un&nbsp;sonido&nbsp;espurio,&nbsp;o<br>
+&nbsp;&nbsp;una&nbsp;nota&nbsp;equivocada,&nbsp;no&nbsp;dice&nbsp;cuándo&nbsp;empezó&nbsp;el&nbsp;intérprete.<br>
+&nbsp;<br>
+Política&nbsp;de&nbsp;estados&nbsp;(C9)<br>
+-&nbsp;Un&nbsp;acierto&nbsp;(nota&nbsp;y&nbsp;octava&nbsp;correctas,&nbsp;afinada&nbsp;o&nbsp;desafinada)&nbsp;es&nbsp;definitivo:&nbsp;ningún&nbsp;evento<br>
+&nbsp;&nbsp;posterior&nbsp;lo&nbsp;cambia.<br>
+-&nbsp;Un&nbsp;error&nbsp;de&nbsp;altura&nbsp;es&nbsp;provisional&nbsp;mientras&nbsp;la&nbsp;ventana&nbsp;de&nbsp;la&nbsp;nota&nbsp;está&nbsp;abierta:&nbsp;si&nbsp;el<br>
+&nbsp;&nbsp;usuario&nbsp;se&nbsp;corrige&nbsp;dentro&nbsp;de&nbsp;la&nbsp;ventana,&nbsp;la&nbsp;nota&nbsp;pasa&nbsp;a&nbsp;acierto&nbsp;(y&nbsp;se&nbsp;cuenta&nbsp;el&nbsp;intento<br>
+&nbsp;&nbsp;fallido).&nbsp;Al&nbsp;cerrarse&nbsp;la&nbsp;ventana,&nbsp;el&nbsp;error&nbsp;es&nbsp;definitivo.<br>
+-&nbsp;Los&nbsp;eventos&nbsp;sin&nbsp;altura&nbsp;fiable&nbsp;(señal&nbsp;débil,&nbsp;baja&nbsp;confianza,&nbsp;inestable)&nbsp;y&nbsp;los&nbsp;de&nbsp;fuera&nbsp;de<br>
+&nbsp;&nbsp;rango&nbsp;nunca&nbsp;cambian&nbsp;un&nbsp;estado&nbsp;ni&nbsp;hacen&nbsp;avanzar&nbsp;la&nbsp;partitura:&nbsp;solo&nbsp;explican&nbsp;por&nbsp;qué&nbsp;una<br>
+&nbsp;&nbsp;nota&nbsp;quedó&nbsp;sin&nbsp;tocar&nbsp;(OMITIDA,&nbsp;SENAL_INSUFICIENTE,&nbsp;BAJA_CONFIANZA&nbsp;o&nbsp;FUERA_DE_RANGO).<br>
+-&nbsp;Un&nbsp;evento&nbsp;se&nbsp;asigna&nbsp;a&nbsp;una&nbsp;sola&nbsp;nota.&nbsp;Los&nbsp;eventos&nbsp;de&nbsp;otra&nbsp;sesión&nbsp;de&nbsp;captura&nbsp;(`sesion`<br>
+&nbsp;&nbsp;distinto)&nbsp;o&nbsp;anteriores&nbsp;al&nbsp;inicio&nbsp;se&nbsp;descartan&nbsp;(C10).<br>
+&nbsp;<br>
+Acordes&nbsp;(DET-03):&nbsp;el&nbsp;detector&nbsp;es&nbsp;monofónico&nbsp;y&nbsp;ante&nbsp;varias&nbsp;notas&nbsp;a&nbsp;la&nbsp;vez&nbsp;devuelve&nbsp;la&nbsp;fundamental<br>
+común,&nbsp;un&nbsp;subarmónico&nbsp;o&nbsp;una&nbsp;altura&nbsp;sin&nbsp;sentido,&nbsp;así&nbsp;que&nbsp;no&nbsp;puede&nbsp;decir&nbsp;si&nbsp;un&nbsp;acorde&nbsp;está&nbsp;bien&nbsp;o<br>
+mal.&nbsp;Un&nbsp;acorde&nbsp;queda&nbsp;en&nbsp;`SIN_EVALUAR`:&nbsp;ni&nbsp;acierto&nbsp;ni&nbsp;fallo&nbsp;(no&nbsp;cuenta&nbsp;en&nbsp;la&nbsp;precisión)&nbsp;y&nbsp;sin<br>
+sonido&nbsp;que&nbsp;lo&nbsp;puntúe.&nbsp;Con&nbsp;tempo&nbsp;se&nbsp;cierra&nbsp;con&nbsp;su&nbsp;ventana&nbsp;y&nbsp;los&nbsp;eventos&nbsp;que&nbsp;caen&nbsp;más&nbsp;cerca&nbsp;de&nbsp;él<br>
+que&nbsp;de&nbsp;otra&nbsp;nota&nbsp;se&nbsp;descartan,&nbsp;para&nbsp;que&nbsp;su&nbsp;rasgueo&nbsp;no&nbsp;puntúe&nbsp;a&nbsp;las&nbsp;notas&nbsp;vecinas.&nbsp;En&nbsp;«esperar<br>
+cada&nbsp;nota»&nbsp;el&nbsp;acorde&nbsp;avanza&nbsp;con&nbsp;el&nbsp;primer&nbsp;ataque&nbsp;que&nbsp;se&nbsp;oye&nbsp;(de&nbsp;cualquier&nbsp;altura)&nbsp;y,&nbsp;durante<br>
+`refractario_acorde_s`,&nbsp;se&nbsp;ignoran&nbsp;los&nbsp;eventos&nbsp;que&nbsp;le&nbsp;siguen:&nbsp;así&nbsp;un&nbsp;solo&nbsp;rasgueo&nbsp;no&nbsp;avanza&nbsp;dos<br>
+veces.&nbsp;Las&nbsp;notas&nbsp;del&nbsp;acorde&nbsp;se&nbsp;muestran&nbsp;como&nbsp;referencia&nbsp;visual.<br>
+&nbsp;<br>
+Dudas&nbsp;del&nbsp;detector&nbsp;(DET-05):&nbsp;un&nbsp;evento&nbsp;con&nbsp;`confianza`&nbsp;por&nbsp;debajo&nbsp;de&nbsp;`confianza_min_error`&nbsp;que<br>
+no&nbsp;coincide&nbsp;con&nbsp;la&nbsp;nota&nbsp;esperada&nbsp;no&nbsp;se&nbsp;declara&nbsp;«nota&nbsp;equivocada»:&nbsp;se&nbsp;anota&nbsp;como&nbsp;detección&nbsp;poco<br>
+fiable.&nbsp;Un&nbsp;acierto&nbsp;cuenta&nbsp;siempre,&nbsp;sea&nbsp;cual&nbsp;sea&nbsp;su&nbsp;confianza:&nbsp;el&nbsp;umbral&nbsp;nunca&nbsp;quita&nbsp;notas<br>
+válidas,&nbsp;solo&nbsp;evita&nbsp;acusar&nbsp;de&nbsp;error&nbsp;a&nbsp;un&nbsp;sonido&nbsp;dudoso&nbsp;(voz,&nbsp;ruido&nbsp;con&nbsp;altura).<br>
+&nbsp;<br>
+Solo&nbsp;usa&nbsp;la&nbsp;biblioteca&nbsp;estándar.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="datetime.html">datetime</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.sesion.html#Cambio">Cambio</a>
+</dt><dt class="heading-text"><a href="nucleo.sesion.html#ConfiguracionSesion">ConfiguracionSesion</a>
+</dt><dt class="heading-text"><a href="nucleo.sesion.html#NotaEsperada">NotaEsperada</a>
+</dt><dt class="heading-text"><a href="nucleo.sesion.html#ResultadoNota">ResultadoNota</a>
+</dt><dt class="heading-text"><a href="nucleo.sesion.html#SesionDePractica">SesionDePractica</a>
+</dt><dt class="heading-text"><a href="nucleo.sesion.html#SesionProgreso">SesionProgreso</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="builtins.html#str">builtins.str</a>(<a href="builtins.html#object">builtins.object</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.sesion.html#EstadoNota">EstadoNota</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt><dt class="heading-text"><a href="nucleo.sesion.html#ModoPractica">ModoPractica</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="enum.html#Enum">enum.Enum</a>(<a href="builtins.html#object">builtins.object</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.sesion.html#EstadoNota">EstadoNota</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt><dt class="heading-text"><a href="nucleo.sesion.html#ModoPractica">ModoPractica</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Cambio">class <strong>Cambio</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Cambio">Cambio</a>(indice:&nbsp;'int',&nbsp;resultado:&nbsp;'<a href="#ResultadoNota">ResultadoNota</a>')&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Una&nbsp;nota&nbsp;cuyo&nbsp;resultado&nbsp;cambió&nbsp;(para&nbsp;actualizar&nbsp;la&nbsp;interfaz).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Cambio-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Cambio-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Cambio-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Cambio-__init__"><strong>__init__</strong></a>(self, indice: 'int', resultado: 'ResultadoNota') -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Cambio-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Cambio-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Cambio-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'indice': 'int', 'resultado': 'ResultadoNota'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'indice': Field(name='indice',type='int',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD), 'resultado': Field(name='resultado',type='ResultadoNota',defa...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('indice', 'resultado')</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ConfiguracionSesion">class <strong>ConfiguracionSesion</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ConfiguracionSesion">ConfiguracionSesion</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;modo:&nbsp;'<a href="#ModoPractica">ModoPractica</a>'&nbsp;=&nbsp;&amp;lt;<a href="#ModoPractica">ModoPractica</a>.SEGUIR_TEMPO:&nbsp;'seguir_tempo'&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tolerancia_s:&nbsp;'float'&nbsp;=&nbsp;0.15,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alineacion_inicial_max_s:&nbsp;'float'&nbsp;=&nbsp;0.5,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;margen_cierre_s:&nbsp;'float'&nbsp;=&nbsp;0.35,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;confianza_min_error:&nbsp;'float'&nbsp;=&nbsp;0.9,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;refractario_acorde_s:&nbsp;'float'&nbsp;=&nbsp;0.3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;la4:&nbsp;'float'&nbsp;=&nbsp;440.0<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<a href="#ConfiguracionSesion">ConfiguracionSesion</a>(modo:&nbsp;'<a href="#ModoPractica">ModoPractica</a>'&nbsp;=&nbsp;&lt;<a href="#ModoPractica">ModoPractica</a>.SEGUIR_TEMPO:&nbsp;'seguir_tempo'&gt;,&nbsp;tolerancia_s:&nbsp;'float'&nbsp;=&nbsp;0.15,&nbsp;alineacion_inicial_max_s:&nbsp;'float'&nbsp;=&nbsp;0.5,&nbsp;margen_cierre_s:&nbsp;'float'&nbsp;=&nbsp;0.35,&nbsp;confianza_min_error:&nbsp;'float'&nbsp;=&nbsp;0.9,&nbsp;refractario_acorde_s:&nbsp;'float'&nbsp;=&nbsp;0.3,&nbsp;la4:&nbsp;'float'&nbsp;=&nbsp;440.0)<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="ConfiguracionSesion-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="ConfiguracionSesion-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="ConfiguracionSesion-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="ConfiguracionSesion-__init__"><strong>__init__</strong></a>(
+    self,
+    modo: 'ModoPractica' = &lt;ModoPractica.SEGUIR_TEMPO: 'seguir_tempo'&gt;,
+    tolerancia_s: 'float' = 0.15,
+    alineacion_inicial_max_s: 'float' = 0.5,
+    margen_cierre_s: 'float' = 0.35,
+    confianza_min_error: 'float' = 0.9,
+    refractario_acorde_s: 'float' = 0.3,
+    la4: 'float' = 440.0
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ConfiguracionSesion-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="ConfiguracionSesion-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="ConfiguracionSesion-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'alineacion_inicial_max_s': 'float', 'confianza_min_error': 'float', 'la4': 'float', 'margen_cierre_s': 'float', 'modo': 'ModoPractica', 'refractario_acorde_s': 'float', 'tolerancia_s': 'float'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'alineacion_inicial_max_s': Field(name='alineacion_inicial_max_s',type='floa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'confianza_min_error': Field(name='confianza_min_error',type='float',de...appingproxy({}),kw_only=False,_field_type=_FIELD), 'la4': Field(name='la4',type='float',default=440.0,defa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'margen_cierre_s': Field(name='margen_cierre_s',type='float',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD), 'modo': Field(name='modo',type='ModoPractica',default=&lt;M...appingproxy({}),kw_only=False,_field_type=_FIELD), 'refractario_acorde_s': Field(name='refractario_acorde_s',type='float',d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'tolerancia_s': Field(name='tolerancia_s',type='float',default=0...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('modo', 'tolerancia_s', 'alineacion_inicial_max_s', 'margen_cierre_s', 'confianza_min_error', 'refractario_acorde_s', 'la4')</dl>
+
+<dl><dt><strong>alineacion_inicial_max_s</strong> = 0.5</dl>
+
+<dl><dt><strong>confianza_min_error</strong> = 0.9</dl>
+
+<dl><dt><strong>la4</strong> = 440.0</dl>
+
+<dl><dt><strong>margen_cierre_s</strong> = 0.35</dl>
+
+<dl><dt><strong>modo</strong> = &lt;ModoPractica.SEGUIR_TEMPO: 'seguir_tempo'&gt;</dl>
+
+<dl><dt><strong>refractario_acorde_s</strong> = 0.3</dl>
+
+<dl><dt><strong>tolerancia_s</strong> = 0.15</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="EstadoNota">class <strong>EstadoNota</strong></a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#EstadoNota">EstadoNota</a>(*values)<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="nucleo.sesion.html#EstadoNota">EstadoNota</a></dd>
+<dd><a href="builtins.html#str">builtins.str</a></dd>
+<dd><a href="enum.html#Enum">enum.Enum</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="EstadoNota-__format__"><strong>__format__</strong></a>(self, format_spec)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Default&nbsp;<a href="builtins.html#object">object</a>&nbsp;formatter.<br>
+&nbsp;<br>
+Return&nbsp;<a href="builtins.html#str">str</a>(self)&nbsp;if&nbsp;format_spec&nbsp;is&nbsp;empty.&nbsp;Raise&nbsp;TypeError&nbsp;otherwise.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__new__"><strong>__new__</strong></a>(cls, value)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__repr__"><strong>__repr__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__str__"><strong>__str__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;<a href="builtins.html#str">str</a>(self).</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>BAJA_CONFIANZA</strong> = &lt;EstadoNota.BAJA_CONFIANZA: 'baja_confianza'&gt;</dl>
+
+<dl><dt><strong>CORRECTA</strong> = &lt;EstadoNota.CORRECTA: 'correcta'&gt;</dl>
+
+<dl><dt><strong>DESAFINADA</strong> = &lt;EstadoNota.DESAFINADA: 'desafinada'&gt;</dl>
+
+<dl><dt><strong>FUERA_DE_RANGO</strong> = &lt;EstadoNota.FUERA_DE_RANGO: 'fuera_de_rango'&gt;</dl>
+
+<dl><dt><strong>NOTA_INCORRECTA</strong> = &lt;EstadoNota.NOTA_INCORRECTA: 'nota_incorrecta'&gt;</dl>
+
+<dl><dt><strong>OCTAVA_INCORRECTA</strong> = &lt;EstadoNota.OCTAVA_INCORRECTA: 'octava_incorrecta'&gt;</dl>
+
+<dl><dt><strong>OMITIDA</strong> = &lt;EstadoNota.OMITIDA: 'omitida'&gt;</dl>
+
+<dl><dt><strong>PENDIENTE</strong> = &lt;EstadoNota.PENDIENTE: 'pendiente'&gt;</dl>
+
+<dl><dt><strong>SENAL_INSUFICIENTE</strong> = &lt;EstadoNota.SENAL_INSUFICIENTE: 'senal_insuficiente'&gt;</dl>
+
+<dl><dt><strong>SIN_EVALUAR</strong> = &lt;EstadoNota.SIN_EVALUAR: 'sin_evaluar'&gt;</dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="EstadoNota-__add__"><strong>__add__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self+value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__contains__"><strong>__contains__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;bool(key&nbsp;in&nbsp;self).</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__eq__"><strong>__eq__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__ge__"><strong>__ge__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;=value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__getitem__"><strong>__getitem__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;self[key].</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__getnewargs__"><strong>__getnewargs__</strong></a>(self, /)</dt></dl>
+
+<dl><dt><a name="EstadoNota-__gt__"><strong>__gt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__hash__"><strong>__hash__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__iter__"><strong>__iter__</strong></a>(self, /)</dt><dd><span class="code">Implement&nbsp;iter(self).</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__le__"><strong>__le__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;=value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__len__"><strong>__len__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;len(self).</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__lt__"><strong>__lt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__mod__"><strong>__mod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self%value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__mul__"><strong>__mul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self*value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__ne__"><strong>__ne__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self!=value.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__rmod__"><strong>__rmod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value%self.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__rmul__"><strong>__rmul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value*self.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__sizeof__"><strong>__sizeof__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;string&nbsp;in&nbsp;memory,&nbsp;in&nbsp;bytes.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-capitalize"><strong>capitalize</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;capitalized&nbsp;version&nbsp;of&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;make&nbsp;the&nbsp;first&nbsp;character&nbsp;have&nbsp;upper&nbsp;case&nbsp;and&nbsp;the<br>
+rest&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-casefold"><strong>casefold</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;suitable&nbsp;for&nbsp;caseless&nbsp;comparisons.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-center"><strong>center</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;centered&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-count"><strong>count</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;number&nbsp;of&nbsp;non-overlapping&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;sub&nbsp;in&nbsp;string&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-encode"><strong>encode</strong></a>(self, /, encoding='utf-8', errors='strict')</dt><dd><span class="code">Encode&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;codec&nbsp;registered&nbsp;for&nbsp;encoding.<br>
+&nbsp;<br>
+encoding<br>
+&nbsp;&nbsp;The&nbsp;encoding&nbsp;in&nbsp;which&nbsp;to&nbsp;encode&nbsp;the&nbsp;string.<br>
+errors<br>
+&nbsp;&nbsp;The&nbsp;error&nbsp;handling&nbsp;scheme&nbsp;to&nbsp;use&nbsp;for&nbsp;encoding&nbsp;errors.<br>
+&nbsp;&nbsp;The&nbsp;default&nbsp;is&nbsp;'strict'&nbsp;meaning&nbsp;that&nbsp;encoding&nbsp;errors&nbsp;raise&nbsp;a<br>
+&nbsp;&nbsp;UnicodeEncodeError.&nbsp;&nbsp;Other&nbsp;possible&nbsp;values&nbsp;are&nbsp;'ignore',&nbsp;'replace'<br>
+&nbsp;&nbsp;and&nbsp;'xmlcharrefreplace'&nbsp;as&nbsp;well&nbsp;as&nbsp;any&nbsp;other&nbsp;name&nbsp;registered&nbsp;with<br>
+&nbsp;&nbsp;codecs.register_error&nbsp;that&nbsp;can&nbsp;handle&nbsp;UnicodeEncodeErrors.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-endswith"><strong>endswith</strong></a>(self, suffix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;specified&nbsp;suffix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+suffix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-expandtabs"><strong>expandtabs</strong></a>(self, /, tabsize=8)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;where&nbsp;all&nbsp;tab&nbsp;characters&nbsp;are&nbsp;expanded&nbsp;using&nbsp;spaces.<br>
+&nbsp;<br>
+If&nbsp;tabsize&nbsp;is&nbsp;not&nbsp;given,&nbsp;a&nbsp;tab&nbsp;size&nbsp;of&nbsp;8&nbsp;characters&nbsp;is&nbsp;assumed.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-find"><strong>find</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-format"><strong>format</strong></a>(self, /, *args, **kwargs)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;args&nbsp;and&nbsp;kwargs.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-format_map"><strong>format_map</strong></a>(self, mapping, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;mapping.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-index"><strong>index</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;ValueError&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isalnum"><strong>isalnum</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alpha-numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alpha-numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alpha-numeric&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isalpha"><strong>isalpha</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alphabetic&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alphabetic&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alphabetic&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isascii"><strong>isascii</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;ASCII,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+ASCII&nbsp;characters&nbsp;have&nbsp;code&nbsp;points&nbsp;in&nbsp;the&nbsp;range&nbsp;U+0000-U+007F.<br>
+Empty&nbsp;string&nbsp;is&nbsp;ASCII&nbsp;too.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isdecimal"><strong>isdecimal</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+decimal&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isdigit"><strong>isdigit</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+digits&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isidentifier"><strong>isidentifier</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;valid&nbsp;Python&nbsp;identifier,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+Call&nbsp;keyword.iskeyword(s)&nbsp;to&nbsp;test&nbsp;whether&nbsp;string&nbsp;s&nbsp;is&nbsp;a&nbsp;reserved<br>
+identifier,&nbsp;such&nbsp;as&nbsp;"def"&nbsp;or&nbsp;"class".</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-islower"><strong>islower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;lowercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;lowercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+lowercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isnumeric"><strong>isnumeric</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;numeric&nbsp;and<br>
+there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isprintable"><strong>isprintable</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;printable,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;character&nbsp;is&nbsp;printable&nbsp;if&nbsp;repr()&nbsp;may&nbsp;use&nbsp;it&nbsp;in&nbsp;its&nbsp;output.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isspace"><strong>isspace</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;whitespace&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;whitespace&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+whitespace&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-istitle"><strong>istitle</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+In&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;upper-&nbsp;and&nbsp;title-case&nbsp;characters&nbsp;may&nbsp;only<br>
+follow&nbsp;uncased&nbsp;characters&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;only&nbsp;cased&nbsp;ones.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-isupper"><strong>isupper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;uppercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;uppercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+uppercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-join"><strong>join</strong></a>(self, iterable, /)</dt><dd><span class="code">Concatenate&nbsp;any&nbsp;number&nbsp;of&nbsp;strings.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;whose&nbsp;method&nbsp;is&nbsp;called&nbsp;is&nbsp;inserted&nbsp;in&nbsp;between&nbsp;each&nbsp;given<br>
+string.&nbsp;&nbsp;The&nbsp;result&nbsp;is&nbsp;returned&nbsp;as&nbsp;a&nbsp;new&nbsp;string.<br>
+&nbsp;<br>
+Example:&nbsp;'.'.<a href="#EstadoNota-join">join</a>(['ab',&nbsp;'pq',&nbsp;'rs'])&nbsp;-&gt;&nbsp;'ab.pq.rs'</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-ljust"><strong>ljust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;left-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-lower"><strong>lower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;lowercase.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-lstrip"><strong>lstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-partition"><strong>partition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string.&nbsp;&nbsp;If&nbsp;the&nbsp;separator<br>
+is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the&nbsp;part&nbsp;before&nbsp;the<br>
+separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after&nbsp;it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing<br>
+the&nbsp;original&nbsp;string&nbsp;and&nbsp;two&nbsp;empty&nbsp;strings.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-removeprefix"><strong>removeprefix</strong></a>(self, prefix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;prefix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;prefix&nbsp;string,&nbsp;return<br>
+string[len(prefix):].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;original<br>
+string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-removesuffix"><strong>removesuffix</strong></a>(self, suffix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;suffix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;suffix&nbsp;string&nbsp;and&nbsp;that&nbsp;suffix&nbsp;is&nbsp;not<br>
+empty,&nbsp;return&nbsp;string[:-len(suffix)].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of<br>
+the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-replace"><strong>replace</strong></a>(self, old, new, /, count=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;with&nbsp;all&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;old&nbsp;replaced&nbsp;by&nbsp;new.<br>
+&nbsp;<br>
+&nbsp;&nbsp;count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;occurrences&nbsp;to&nbsp;replace.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;replace&nbsp;all&nbsp;occurrences.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;optional&nbsp;argument&nbsp;count&nbsp;is&nbsp;given,&nbsp;only&nbsp;the&nbsp;first&nbsp;count&nbsp;occurrences&nbsp;are<br>
+replaced.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-rfind"><strong>rfind</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-rindex"><strong>rindex</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;ValueError&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-rjust"><strong>rjust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;right-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-rpartition"><strong>rpartition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string,&nbsp;starting&nbsp;at&nbsp;the<br>
+end.&nbsp;&nbsp;If&nbsp;the&nbsp;separator&nbsp;is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the<br>
+part&nbsp;before&nbsp;the&nbsp;separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after<br>
+it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;two<br>
+empty&nbsp;strings&nbsp;and&nbsp;the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-rsplit"><strong>rsplit</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;front.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-rstrip"><strong>rstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-split"><strong>split</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;front&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;end.<br>
+&nbsp;<br>
+Note,&nbsp;<a href="builtins.html#str">str</a>.<a href="#EstadoNota-split">split</a>()&nbsp;is&nbsp;mainly&nbsp;useful&nbsp;for&nbsp;data&nbsp;that&nbsp;has&nbsp;been<br>
+intentionally&nbsp;delimited.&nbsp;&nbsp;With&nbsp;natural&nbsp;text&nbsp;that&nbsp;includes<br>
+punctuation,&nbsp;consider&nbsp;using&nbsp;the&nbsp;regular&nbsp;expression&nbsp;module.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-splitlines"><strong>splitlines</strong></a>(self, /, keepends=False)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;string,&nbsp;breaking&nbsp;at&nbsp;line&nbsp;boundaries.<br>
+&nbsp;<br>
+Line&nbsp;breaks&nbsp;are&nbsp;not&nbsp;included&nbsp;in&nbsp;the&nbsp;resulting&nbsp;list&nbsp;unless&nbsp;keepends<br>
+is&nbsp;given&nbsp;and&nbsp;true.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-startswith"><strong>startswith</strong></a>(self, prefix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;specified&nbsp;prefix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+prefix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-strip"><strong>strip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-swapcase"><strong>swapcase</strong></a>(self, /)</dt><dd><span class="code">Convert&nbsp;uppercase&nbsp;characters&nbsp;to&nbsp;lowercase&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-title"><strong>title</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;where&nbsp;each&nbsp;word&nbsp;is&nbsp;titlecased.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;words&nbsp;start&nbsp;with&nbsp;uppercased&nbsp;characters&nbsp;and&nbsp;all<br>
+remaining&nbsp;cased&nbsp;characters&nbsp;have&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-translate"><strong>translate</strong></a>(self, table, /)</dt><dd><span class="code">Replace&nbsp;each&nbsp;character&nbsp;in&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;given&nbsp;translation&nbsp;table.<br>
+&nbsp;<br>
+&nbsp;&nbsp;table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Translation&nbsp;table,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;mapping&nbsp;of&nbsp;Unicode&nbsp;ordinals<br>
+&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;Unicode&nbsp;ordinals,&nbsp;strings,&nbsp;or&nbsp;None.<br>
+&nbsp;<br>
+The&nbsp;table&nbsp;must&nbsp;implement&nbsp;lookup/indexing&nbsp;via&nbsp;__getitem__,&nbsp;for<br>
+instance&nbsp;a&nbsp;dictionary&nbsp;or&nbsp;list.&nbsp;&nbsp;If&nbsp;this&nbsp;operation&nbsp;raises<br>
+LookupError,&nbsp;the&nbsp;character&nbsp;is&nbsp;left&nbsp;untouched.&nbsp;&nbsp;Characters&nbsp;mapped&nbsp;to<br>
+None&nbsp;are&nbsp;deleted.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-upper"><strong>upper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-zfill"><strong>zfill</strong></a>(self, width, /)</dt><dd><span class="code">Pad&nbsp;a&nbsp;numeric&nbsp;string&nbsp;with&nbsp;zeros&nbsp;on&nbsp;the&nbsp;left,&nbsp;to&nbsp;fill&nbsp;a&nbsp;field&nbsp;of&nbsp;the&nbsp;given&nbsp;width.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;is&nbsp;never&nbsp;truncated.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="EstadoNota-maketrans"><strong>maketrans</strong></a>(x, y=&lt;unrepresentable&gt;, z=&lt;unrepresentable&gt;, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;translation&nbsp;table&nbsp;usable&nbsp;for&nbsp;<a href="builtins.html#str">str</a>.<a href="#EstadoNota-translate">translate</a>().<br>
+&nbsp;<br>
+If&nbsp;there&nbsp;is&nbsp;only&nbsp;one&nbsp;argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;mapping<br>
+Unicode&nbsp;ordinals&nbsp;(integers)&nbsp;or&nbsp;characters&nbsp;to&nbsp;Unicode&nbsp;ordinals,<br>
+strings&nbsp;or&nbsp;None.&nbsp;&nbsp;Character&nbsp;keys&nbsp;will&nbsp;be&nbsp;then&nbsp;converted&nbsp;to&nbsp;ordinals.<br>
+If&nbsp;there&nbsp;are&nbsp;two&nbsp;arguments,&nbsp;they&nbsp;must&nbsp;be&nbsp;strings&nbsp;of&nbsp;equal&nbsp;length,<br>
+and&nbsp;in&nbsp;the&nbsp;resulting&nbsp;dictionary,&nbsp;each&nbsp;character&nbsp;in&nbsp;x&nbsp;will&nbsp;be&nbsp;mapped<br>
+to&nbsp;the&nbsp;character&nbsp;at&nbsp;the&nbsp;same&nbsp;position&nbsp;in&nbsp;y.&nbsp;&nbsp;If&nbsp;there&nbsp;is&nbsp;a&nbsp;third<br>
+argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;string,&nbsp;whose&nbsp;characters&nbsp;will&nbsp;be&nbsp;mapped&nbsp;to<br>
+None&nbsp;in&nbsp;the&nbsp;result.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><a name="EstadoNota-__dir__"><strong>__dir__</strong></a>(self)</dt><dd><span class="code">Returns&nbsp;public&nbsp;methods&nbsp;and&nbsp;other&nbsp;interesting&nbsp;attributes.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__init__"><strong>__init__</strong></a>(self, *args, **kwds)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="EstadoNota-__reduce_ex__"><strong>__reduce_ex__</strong></a>(self, proto)</dt><dd><span class="code">Helper&nbsp;for&nbsp;pickle.</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><strong>name</strong></dt>
+<dd><span class="code">The&nbsp;name&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<dl><dt><strong>value</strong></dt>
+<dd><span class="code">The&nbsp;value&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<hr>
+Readonly properties inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><strong>__members__</strong></dt>
+<dd><span class="code">Returns&nbsp;a&nbsp;mapping&nbsp;of&nbsp;member&nbsp;name-&gt;value.<br>
+&nbsp;<br>
+This&nbsp;mapping&nbsp;lists&nbsp;all&nbsp;enum&nbsp;members,&nbsp;including&nbsp;aliases.&nbsp;&nbsp;Note&nbsp;that<br>
+this&nbsp;is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ModoPractica">class <strong>ModoPractica</strong></a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ModoPractica">ModoPractica</a>(*values)<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="nucleo.sesion.html#ModoPractica">ModoPractica</a></dd>
+<dd><a href="builtins.html#str">builtins.str</a></dd>
+<dd><a href="enum.html#Enum">enum.Enum</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="ModoPractica-__format__"><strong>__format__</strong></a>(self, format_spec)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Default&nbsp;<a href="builtins.html#object">object</a>&nbsp;formatter.<br>
+&nbsp;<br>
+Return&nbsp;<a href="builtins.html#str">str</a>(self)&nbsp;if&nbsp;format_spec&nbsp;is&nbsp;empty.&nbsp;Raise&nbsp;TypeError&nbsp;otherwise.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__new__"><strong>__new__</strong></a>(cls, value)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__repr__"><strong>__repr__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__str__"><strong>__str__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;<a href="builtins.html#str">str</a>(self).</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>ESPERAR_NOTA</strong> = &lt;ModoPractica.ESPERAR_NOTA: 'esperar_nota'&gt;</dl>
+
+<dl><dt><strong>SEGUIR_TEMPO</strong> = &lt;ModoPractica.SEGUIR_TEMPO: 'seguir_tempo'&gt;</dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="ModoPractica-__add__"><strong>__add__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self+value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__contains__"><strong>__contains__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;bool(key&nbsp;in&nbsp;self).</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__eq__"><strong>__eq__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__ge__"><strong>__ge__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;=value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__getitem__"><strong>__getitem__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;self[key].</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__getnewargs__"><strong>__getnewargs__</strong></a>(self, /)</dt></dl>
+
+<dl><dt><a name="ModoPractica-__gt__"><strong>__gt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__hash__"><strong>__hash__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__iter__"><strong>__iter__</strong></a>(self, /)</dt><dd><span class="code">Implement&nbsp;iter(self).</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__le__"><strong>__le__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;=value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__len__"><strong>__len__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;len(self).</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__lt__"><strong>__lt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__mod__"><strong>__mod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self%value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__mul__"><strong>__mul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self*value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__ne__"><strong>__ne__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self!=value.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__rmod__"><strong>__rmod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value%self.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__rmul__"><strong>__rmul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value*self.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__sizeof__"><strong>__sizeof__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;string&nbsp;in&nbsp;memory,&nbsp;in&nbsp;bytes.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-capitalize"><strong>capitalize</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;capitalized&nbsp;version&nbsp;of&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;make&nbsp;the&nbsp;first&nbsp;character&nbsp;have&nbsp;upper&nbsp;case&nbsp;and&nbsp;the<br>
+rest&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-casefold"><strong>casefold</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;suitable&nbsp;for&nbsp;caseless&nbsp;comparisons.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-center"><strong>center</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;centered&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-count"><strong>count</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;number&nbsp;of&nbsp;non-overlapping&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;sub&nbsp;in&nbsp;string&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-encode"><strong>encode</strong></a>(self, /, encoding='utf-8', errors='strict')</dt><dd><span class="code">Encode&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;codec&nbsp;registered&nbsp;for&nbsp;encoding.<br>
+&nbsp;<br>
+encoding<br>
+&nbsp;&nbsp;The&nbsp;encoding&nbsp;in&nbsp;which&nbsp;to&nbsp;encode&nbsp;the&nbsp;string.<br>
+errors<br>
+&nbsp;&nbsp;The&nbsp;error&nbsp;handling&nbsp;scheme&nbsp;to&nbsp;use&nbsp;for&nbsp;encoding&nbsp;errors.<br>
+&nbsp;&nbsp;The&nbsp;default&nbsp;is&nbsp;'strict'&nbsp;meaning&nbsp;that&nbsp;encoding&nbsp;errors&nbsp;raise&nbsp;a<br>
+&nbsp;&nbsp;UnicodeEncodeError.&nbsp;&nbsp;Other&nbsp;possible&nbsp;values&nbsp;are&nbsp;'ignore',&nbsp;'replace'<br>
+&nbsp;&nbsp;and&nbsp;'xmlcharrefreplace'&nbsp;as&nbsp;well&nbsp;as&nbsp;any&nbsp;other&nbsp;name&nbsp;registered&nbsp;with<br>
+&nbsp;&nbsp;codecs.register_error&nbsp;that&nbsp;can&nbsp;handle&nbsp;UnicodeEncodeErrors.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-endswith"><strong>endswith</strong></a>(self, suffix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;specified&nbsp;suffix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+suffix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-expandtabs"><strong>expandtabs</strong></a>(self, /, tabsize=8)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;where&nbsp;all&nbsp;tab&nbsp;characters&nbsp;are&nbsp;expanded&nbsp;using&nbsp;spaces.<br>
+&nbsp;<br>
+If&nbsp;tabsize&nbsp;is&nbsp;not&nbsp;given,&nbsp;a&nbsp;tab&nbsp;size&nbsp;of&nbsp;8&nbsp;characters&nbsp;is&nbsp;assumed.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-find"><strong>find</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-format"><strong>format</strong></a>(self, /, *args, **kwargs)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;args&nbsp;and&nbsp;kwargs.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-format_map"><strong>format_map</strong></a>(self, mapping, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;mapping.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-index"><strong>index</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;ValueError&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isalnum"><strong>isalnum</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alpha-numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alpha-numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alpha-numeric&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isalpha"><strong>isalpha</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alphabetic&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alphabetic&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alphabetic&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isascii"><strong>isascii</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;ASCII,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+ASCII&nbsp;characters&nbsp;have&nbsp;code&nbsp;points&nbsp;in&nbsp;the&nbsp;range&nbsp;U+0000-U+007F.<br>
+Empty&nbsp;string&nbsp;is&nbsp;ASCII&nbsp;too.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isdecimal"><strong>isdecimal</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+decimal&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isdigit"><strong>isdigit</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+digits&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isidentifier"><strong>isidentifier</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;valid&nbsp;Python&nbsp;identifier,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+Call&nbsp;keyword.iskeyword(s)&nbsp;to&nbsp;test&nbsp;whether&nbsp;string&nbsp;s&nbsp;is&nbsp;a&nbsp;reserved<br>
+identifier,&nbsp;such&nbsp;as&nbsp;"def"&nbsp;or&nbsp;"class".</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-islower"><strong>islower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;lowercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;lowercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+lowercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isnumeric"><strong>isnumeric</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;numeric&nbsp;and<br>
+there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isprintable"><strong>isprintable</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;printable,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;character&nbsp;is&nbsp;printable&nbsp;if&nbsp;repr()&nbsp;may&nbsp;use&nbsp;it&nbsp;in&nbsp;its&nbsp;output.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isspace"><strong>isspace</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;whitespace&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;whitespace&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+whitespace&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-istitle"><strong>istitle</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+In&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;upper-&nbsp;and&nbsp;title-case&nbsp;characters&nbsp;may&nbsp;only<br>
+follow&nbsp;uncased&nbsp;characters&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;only&nbsp;cased&nbsp;ones.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-isupper"><strong>isupper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;uppercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;uppercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+uppercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-join"><strong>join</strong></a>(self, iterable, /)</dt><dd><span class="code">Concatenate&nbsp;any&nbsp;number&nbsp;of&nbsp;strings.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;whose&nbsp;method&nbsp;is&nbsp;called&nbsp;is&nbsp;inserted&nbsp;in&nbsp;between&nbsp;each&nbsp;given<br>
+string.&nbsp;&nbsp;The&nbsp;result&nbsp;is&nbsp;returned&nbsp;as&nbsp;a&nbsp;new&nbsp;string.<br>
+&nbsp;<br>
+Example:&nbsp;'.'.<a href="#ModoPractica-join">join</a>(['ab',&nbsp;'pq',&nbsp;'rs'])&nbsp;-&gt;&nbsp;'ab.pq.rs'</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-ljust"><strong>ljust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;left-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-lower"><strong>lower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;lowercase.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-lstrip"><strong>lstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-partition"><strong>partition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string.&nbsp;&nbsp;If&nbsp;the&nbsp;separator<br>
+is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the&nbsp;part&nbsp;before&nbsp;the<br>
+separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after&nbsp;it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing<br>
+the&nbsp;original&nbsp;string&nbsp;and&nbsp;two&nbsp;empty&nbsp;strings.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-removeprefix"><strong>removeprefix</strong></a>(self, prefix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;prefix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;prefix&nbsp;string,&nbsp;return<br>
+string[len(prefix):].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;original<br>
+string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-removesuffix"><strong>removesuffix</strong></a>(self, suffix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;suffix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;suffix&nbsp;string&nbsp;and&nbsp;that&nbsp;suffix&nbsp;is&nbsp;not<br>
+empty,&nbsp;return&nbsp;string[:-len(suffix)].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of<br>
+the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-replace"><strong>replace</strong></a>(self, old, new, /, count=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;with&nbsp;all&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;old&nbsp;replaced&nbsp;by&nbsp;new.<br>
+&nbsp;<br>
+&nbsp;&nbsp;count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;occurrences&nbsp;to&nbsp;replace.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;replace&nbsp;all&nbsp;occurrences.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;optional&nbsp;argument&nbsp;count&nbsp;is&nbsp;given,&nbsp;only&nbsp;the&nbsp;first&nbsp;count&nbsp;occurrences&nbsp;are<br>
+replaced.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-rfind"><strong>rfind</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-rindex"><strong>rindex</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;ValueError&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-rjust"><strong>rjust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;right-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-rpartition"><strong>rpartition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string,&nbsp;starting&nbsp;at&nbsp;the<br>
+end.&nbsp;&nbsp;If&nbsp;the&nbsp;separator&nbsp;is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the<br>
+part&nbsp;before&nbsp;the&nbsp;separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after<br>
+it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;two<br>
+empty&nbsp;strings&nbsp;and&nbsp;the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-rsplit"><strong>rsplit</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;front.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-rstrip"><strong>rstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-split"><strong>split</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;front&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;end.<br>
+&nbsp;<br>
+Note,&nbsp;<a href="builtins.html#str">str</a>.<a href="#ModoPractica-split">split</a>()&nbsp;is&nbsp;mainly&nbsp;useful&nbsp;for&nbsp;data&nbsp;that&nbsp;has&nbsp;been<br>
+intentionally&nbsp;delimited.&nbsp;&nbsp;With&nbsp;natural&nbsp;text&nbsp;that&nbsp;includes<br>
+punctuation,&nbsp;consider&nbsp;using&nbsp;the&nbsp;regular&nbsp;expression&nbsp;module.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-splitlines"><strong>splitlines</strong></a>(self, /, keepends=False)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;string,&nbsp;breaking&nbsp;at&nbsp;line&nbsp;boundaries.<br>
+&nbsp;<br>
+Line&nbsp;breaks&nbsp;are&nbsp;not&nbsp;included&nbsp;in&nbsp;the&nbsp;resulting&nbsp;list&nbsp;unless&nbsp;keepends<br>
+is&nbsp;given&nbsp;and&nbsp;true.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-startswith"><strong>startswith</strong></a>(self, prefix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;specified&nbsp;prefix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+prefix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-strip"><strong>strip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-swapcase"><strong>swapcase</strong></a>(self, /)</dt><dd><span class="code">Convert&nbsp;uppercase&nbsp;characters&nbsp;to&nbsp;lowercase&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-title"><strong>title</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;where&nbsp;each&nbsp;word&nbsp;is&nbsp;titlecased.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;words&nbsp;start&nbsp;with&nbsp;uppercased&nbsp;characters&nbsp;and&nbsp;all<br>
+remaining&nbsp;cased&nbsp;characters&nbsp;have&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-translate"><strong>translate</strong></a>(self, table, /)</dt><dd><span class="code">Replace&nbsp;each&nbsp;character&nbsp;in&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;given&nbsp;translation&nbsp;table.<br>
+&nbsp;<br>
+&nbsp;&nbsp;table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Translation&nbsp;table,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;mapping&nbsp;of&nbsp;Unicode&nbsp;ordinals<br>
+&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;Unicode&nbsp;ordinals,&nbsp;strings,&nbsp;or&nbsp;None.<br>
+&nbsp;<br>
+The&nbsp;table&nbsp;must&nbsp;implement&nbsp;lookup/indexing&nbsp;via&nbsp;__getitem__,&nbsp;for<br>
+instance&nbsp;a&nbsp;dictionary&nbsp;or&nbsp;list.&nbsp;&nbsp;If&nbsp;this&nbsp;operation&nbsp;raises<br>
+LookupError,&nbsp;the&nbsp;character&nbsp;is&nbsp;left&nbsp;untouched.&nbsp;&nbsp;Characters&nbsp;mapped&nbsp;to<br>
+None&nbsp;are&nbsp;deleted.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-upper"><strong>upper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-zfill"><strong>zfill</strong></a>(self, width, /)</dt><dd><span class="code">Pad&nbsp;a&nbsp;numeric&nbsp;string&nbsp;with&nbsp;zeros&nbsp;on&nbsp;the&nbsp;left,&nbsp;to&nbsp;fill&nbsp;a&nbsp;field&nbsp;of&nbsp;the&nbsp;given&nbsp;width.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;is&nbsp;never&nbsp;truncated.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="ModoPractica-maketrans"><strong>maketrans</strong></a>(x, y=&lt;unrepresentable&gt;, z=&lt;unrepresentable&gt;, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;translation&nbsp;table&nbsp;usable&nbsp;for&nbsp;<a href="builtins.html#str">str</a>.<a href="#ModoPractica-translate">translate</a>().<br>
+&nbsp;<br>
+If&nbsp;there&nbsp;is&nbsp;only&nbsp;one&nbsp;argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;mapping<br>
+Unicode&nbsp;ordinals&nbsp;(integers)&nbsp;or&nbsp;characters&nbsp;to&nbsp;Unicode&nbsp;ordinals,<br>
+strings&nbsp;or&nbsp;None.&nbsp;&nbsp;Character&nbsp;keys&nbsp;will&nbsp;be&nbsp;then&nbsp;converted&nbsp;to&nbsp;ordinals.<br>
+If&nbsp;there&nbsp;are&nbsp;two&nbsp;arguments,&nbsp;they&nbsp;must&nbsp;be&nbsp;strings&nbsp;of&nbsp;equal&nbsp;length,<br>
+and&nbsp;in&nbsp;the&nbsp;resulting&nbsp;dictionary,&nbsp;each&nbsp;character&nbsp;in&nbsp;x&nbsp;will&nbsp;be&nbsp;mapped<br>
+to&nbsp;the&nbsp;character&nbsp;at&nbsp;the&nbsp;same&nbsp;position&nbsp;in&nbsp;y.&nbsp;&nbsp;If&nbsp;there&nbsp;is&nbsp;a&nbsp;third<br>
+argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;string,&nbsp;whose&nbsp;characters&nbsp;will&nbsp;be&nbsp;mapped&nbsp;to<br>
+None&nbsp;in&nbsp;the&nbsp;result.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><a name="ModoPractica-__dir__"><strong>__dir__</strong></a>(self)</dt><dd><span class="code">Returns&nbsp;public&nbsp;methods&nbsp;and&nbsp;other&nbsp;interesting&nbsp;attributes.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__init__"><strong>__init__</strong></a>(self, *args, **kwds)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ModoPractica-__reduce_ex__"><strong>__reduce_ex__</strong></a>(self, proto)</dt><dd><span class="code">Helper&nbsp;for&nbsp;pickle.</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><strong>name</strong></dt>
+<dd><span class="code">The&nbsp;name&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<dl><dt><strong>value</strong></dt>
+<dd><span class="code">The&nbsp;value&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<hr>
+Readonly properties inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><strong>__members__</strong></dt>
+<dd><span class="code">Returns&nbsp;a&nbsp;mapping&nbsp;of&nbsp;member&nbsp;name-&gt;value.<br>
+&nbsp;<br>
+This&nbsp;mapping&nbsp;lists&nbsp;all&nbsp;enum&nbsp;members,&nbsp;including&nbsp;aliases.&nbsp;&nbsp;Note&nbsp;that<br>
+this&nbsp;is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="NotaEsperada">class <strong>NotaEsperada</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#NotaEsperada">NotaEsperada</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;indice:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicio_s:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;duracion_s:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;midi:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alturas_midi:&nbsp;'Tuple[float,&nbsp;...]'&nbsp;=&nbsp;(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nombre:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;''<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Una&nbsp;nota&nbsp;(o&nbsp;ataque)&nbsp;de&nbsp;la&nbsp;línea&nbsp;de&nbsp;práctica,&nbsp;con&nbsp;tiempos&nbsp;en&nbsp;segundos&nbsp;de&nbsp;partitura.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="NotaEsperada-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="NotaEsperada-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="NotaEsperada-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="NotaEsperada-__init__"><strong>__init__</strong></a>(
+    self,
+    indice: 'int',
+    inicio_s: 'float',
+    duracion_s: 'float',
+    midi: 'float',
+    alturas_midi: 'Tuple[float, ...]' = (),
+    nombre: 'str' = ''
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="NotaEsperada-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="NotaEsperada-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="NotaEsperada-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>es_acorde</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'alturas_midi': 'Tuple[float, ...]', 'duracion_s': 'float', 'indice': 'int', 'inicio_s': 'float', 'midi': 'float', 'nombre': 'str'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'alturas_midi': Field(name='alturas_midi',type='Tuple[float, ......appingproxy({}),kw_only=False,_field_type=_FIELD), 'duracion_s': Field(name='duracion_s',type='float',default=&lt;da...appingproxy({}),kw_only=False,_field_type=_FIELD), 'indice': Field(name='indice',type='int',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicio_s': Field(name='inicio_s',type='float',default=&lt;data...appingproxy({}),kw_only=False,_field_type=_FIELD), 'midi': Field(name='midi',type='float',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD), 'nombre': Field(name='nombre',type='str',default='',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('indice', 'inicio_s', 'duracion_s', 'midi', 'alturas_midi', 'nombre')</dl>
+
+<dl><dt><strong>alturas_midi</strong> = ()</dl>
+
+<dl><dt><strong>nombre</strong> = ''</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ResultadoNota">class <strong>ResultadoNota</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ResultadoNota">ResultadoNota</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;estado:&nbsp;'<a href="#EstadoNota">EstadoNota</a>'&nbsp;=&nbsp;&amp;lt;<a href="#EstadoNota">EstadoNota</a>.PENDIENTE:&nbsp;'pendiente'&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;definitivo:&nbsp;'bool'&nbsp;=&nbsp;False,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;evento:&nbsp;'Optional[EventoInterpretacion]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;comparacion:&nbsp;'Optional[ResultadoAltura]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;desfase_s:&nbsp;'Optional[float]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;intentos_fallidos:&nbsp;'int'&nbsp;=&nbsp;0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;diagnosticos:&nbsp;'List[TipoEvento]'&nbsp;=&nbsp;&amp;lt;factory&amp;gt;<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Estado&nbsp;de&nbsp;una&nbsp;nota&nbsp;y&nbsp;la&nbsp;evidencia&nbsp;que&nbsp;lo&nbsp;decide.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="ResultadoNota-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="ResultadoNota-__init__"><strong>__init__</strong></a>(
+    self,
+    estado: 'EstadoNota' = &lt;EstadoNota.PENDIENTE: 'pendiente'&gt;,
+    definitivo: 'bool' = False,
+    evento: 'Optional[EventoInterpretacion]' = None,
+    comparacion: 'Optional[ResultadoAltura]' = None,
+    desfase_s: 'Optional[float]' = None,
+    intentos_fallidos: 'int' = 0,
+    diagnosticos: 'List[TipoEvento]' = &lt;factory&gt;
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ResultadoNota-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="ResultadoNota-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>cents</strong></dt>
+<dd><span class="code">Desviación&nbsp;respecto&nbsp;de&nbsp;la&nbsp;nota&nbsp;identificada&nbsp;(la&nbsp;esperada&nbsp;si&nbsp;es&nbsp;un&nbsp;acierto).</span></dd>
+</dl>
+<dl><dt><strong>es_acierto</strong></dt>
+</dl>
+<dl><dt><strong>midi_detectado</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'comparacion': 'Optional[ResultadoAltura]', 'definitivo': 'bool', 'desfase_s': 'Optional[float]', 'diagnosticos': 'List[TipoEvento]', 'estado': 'EstadoNota', 'evento': 'Optional[EventoInterpretacion]', 'intentos_fallidos': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'comparacion': Field(name='comparacion',type='Optional[Resultad...appingproxy({}),kw_only=False,_field_type=_FIELD), 'definitivo': Field(name='definitivo',type='bool',default=Fals...appingproxy({}),kw_only=False,_field_type=_FIELD), 'desfase_s': Field(name='desfase_s',type='Optional[float]',de...appingproxy({}),kw_only=False,_field_type=_FIELD), 'diagnosticos': Field(name='diagnosticos',type='List[TipoEvento]...appingproxy({}),kw_only=False,_field_type=_FIELD), 'estado': Field(name='estado',type='EstadoNota',default=&lt;E...appingproxy({}),kw_only=False,_field_type=_FIELD), 'evento': Field(name='evento',type='Optional[EventoInterpr...appingproxy({}),kw_only=False,_field_type=_FIELD), 'intentos_fallidos': Field(name='intentos_fallidos',type='int',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('estado', 'definitivo', 'evento', 'comparacion', 'desfase_s', 'intentos_fallidos', 'diagnosticos')</dl>
+
+<dl><dt><strong>comparacion</strong> = None</dl>
+
+<dl><dt><strong>definitivo</strong> = False</dl>
+
+<dl><dt><strong>desfase_s</strong> = None</dl>
+
+<dl><dt><strong>estado</strong> = &lt;EstadoNota.PENDIENTE: 'pendiente'&gt;</dl>
+
+<dl><dt><strong>evento</strong> = None</dl>
+
+<dl><dt><strong>intentos_fallidos</strong> = 0</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="SesionDePractica">class <strong>SesionDePractica</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#SesionDePractica">SesionDePractica</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;notas:&nbsp;'Sequence[<a href="#NotaEsperada">NotaEsperada</a>]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;configuracion:&nbsp;'<a href="#ConfiguracionSesion">ConfiguracionSesion</a>'&nbsp;=&nbsp;<a href="#ConfiguracionSesion">ConfiguracionSesion</a>(modo=&amp;lt;<a href="#ModoPractica">ModoPractica</a>.SEGUIR_TEMPO:&nbsp;'seguir_tempo'&amp;gt;,&nbsp;tolerancia_s=0.15,&nbsp;alineacion_inicial_max_s=0.5,&nbsp;margen_cierre_s=0.35,&nbsp;confianza_min_error=0.9,&nbsp;refractario_acorde_s=0.3,&nbsp;la4=440.0),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sesion:&nbsp;'int'&nbsp;=&nbsp;1<br>
+)<br>
+&nbsp;<br>
+Evalúa&nbsp;una&nbsp;interpretación&nbsp;frente&nbsp;a&nbsp;la&nbsp;línea&nbsp;de&nbsp;práctica&nbsp;de&nbsp;una&nbsp;partitura.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="SesionDePractica-__init__"><strong>__init__</strong></a>(
+    self,
+    notas: 'Sequence[NotaEsperada]',
+    configuracion: 'ConfiguracionSesion' = ConfiguracionSesion(modo=&lt;ModoPractica.SEGUIR_TEMPO: 'seguir_tempo'&gt;, tolerancia_s=0.15, alineacion_inicial_max_s=0.5, margen_cierre_s=0.35, confianza_min_error=0.9, refractario_acorde_s=0.3, la4=440.0),
+    sesion: 'int' = 1
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="SesionDePractica-actualizar"><strong>actualizar</strong></a>(self, t: 'float') -&gt; 'List[Cambio]'</dt><dd><span class="code">Avanza&nbsp;el&nbsp;reloj:&nbsp;cierra&nbsp;las&nbsp;ventanas&nbsp;vencidas&nbsp;y&nbsp;mueve&nbsp;la&nbsp;nota&nbsp;actual.</span></dd></dl>
+
+<dl><dt><a name="SesionDePractica-detener"><strong>detener</strong></a>(self) -&gt; 'None'</dt><dd><span class="code">El&nbsp;usuario&nbsp;detiene&nbsp;la&nbsp;sesión:&nbsp;no&nbsp;se&nbsp;procesan&nbsp;más&nbsp;eventos.</span></dd></dl>
+
+<dl><dt><a name="SesionDePractica-iniciar"><strong>iniciar</strong></a>(self, t0: 'float') -&gt; 'None'</dt><dd><span class="code">Fija&nbsp;el&nbsp;instante&nbsp;(reloj&nbsp;de&nbsp;captura)&nbsp;que&nbsp;corresponde&nbsp;al&nbsp;inicio&nbsp;de&nbsp;la&nbsp;partitura.</span></dd></dl>
+
+<dl><dt><a name="SesionDePractica-inicio_esperado"><strong>inicio_esperado</strong></a>(self, indice: 'int') -&gt; 'float'</dt><dd><span class="code">Instante&nbsp;esperado&nbsp;(reloj&nbsp;de&nbsp;captura)&nbsp;del&nbsp;ataque&nbsp;de&nbsp;una&nbsp;nota,&nbsp;con&nbsp;la&nbsp;alineación.</span></dd></dl>
+
+<dl><dt><a name="SesionDePractica-procesar"><strong>procesar</strong></a>(self, evento: 'EventoInterpretacion') -&gt; 'List[Cambio]'</dt><dd><span class="code">Incorpora&nbsp;un&nbsp;evento&nbsp;de&nbsp;interpretación.&nbsp;Devuelve&nbsp;las&nbsp;notas&nbsp;que&nbsp;cambiaron.</span></dd></dl>
+
+<dl><dt><a name="SesionDePractica-resumen"><strong>resumen</strong></a>(self) -&gt; 'Dict[str, object]'</dt><dd><span class="code">#&nbsp;------------------------------------------------------------------------------------</span></dd></dl>
+
+<dl><dt><a name="SesionDePractica-ventana"><strong>ventana</strong></a>(self, indice: 'int') -&gt; 'Tuple[float, float]'</dt></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>estados_booleanos</strong></dt>
+<dd><span class="code">True&nbsp;(acierto),&nbsp;False&nbsp;(error)&nbsp;o&nbsp;None&nbsp;(pendiente),&nbsp;como&nbsp;la&nbsp;interfaz&nbsp;anterior.</span></dd>
+</dl>
+<dl><dt><strong>iniciada</strong></dt>
+</dl>
+<dl><dt><strong>modo</strong></dt>
+</dl>
+<dl><dt><strong>terminada</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="SesionProgreso">class <strong>SesionProgreso</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#SesionProgreso">SesionProgreso</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;partitura:&nbsp;'<a href="builtins.html#str">str</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;instrumento:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;'piano',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;modo:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;'seguir_tempo',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;factor_tempo:&nbsp;'float'&nbsp;=&nbsp;1.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;total:&nbsp;'int'&nbsp;=&nbsp;0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;aciertos:&nbsp;'int'&nbsp;=&nbsp;0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;precision:&nbsp;'float'&nbsp;=&nbsp;0.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;fecha:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;estados:&nbsp;'Dict[<a href="builtins.html#str">str</a>,&nbsp;int]'&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cents_medios:&nbsp;'Optional[float]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;desfase_medio_s:&nbsp;'Optional[float]'&nbsp;=&nbsp;None<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Clase&nbsp;formal&nbsp;POO&nbsp;de&nbsp;dominio&nbsp;que&nbsp;modela&nbsp;el&nbsp;resultado&nbsp;de&nbsp;una&nbsp;sesión&nbsp;de&nbsp;práctica.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="SesionProgreso-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="SesionProgreso-__init__"><strong>__init__</strong></a>(
+    self,
+    partitura: 'str',
+    instrumento: 'str' = 'piano',
+    modo: 'str' = 'seguir_tempo',
+    factor_tempo: 'float' = 1.0,
+    total: 'int' = 0,
+    aciertos: 'int' = 0,
+    precision: 'float' = 0.0,
+    fecha: 'str' = &lt;factory&gt;,
+    estados: 'Dict[str, int]' = &lt;factory&gt;,
+    cents_medios: 'Optional[float]' = None,
+    desfase_medio_s: 'Optional[float]' = None
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="SesionProgreso-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="SesionProgreso-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="SesionProgreso-to_dict"><strong>to_dict</strong></a>(self) -&gt; 'Dict[str, Any]'</dt><dd><span class="code">Serializa&nbsp;la&nbsp;instancia&nbsp;POO&nbsp;a&nbsp;un&nbsp;diccionario&nbsp;primitivo&nbsp;para&nbsp;persistencia&nbsp;JSON.</span></dd></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="SesionProgreso-from_dict"><strong>from_dict</strong></a>(datos: 'Dict[str, Any]') -&gt; "'SesionProgreso'"</dt><dd><span class="code">Reconstruye&nbsp;una&nbsp;instancia&nbsp;POO&nbsp;de&nbsp;dominio&nbsp;a&nbsp;partir&nbsp;de&nbsp;un&nbsp;diccionario&nbsp;cargado&nbsp;de&nbsp;JSON.</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>nombre_partitura</strong></dt>
+</dl>
+<dl><dt><strong>notas_correctas</strong></dt>
+</dl>
+<dl><dt><strong>precision_media</strong></dt>
+</dl>
+<dl><dt><strong>timestamp</strong></dt>
+</dl>
+<dl><dt><strong>total_notas</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'aciertos': 'int', 'cents_medios': 'Optional[float]', 'desfase_medio_s': 'Optional[float]', 'estados': 'Dict[str, int]', 'factor_tempo': 'float', 'fecha': 'str', 'instrumento': 'str', 'modo': 'str', 'partitura': 'str', 'precision': 'float', ...}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'aciertos': Field(name='aciertos',type='int',default=0,defau...appingproxy({}),kw_only=False,_field_type=_FIELD), 'cents_medios': Field(name='cents_medios',type='Optional[float]'...appingproxy({}),kw_only=False,_field_type=_FIELD), 'desfase_medio_s': Field(name='desfase_medio_s',type='Optional[floa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'estados': Field(name='estados',type='Dict[str, int]',defau...appingproxy({}),kw_only=False,_field_type=_FIELD), 'factor_tempo': Field(name='factor_tempo',type='float',default=1...appingproxy({}),kw_only=False,_field_type=_FIELD), 'fecha': Field(name='fecha',type='str',default=&lt;dataclass...appingproxy({}),kw_only=False,_field_type=_FIELD), 'instrumento': Field(name='instrumento',type='str',default='pia...appingproxy({}),kw_only=False,_field_type=_FIELD), 'modo': Field(name='modo',type='str',default='seguir_tem...appingproxy({}),kw_only=False,_field_type=_FIELD), 'partitura': Field(name='partitura',type='str',default=&lt;datac...appingproxy({}),kw_only=False,_field_type=_FIELD), 'precision': Field(name='precision',type='float',default=0.0,...appingproxy({}),kw_only=False,_field_type=_FIELD), ...}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('partitura', 'instrumento', 'modo', 'factor_tempo', 'total', 'aciertos', 'precision', 'fecha', 'estados', 'cents_medios', 'desfase_medio_s')</dl>
+
+<dl><dt><strong>aciertos</strong> = 0</dl>
+
+<dl><dt><strong>cents_medios</strong> = None</dl>
+
+<dl><dt><strong>desfase_medio_s</strong> = None</dl>
+
+<dl><dt><strong>factor_tempo</strong> = 1.0</dl>
+
+<dl><dt><strong>instrumento</strong> = 'piano'</dl>
+
+<dl><dt><strong>modo</strong> = 'seguir_tempo'</dl>
+
+<dl><dt><strong>precision</strong> = 0.0</dl>
+
+<dl><dt><strong>total</strong> = 0</dl>
+
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-describir_estado"><strong>describir_estado</strong></a>(estado: 'EstadoNota') -&gt; 'str'</dt><dd><span class="code">Texto&nbsp;breve&nbsp;para&nbsp;la&nbsp;interfaz&nbsp;(sin&nbsp;depender&nbsp;de&nbsp;colores).</span></dd></dl>
+ <dl><dt><a name="-notas_esperadas"><strong>notas_esperadas</strong></a>(
+    notas: 'Iterable[dict]',
+    bpm: 'float' = 120.0,
+    factor_tempo: 'float' = 1.0
+) -&gt; 'List[NotaEsperada]'</dt><dd><span class="code">Convierte&nbsp;la&nbsp;lista&nbsp;de&nbsp;`cargar_partitura`&nbsp;en&nbsp;notas&nbsp;esperadas.<br>
+&nbsp;<br>
+Usa&nbsp;`inicio_s`/`duracion_s`&nbsp;(tempo&nbsp;de&nbsp;la&nbsp;partitura,&nbsp;cambios&nbsp;incluidos)&nbsp;cuando&nbsp;existen&nbsp;y,<br>
+si&nbsp;no,&nbsp;`offset_beats`/`duracion_beats`&nbsp;a&nbsp;`bpm`.&nbsp;`factor_tempo`&nbsp;&gt;&nbsp;1&nbsp;acelera&nbsp;la&nbsp;práctica.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>__all__</strong> = ['Cambio', 'ConfiguracionSesion', 'EstadoNota', 'ModoPractica', 'NotaEsperada', 'ResultadoNota', 'SesionDePractica', 'SesionProgreso', 'describir_estado', 'notas_esperadas']</td></tr></table>
+</body>
+</html>

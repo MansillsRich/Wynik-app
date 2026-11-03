@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module servicios.audio_service</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="servicios.html" class="white">servicios</a>.audio_service</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/servicios/audio_service.py">/home/benja/Documentos/WynikApp/Wynik-app/servicios/audio_service.py</a></td></tr></table>
+    <p><span class="code">Servicio&nbsp;de&nbsp;la&nbsp;guía&nbsp;de&nbsp;audio:&nbsp;fachada&nbsp;de&nbsp;compatibilidad&nbsp;sobre&nbsp;`audio.guia`.<br>
+&nbsp;<br>
+-&nbsp;`<a href="#-generar_audio_guia">generar_audio_guia</a>(notas,&nbsp;bpm,&nbsp;...)`&nbsp;(interfaz&nbsp;anterior):&nbsp;tempo&nbsp;constante&nbsp;`bpm`,&nbsp;pero&nbsp;cada<br>
+&nbsp;&nbsp;nota&nbsp;suena&nbsp;en&nbsp;su&nbsp;posición&nbsp;(`offset_beats`),&nbsp;así&nbsp;que&nbsp;los&nbsp;silencios&nbsp;se&nbsp;conservan;&nbsp;las&nbsp;notas<br>
+&nbsp;&nbsp;simultáneas&nbsp;suenan&nbsp;a&nbsp;la&nbsp;vez&nbsp;y&nbsp;no&nbsp;alargan&nbsp;la&nbsp;guía.<br>
+-&nbsp;`<a href="#-generar_guia">generar_guia</a>(notas,&nbsp;...)`:&nbsp;usa&nbsp;los&nbsp;tiempos&nbsp;de&nbsp;la&nbsp;partitura&nbsp;(`inicio_s`/`duracion_s`,&nbsp;con<br>
+&nbsp;&nbsp;sus&nbsp;cambios&nbsp;de&nbsp;tempo)&nbsp;y&nbsp;un&nbsp;factor&nbsp;de&nbsp;tempo&nbsp;de&nbsp;práctica.<br>
+&nbsp;<br>
+La&nbsp;frecuencia&nbsp;de&nbsp;cada&nbsp;nota&nbsp;sale&nbsp;del&nbsp;modelo&nbsp;musical&nbsp;(`alturas_midi`,&nbsp;`midi`,&nbsp;`frecuencia_hz`<br>
+o,&nbsp;si&nbsp;faltan,&nbsp;su&nbsp;nombre&nbsp;leído&nbsp;con&nbsp;`nucleo.musica.Altura`):&nbsp;'B-4'&nbsp;es&nbsp;Si&nbsp;bemol&nbsp;4.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="math.html">math</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-duracion_wav"><strong>duracion_wav</strong></a>(ruta: str) -&gt; float</dt><dd><span class="code">Duración&nbsp;en&nbsp;segundos&nbsp;de&nbsp;un&nbsp;WAV&nbsp;según&nbsp;su&nbsp;cabecera&nbsp;(0.0&nbsp;si&nbsp;no&nbsp;se&nbsp;puede&nbsp;leer).&nbsp;Sirve<br>
+cuando&nbsp;el&nbsp;reproductor&nbsp;del&nbsp;sistema&nbsp;no&nbsp;informa&nbsp;la&nbsp;duración&nbsp;(por&nbsp;ejemplo,&nbsp;sin&nbsp;salida&nbsp;de<br>
+audio).</span></dd></dl>
+ <dl><dt><a name="-formatear_tiempo"><strong>formatear_tiempo</strong></a>(segundos: Optional[float]) -&gt; str</dt><dd><span class="code">Formatea&nbsp;una&nbsp;duración&nbsp;en&nbsp;segundos&nbsp;a&nbsp;una&nbsp;cadena&nbsp;MM:SS.</span></dd></dl>
+ <dl><dt><a name="-frecuencia_de_nota"><strong>frecuencia_de_nota</strong></a>(nota: Dict[str, Any]) -&gt; Optional[float]</dt><dd><span class="code">Frecuencia&nbsp;en&nbsp;hercios&nbsp;de&nbsp;la&nbsp;nota&nbsp;principal&nbsp;(None&nbsp;si&nbsp;no&nbsp;tiene&nbsp;altura&nbsp;válida).</span></dd></dl>
+ <dl><dt><a name="-generar_audio_guia"><strong>generar_audio_guia</strong></a>(
+    notas_partitura: List[Dict[str, Any]],
+    bpm: float,
+    ruta_salida: str = 'temp_guia.wav',
+    sample_rate: int = 22050,
+    timbre: str = 'seno'
+) -&gt; Optional[str]</dt><dd><span class="code">Sintetiza&nbsp;la&nbsp;guía&nbsp;a&nbsp;tempo&nbsp;constante&nbsp;`bpm`&nbsp;y&nbsp;la&nbsp;guarda&nbsp;en&nbsp;`ruta_salida`&nbsp;(WAV).</span></dd></dl>
+ <dl><dt><a name="-generar_guia"><strong>generar_guia</strong></a>(
+    notas_partitura: List[Dict[str, Any]],
+    ruta_salida: str = 'temp_guia.wav',
+    factor_tempo: float = 1.0,
+    duracion_total_s: Optional[float] = None,
+    sample_rate: int = 22050,
+    timbre: str = 'seno'
+) -&gt; Optional[str]</dt><dd><span class="code">Guía&nbsp;con&nbsp;los&nbsp;tiempos&nbsp;de&nbsp;la&nbsp;partitura&nbsp;(cambios&nbsp;de&nbsp;tempo&nbsp;incluidos).&nbsp;`timbre`:&nbsp;«seno»,<br>
+«piano»&nbsp;o&nbsp;«guitarra»&nbsp;(ver&nbsp;`audio.guia`).</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Dict</strong> = typing.Dict<br>
+<strong>FRECUENCIA_GUIA</strong> = 22050<br>
+<strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional</td></tr></table>
+</body>
+</html>

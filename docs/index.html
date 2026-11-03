@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: Wynik Project Documentation (Pydoc)</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">Wynik</strong>: Documentación Técnica del Proyecto</td>
+<td class="extra"><a href="toma_de_requerimientos.pdf" target="_blank" class="white"><strong>[PDF] Toma de Requerimientos</strong></a> | <a href="toma_de_requerimientos.md" class="white">MD</a><br><a href="documentacion_proyecto_ccii.pdf" target="_blank" class="white"><strong>[PDF] Memoria Proyecto CCII</strong></a> | <a href="documentacion_proyecto_ccii.md" class="white">MD</a></td></tr></table>
+    <p><span class="code">Documentación técnica oficial de arquitectura, módulos, clases, métodos y <em>docstrings</em> del proyecto <strong>Wynik</strong> (Entrenador Musical Interactivo en Tiempo Real).<br>Descarga de documentos formales: <a href="toma_de_requerimientos.pdf" target="_blank"><strong>Toma de Requerimientos (PDF)</strong></a> | <a href="documentacion_proyecto_ccii.pdf" target="_blank"><strong>Memoria Técnica Proyecto CCII (PDF)</strong></a>.<br>Portal web generado bajo el formato y motor estándar de <strong>Pydoc (Python 3.13)</strong>.</span></p><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Paquete: nucleo</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table style="width: 100%; border-collapse: collapse;"><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="nucleo.html"><strong>nucleo</strong></a></td><td class="code" style="color: #333333;">Núcleo musical de Wynik: modelo de datos y reglas musicales independientes de la interfaz</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="nucleo.digitacion.html"><strong>nucleo.digitacion</strong></a></td><td class="code" style="color: #333333;">Guía visual para tocar una nota o un acorde: posiciones en la guitarra y teclas del piano.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="nucleo.eventos.html"><strong>nucleo.eventos</strong></a></td><td class="code" style="color: #333333;">Eventos de interpretación: lo que el análisis de audio entrega a la sesión de práctica.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="nucleo.importador_musicxml.html"><strong>nucleo.importador_musicxml</strong></a></td><td class="code" style="color: #333333;">Importador de MusicXML (.musicxml, .xml y .mxl) al modelo de `nucleo.musica`.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="nucleo.instrumentos.html"><strong>nucleo.instrumentos</strong></a></td><td class="code" style="color: #333333;">Perfiles de instrumento: rango sonoro, convención de escritura, afinaciones y parámetros de</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="nucleo.musica.html"><strong>nucleo.musica</strong></a></td><td class="code" style="color: #333333;">Modelo musical de Wynik.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="nucleo.notacion.html"><strong>nucleo.notacion</strong></a></td><td class="code" style="color: #333333;">Maquetación de la partitura: de los datos importados (`nucleo.musica.Parte`) a primitivas</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="nucleo.sesion.html"><strong>nucleo.sesion</strong></a></td><td class="code" style="color: #333333;">Sesión de práctica: compara los eventos de interpretación con la partitura en el tiempo.</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Paquete: servicios</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table style="width: 100%; border-collapse: collapse;"><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.html"><strong>servicios</strong></a></td><td class="code" style="color: #333333;">Módulo de servicios de Wynik: procesamiento musical, audio, captura y persistencia.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.ajustes_service.html"><strong>servicios.ajustes_service</strong></a></td><td class="code" style="color: #333333;">Ajustes de práctica persistentes (`ajustes_wynik.json` en el directorio de datos).</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.almacenamiento.html"><strong>servicios.almacenamiento</strong></a></td><td class="code" style="color: #333333;">Ubicación y escritura segura de los datos locales (ajustes y progreso).</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.audio_service.html"><strong>servicios.audio_service</strong></a></td><td class="code" style="color: #333333;">Servicio de la guía de audio: fachada de compatibilidad sobre `audio.guia`.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.detector_service.html"><strong>servicios.detector_service</strong></a></td><td class="code" style="color: #333333;">Servicio de detección de notas: fachada de compatibilidad sobre `audio.escucha`.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.historial_service.html"><strong>servicios.historial_service</strong></a></td><td class="code" style="color: #333333;">Servicio para la persistencia del historial de partituras recientes en JSON.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.notacion_service.html"><strong>servicios.notacion_service</strong></a></td><td class="code" style="color: #333333;">Servicio de notación: fachada de compatibilidad sobre `nucleo.musica`.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.partitura_service.html"><strong>servicios.partitura_service</strong></a></td><td class="code" style="color: #333333;">Servicio de partituras: fachada de compatibilidad sobre `nucleo.importador_musicxml`.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.practica_service.html"><strong>servicios.practica_service</strong></a></td><td class="code" style="color: #333333;">Controlador de la práctica: une la escucha (`audio.escucha`), la sesión (`nucleo.sesion`) y</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.progreso_service.html"><strong>servicios.progreso_service</strong></a></td><td class="code" style="color: #333333;">Historial de sesiones de práctica (`progreso_sesiones.json` en el directorio de datos).</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="servicios.reproductor_guia.html"><strong>servicios.reproductor_guia</strong></a></td><td class="code" style="color: #333333;">Estado del reproductor de la guía de audio, sin depender de Kivy.</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Paquete: audio</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table style="width: 100%; border-collapse: collapse;"><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="audio.html"><strong>audio</strong></a></td><td class="code" style="color: #333333;">Procesamiento de audio de Wynik: estimación de altura, nivel de señal, segmentación en</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="audio.analizador.html"><strong>audio.analizador</strong></a></td><td class="code" style="color: #333333;">Analizador: convierte bloques de audio en eventos de interpretación.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="audio.captura.html"><strong>audio.captura</strong></a></td><td class="code" style="color: #333333;">Captura de audio desacoplada del análisis.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="audio.escucha.html"><strong>audio.escucha</strong></a></td><td class="code" style="color: #333333;">Motor de escucha: captura + cola acotada + analizador en un hilo independiente.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="audio.estimador_yin.html"><strong>audio.estimador_yin</strong></a></td><td class="code" style="color: #333333;">Estimador de frecuencia fundamental YIN (de Cheveigné y Kawahara, 2002) con NumPy.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="audio.guia.html"><strong>audio.guia</strong></a></td><td class="code" style="color: #333333;">Síntesis de la guía de audio desde el modelo temporal de la partitura (C11).</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="audio.segmentador.html"><strong>audio.segmentador</strong></a></td><td class="code" style="color: #333333;">Segmentación: convierte las estimaciones sucesivas (tramas de 10 ms) en eventos de</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="audio.senal.html"><strong>audio.senal</strong></a></td><td class="code" style="color: #333333;">Nivel de señal, perfil de ruido de fondo y calibración.</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Paquete: vistas</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table style="width: 100%; border-collapse: collapse;"><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.html"><strong>vistas</strong></a></td><td class="code" style="color: #333333;">Módulo de vistas y componentes de interfaz de usuario de Wynik.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.app.html"><strong>vistas.app</strong></a></td><td class="code" style="color: #333333;">Aplicación KivyMD (WynikApp): navegación, pantallas y conexión con la práctica.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.componentes.html"><strong>vistas.componentes</strong></a></td><td class="code" style="color: #333333;">Componentes visuales reutilizables de Wynik (Kivy puro + la fuente de iconos de KivyMD).</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.dialogs.html"><strong>vistas.dialogs</strong></a></td><td class="code" style="color: #333333;">Diálogos de Wynik: confirmaciones, errores, resumen de la práctica y selector de archivos.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.fuentes.html"><strong>vistas.fuentes</strong></a></td><td class="code" style="color: #333333;">Fuente de la interfaz con los símbolos musicales.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.screens.html"><strong>vistas.screens</strong></a></td><td class="code" style="color: #333333;">Pantallas de la aplicación Wynik.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.screens.ajustes_inicio_screen.html"><strong>vistas.screens.ajustes_inicio_screen</strong></a></td><td class="code" style="color: #333333;">Preparación de la práctica: instrumento, modo, tempo, nombres de las notas y guía de audio.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.screens.ajustes_screen.html"><strong>vistas.screens.ajustes_screen</strong></a></td><td class="code" style="color: #333333;">Pantalla de ajustes generales: micrófono, ruido de fondo, afinación de referencia,</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.screens.elegir_partitura_screen.html"><strong>vistas.screens.elegir_partitura_screen</strong></a></td><td class="code" style="color: #333333;">Biblioteca: partituras importadas (historial).</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.screens.interprete_screen.html"><strong>vistas.screens.interprete_screen</strong></a></td><td class="code" style="color: #333333;">Pantalla de práctica: nota esperada, pentagrama, guía visual del instrumento, resultado de</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.screens.menu_screen.html"><strong>vistas.screens.menu_screen</strong></a></td><td class="code" style="color: #333333;">Pantalla de inicio de Wynik.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.screens.partitura_simple_screen.html"><strong>vistas.screens.partitura_simple_screen</strong></a></td><td class="code" style="color: #333333;">Pantalla de práctica con vista simplificada de partitura: alternativa ligera</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.screens.progreso_screen.html"><strong>vistas.screens.progreso_screen</strong></a></td><td class="code" style="color: #333333;">Pantalla de progreso: sesiones de práctica terminadas, de la más reciente a la más antigua.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.tema.html"><strong>vistas.tema</strong></a></td><td class="code" style="color: #333333;">Sistema visual de Wynik: colores, tipografía, medidas y puntos de corte.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.widgets.html"><strong>vistas.widgets</strong></a></td><td class="code" style="color: #333333;">Widgets personalizados de la vista.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.widgets.dibujo.html"><strong>vistas.widgets.dibujo</strong></a></td><td class="code" style="color: #333333;">Utilidades de dibujo para los widgets de Wynik: texto con la fuente de símbolos musicales y</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.widgets.guia_instrumento_widget.html"><strong>vistas.widgets.guia_instrumento_widget</strong></a></td><td class="code" style="color: #333333;">Guía visual de cómo tocar la nota (o el acorde) esperada: diapasón de guitarra o teclado de</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.widgets.ilustraciones.html"><strong>vistas.widgets.ilustraciones</strong></a></td><td class="code" style="color: #333333;">Ilustraciones de Wynik dibujadas con el canvas de Kivy (sin imágenes ni recursos remotos).</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.widgets.partitura_simple_widget.html"><strong>vistas.widgets.partitura_simple_widget</strong></a></td><td class="code" style="color: #333333;">Widget de partitura simplificada para la práctica musical.</td></tr><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="vistas.widgets.partitura_widget.html"><strong>vistas.widgets.partitura_widget</strong></a></td><td class="code" style="color: #333333;">Pentagrama con la partitura alrededor de la nota actual.</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Módulos Generales</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table style="width: 100%; border-collapse: collapse;"><tr><td style="width: 30%; vertical-align: top;" class="code"><a href="main.html"><strong>main</strong></a></td><td class="code" style="color: #333333;">Wynik </td></tr></table></td></tr></table>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module servicios.partitura_service</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="servicios.html" class="white">servicios</a>.partitura_service</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/servicios/partitura_service.py">/home/benja/Documentos/WynikApp/Wynik-app/servicios/partitura_service.py</a></td></tr></table>
+    <p><span class="code">Servicio&nbsp;de&nbsp;partituras:&nbsp;fachada&nbsp;de&nbsp;compatibilidad&nbsp;sobre&nbsp;`nucleo.importador_musicxml`.<br>
+&nbsp;<br>
+-&nbsp;`cargar_partitura_estructurada`&nbsp;devuelve&nbsp;el&nbsp;modelo&nbsp;completo&nbsp;(`nucleo.musica.Partitura`):<br>
+&nbsp;&nbsp;partes,&nbsp;pentagramas,&nbsp;voces,&nbsp;silencios,&nbsp;ligaduras,&nbsp;acordes&nbsp;y&nbsp;tempo.<br>
+-&nbsp;`cargar_partitura`&nbsp;mantiene&nbsp;la&nbsp;lista&nbsp;de&nbsp;notas&nbsp;que&nbsp;usa&nbsp;la&nbsp;interfaz&nbsp;actual,&nbsp;calculada&nbsp;desde<br>
+&nbsp;&nbsp;ese&nbsp;modelo&nbsp;con&nbsp;`Partitura.linea_de_practica`&nbsp;(práctica&nbsp;nota&nbsp;a&nbsp;nota&nbsp;de&nbsp;la&nbsp;primera&nbsp;parte).<br>
+&nbsp;<br>
+Formato&nbsp;de&nbsp;cada&nbsp;elemento&nbsp;de&nbsp;`cargar_partitura`:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nombre&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;altura&nbsp;sonora&nbsp;con&nbsp;su&nbsp;alteración&nbsp;original&nbsp;('B♭4'):&nbsp;la&nbsp;que&nbsp;debe&nbsp;oírse<br>
+&nbsp;&nbsp;&nbsp;&nbsp;offset_beats&nbsp;&nbsp;&nbsp;&nbsp;inicio&nbsp;en&nbsp;negras&nbsp;desde&nbsp;el&nbsp;principio&nbsp;de&nbsp;la&nbsp;partitura<br>
+&nbsp;&nbsp;&nbsp;&nbsp;duracion_beats&nbsp;&nbsp;duración&nbsp;en&nbsp;negras,&nbsp;con&nbsp;las&nbsp;ligaduras&nbsp;ya&nbsp;sumadas<br>
+&nbsp;&nbsp;&nbsp;&nbsp;midi,&nbsp;frecuencia_hz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;altura&nbsp;sonora&nbsp;en&nbsp;número&nbsp;MIDI&nbsp;y&nbsp;en&nbsp;hercios<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nombre_escrito,&nbsp;midi_escrito&nbsp;&nbsp;altura&nbsp;escrita&nbsp;(posición&nbsp;en&nbsp;el&nbsp;pentagrama)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;es_acorde,&nbsp;alturas_midi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;si&nbsp;empiezan&nbsp;varias&nbsp;notas&nbsp;a&nbsp;la&nbsp;vez&nbsp;en&nbsp;el&nbsp;pentagrama&nbsp;que&nbsp;se&nbsp;evalúa&nbsp;y<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;todas&nbsp;sus&nbsp;alturas&nbsp;sonoras<br>
+&nbsp;&nbsp;&nbsp;&nbsp;acompanamiento_midi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notas&nbsp;de&nbsp;los&nbsp;demás&nbsp;pentagramas&nbsp;(la&nbsp;otra&nbsp;mano&nbsp;del&nbsp;piano)&nbsp;que&nbsp;suenan<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;con&nbsp;el&nbsp;ataque:&nbsp;se&nbsp;oyen&nbsp;y&nbsp;se&nbsp;muestran,&nbsp;pero&nbsp;no&nbsp;se&nbsp;evalúan<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pentagrama&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pentagrama&nbsp;del&nbsp;ataque&nbsp;(1&nbsp;=&nbsp;mano&nbsp;derecha&nbsp;en&nbsp;el&nbsp;piano)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nombres,&nbsp;nombres_escritos,&nbsp;alturas_escritas_midi&nbsp;&nbsp;&nbsp;grafía&nbsp;sonora&nbsp;y&nbsp;escrita&nbsp;de&nbsp;cada&nbsp;nota<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicio_s,&nbsp;duracion_s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tiempos&nbsp;en&nbsp;segundos&nbsp;según&nbsp;el&nbsp;tempo&nbsp;de&nbsp;la&nbsp;partitura<br>
+&nbsp;&nbsp;&nbsp;&nbsp;compas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;número&nbsp;de&nbsp;compás</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="os.html">os</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#ValueError">builtins.ValueError</a>(<a href="builtins.html#Exception">builtins.Exception</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.importador_musicxml.html#ErrorPartitura">nucleo.importador_musicxml.ErrorPartitura</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ErrorPartitura">class <strong>ErrorPartitura</strong></a>(<a href="builtins.html#ValueError">builtins.ValueError</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">El&nbsp;archivo&nbsp;no&nbsp;tiene&nbsp;un&nbsp;formato&nbsp;admitido&nbsp;o&nbsp;no&nbsp;se&nbsp;puede&nbsp;interpretar&nbsp;como&nbsp;MusicXML.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="nucleo.importador_musicxml.html#ErrorPartitura">ErrorPartitura</a></dd>
+<dd><a href="builtins.html#ValueError">builtins.ValueError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#ValueError">builtins.ValueError</a>:<br>
+<dl><dt><a name="ErrorPartitura-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#ValueError">builtins.ValueError</a>:<br>
+<dl><dt><a name="ErrorPartitura-__new__"><strong>__new__</strong></a>(*args, **kwargs)<span class="grey"><span class="heading-text"> class method of <a href="builtins.html#ValueError">builtins.ValueError</a></span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;object.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ErrorPartitura-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><span class="code">Return&nbsp;getattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="ErrorPartitura-__reduce__"><strong>__reduce__</strong></a>(self, /)</dt><dd><span class="code">Helper&nbsp;for&nbsp;pickle.</span></dd></dl>
+
+<dl><dt><a name="ErrorPartitura-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="ErrorPartitura-__setstate__"><strong>__setstate__</strong></a>(self, object, /)</dt></dl>
+
+<dl><dt><a name="ErrorPartitura-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;str(self).</span></dd></dl>
+
+<dl><dt><a name="ErrorPartitura-add_note"><strong>add_note</strong></a>(self, object, /)</dt><dd><span class="code">Exception.<a href="#ErrorPartitura-add_note">add_note</a>(note)&nbsp;--<br>
+add&nbsp;a&nbsp;note&nbsp;to&nbsp;the&nbsp;exception</span></dd></dl>
+
+<dl><dt><a name="ErrorPartitura-with_traceback"><strong>with_traceback</strong></a>(self, object, /)</dt><dd><span class="code">Exception.<a href="#ErrorPartitura-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><span class="code">exception&nbsp;cause</span></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><span class="code">exception&nbsp;context</span></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-ataque_a_nota"><strong>ataque_a_nota</strong></a>(ataque: nucleo.musica.Ataque) -&gt; Dict[str, Any]</dt><dd><span class="code">Convierte&nbsp;un&nbsp;ataque&nbsp;de&nbsp;la&nbsp;línea&nbsp;de&nbsp;práctica&nbsp;al&nbsp;diccionario&nbsp;que&nbsp;usa&nbsp;la&nbsp;interfaz.</span></dd></dl>
+ <dl><dt><a name="-cargar_partitura"><strong>cargar_partitura</strong></a>(ruta_archivo: str, parte_id: Optional[str] = None, **opciones) -&gt; List[Dict[str, Any]]</dt><dd><span class="code">Lee&nbsp;un&nbsp;MusicXML&nbsp;(.xml,&nbsp;.musicxml,&nbsp;.mxl)&nbsp;y&nbsp;devuelve&nbsp;las&nbsp;notas&nbsp;para&nbsp;practicar&nbsp;una&nbsp;a&nbsp;una.<br>
+&nbsp;<br>
+Lanza&nbsp;`FileNotFoundError`&nbsp;si&nbsp;el&nbsp;archivo&nbsp;no&nbsp;existe&nbsp;y&nbsp;`<a href="#ErrorPartitura">ErrorPartitura</a>`&nbsp;si&nbsp;no&nbsp;se&nbsp;puede&nbsp;leer.<br>
+Una&nbsp;partitura&nbsp;sin&nbsp;notas&nbsp;devuelve&nbsp;una&nbsp;lista&nbsp;vacía.</span></dd></dl>
+ <dl><dt><a name="-cargar_partitura_estructurada"><strong>cargar_partitura_estructurada</strong></a>(ruta_archivo: str, **opciones) -&gt; nucleo.musica.Partitura</dt><dd><span class="code">Partitura&nbsp;completa&nbsp;(ver&nbsp;`nucleo.importador_musicxml.importar_musicxml`).</span></dd></dl>
+ <dl><dt><a name="-validar_extension_partitura"><strong>validar_extension_partitura</strong></a>(ruta_archivo: str) -&gt; bool</dt><dd><span class="code">Verifica&nbsp;si&nbsp;la&nbsp;ruta&nbsp;corresponde&nbsp;a&nbsp;un&nbsp;formato&nbsp;de&nbsp;partitura&nbsp;soportado.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>EXTENSIONES_PERMITIDAS</strong> = {'.musicxml', '.mxl', '.xml'}<br>
+<strong>__all__</strong> = ['EXTENSIONES_PERMITIDAS', 'ErrorPartitura', 'ataque_a_nota', 'cargar_partitura', 'cargar_partitura_estructurada', 'validar_extension_partitura']</td></tr></table>
+</body>
+</html>

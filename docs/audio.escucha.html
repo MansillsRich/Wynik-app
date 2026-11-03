@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module audio.escucha</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="audio.html" class="white">audio</a>.escucha</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/audio/escucha.py">/home/benja/Documentos/WynikApp/Wynik-app/audio/escucha.py</a></td></tr></table>
+    <p><span class="code">Motor&nbsp;de&nbsp;escucha:&nbsp;captura&nbsp;+&nbsp;cola&nbsp;acotada&nbsp;+&nbsp;analizador&nbsp;en&nbsp;un&nbsp;hilo&nbsp;independiente.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;micrófono&nbsp;─►&nbsp;callback&nbsp;(copia&nbsp;y&nbsp;encola)&nbsp;─►&nbsp;ColaDeBloques&nbsp;─►&nbsp;hilo&nbsp;de&nbsp;análisis<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;Analizador<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;al_evento(EventoInterpretacion)<br>
+&nbsp;<br>
+-&nbsp;`iniciar()`&nbsp;abre&nbsp;la&nbsp;captura&nbsp;y&nbsp;arranca&nbsp;el&nbsp;hilo;&nbsp;`detener()`&nbsp;cierra&nbsp;la&nbsp;captura,&nbsp;para&nbsp;el<br>
+&nbsp;&nbsp;hilo&nbsp;y&nbsp;descarta&nbsp;los&nbsp;bloques&nbsp;pendientes:&nbsp;nada&nbsp;de&nbsp;una&nbsp;sesión&nbsp;cerrada&nbsp;llega&nbsp;a&nbsp;la&nbsp;siguiente.<br>
+-&nbsp;Cada&nbsp;motor&nbsp;tiene&nbsp;un&nbsp;número&nbsp;de&nbsp;`sesion`&nbsp;con&nbsp;el&nbsp;que&nbsp;se&nbsp;marcan&nbsp;sus&nbsp;eventos.<br>
+-&nbsp;`calibrar(segundos)`&nbsp;mide&nbsp;el&nbsp;ruido&nbsp;de&nbsp;fondo&nbsp;con&nbsp;la&nbsp;misma&nbsp;captura&nbsp;antes&nbsp;de&nbsp;analizar.<br>
+-&nbsp;`procesar_pendientes()`&nbsp;es&nbsp;el&nbsp;trabajo&nbsp;de&nbsp;una&nbsp;vuelta&nbsp;del&nbsp;hilo;&nbsp;las&nbsp;pruebas&nbsp;y&nbsp;las<br>
+&nbsp;&nbsp;simulaciones&nbsp;lo&nbsp;llaman&nbsp;directamente&nbsp;para&nbsp;ser&nbsp;deterministas&nbsp;(`usar_hilo=False`).<br>
+&nbsp;<br>
+Un&nbsp;error&nbsp;dentro&nbsp;del&nbsp;análisis&nbsp;no&nbsp;detiene&nbsp;la&nbsp;captura&nbsp;ni&nbsp;bloquea&nbsp;la&nbsp;interfaz:&nbsp;se&nbsp;guarda&nbsp;en<br>
+`ultimo_error`&nbsp;y&nbsp;se&nbsp;cuenta.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="threading.html">threading</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td><td class="multicolumn"><a href="traceback.html">traceback</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="audio.escucha.html#MotorDeEscucha">MotorDeEscucha</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="MotorDeEscucha">class <strong>MotorDeEscucha</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#MotorDeEscucha">MotorDeEscucha</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;perfil:&nbsp;'PerfilInstrumento',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;la4:&nbsp;'float'&nbsp;=&nbsp;440.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ruido:&nbsp;'Optional[PerfilDeRuido]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;captura:&nbsp;'Optional[CapturaBase]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;al_evento:&nbsp;'Optional[Callable[[EventoInterpretacion],&nbsp;None]]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;al_calibrar:&nbsp;'Optional[Callable[[PerfilDeRuido],&nbsp;None]]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sesion:&nbsp;'int'&nbsp;=&nbsp;1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;usar_hilo:&nbsp;'bool'&nbsp;=&nbsp;True,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dispositivo=None<br>
+)<br>
+&nbsp;<br>
+Escucha&nbsp;en&nbsp;segundo&nbsp;plano&nbsp;y&nbsp;entrega&nbsp;eventos&nbsp;de&nbsp;interpretación.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="MotorDeEscucha-__init__"><strong>__init__</strong></a>(
+    self,
+    perfil: 'PerfilInstrumento',
+    la4: 'float' = 440.0,
+    ruido: 'Optional[PerfilDeRuido]' = None,
+    captura: 'Optional[CapturaBase]' = None,
+    al_evento: 'Optional[Callable[[EventoInterpretacion], None]]' = None,
+    al_calibrar: 'Optional[Callable[[PerfilDeRuido], None]]' = None,
+    sesion: 'int' = 1,
+    usar_hilo: 'bool' = True,
+    dispositivo=None
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="MotorDeEscucha-calibrar"><strong>calibrar</strong></a>(self, segundos: 'float') -&gt; 'None'</dt><dd><span class="code">Las&nbsp;próximas&nbsp;`segundos`&nbsp;de&nbsp;audio&nbsp;se&nbsp;usan&nbsp;para&nbsp;medir&nbsp;el&nbsp;fondo,&nbsp;no&nbsp;para&nbsp;analizar.</span></dd></dl>
+
+<dl><dt><a name="MotorDeEscucha-detener"><strong>detener</strong></a>(self) -&gt; 'None'</dt><dd><span class="code">Cierra&nbsp;la&nbsp;captura&nbsp;y&nbsp;el&nbsp;hilo.&nbsp;Los&nbsp;bloques&nbsp;pendientes&nbsp;se&nbsp;descartan.</span></dd></dl>
+
+<dl><dt><a name="MotorDeEscucha-estadisticas"><strong>estadisticas</strong></a>(self) -&gt; 'dict'</dt></dl>
+
+<dl><dt><a name="MotorDeEscucha-iniciar"><strong>iniciar</strong></a>(self) -&gt; 'None'</dt><dd><span class="code">Abre&nbsp;el&nbsp;micrófono&nbsp;y&nbsp;empieza&nbsp;a&nbsp;analizar.&nbsp;Lanza&nbsp;MicrofonoNoDisponibleError.</span></dd></dl>
+
+<dl><dt><a name="MotorDeEscucha-preparar"><strong>preparar</strong></a>(self, frecuencia_muestreo: 'float') -&gt; 'Analizador'</dt><dd><span class="code">Crea&nbsp;el&nbsp;analizador&nbsp;para&nbsp;una&nbsp;frecuencia&nbsp;de&nbsp;muestreo&nbsp;(sin&nbsp;abrir&nbsp;dispositivos).</span></dd></dl>
+
+<dl><dt><a name="MotorDeEscucha-procesar_pendientes"><strong>procesar_pendientes</strong></a>(self) -&gt; 'List[EventoInterpretacion]'</dt><dd><span class="code">Analiza&nbsp;los&nbsp;bloques&nbsp;encolados&nbsp;y&nbsp;entrega&nbsp;sus&nbsp;eventos.&nbsp;Devuelve&nbsp;los&nbsp;eventos.</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>activo</strong></dt>
+</dl>
+<dl><dt><strong>calibrando</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Callable</strong> = typing.Callable<br>
+<strong>INTERVALO_HILO_S</strong> = 0.005<br>
+<strong>LA4_HZ</strong> = 440.0<br>
+<strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional</td></tr></table>
+</body>
+</html>

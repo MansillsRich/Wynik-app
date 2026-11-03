@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module audio.guia</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="audio.html" class="white">audio</a>.guia</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/audio/guia.py">/home/benja/Documentos/WynikApp/Wynik-app/audio/guia.py</a></td></tr></table>
+    <p><span class="code">Síntesis&nbsp;de&nbsp;la&nbsp;guía&nbsp;de&nbsp;audio&nbsp;desde&nbsp;el&nbsp;modelo&nbsp;temporal&nbsp;de&nbsp;la&nbsp;partitura&nbsp;(C11).<br>
+&nbsp;<br>
+Cada&nbsp;ataque&nbsp;suena&nbsp;en&nbsp;su&nbsp;instante&nbsp;(`inicio_s`,&nbsp;con&nbsp;los&nbsp;cambios&nbsp;de&nbsp;tempo&nbsp;de&nbsp;la&nbsp;partitura)&nbsp;y<br>
+durante&nbsp;su&nbsp;duración&nbsp;(con&nbsp;las&nbsp;ligaduras&nbsp;ya&nbsp;sumadas);&nbsp;los&nbsp;silencios&nbsp;son&nbsp;los&nbsp;huecos&nbsp;entre<br>
+ataques;&nbsp;las&nbsp;notas&nbsp;simultáneas&nbsp;(acordes,&nbsp;dos&nbsp;pentagramas)&nbsp;suenan&nbsp;a&nbsp;la&nbsp;vez.&nbsp;La&nbsp;frecuencia&nbsp;sale<br>
+del&nbsp;número&nbsp;MIDI&nbsp;del&nbsp;modelo,&nbsp;nunca&nbsp;de&nbsp;reinterpretar&nbsp;un&nbsp;nombre.<br>
+&nbsp;<br>
+Las&nbsp;notas&nbsp;fuera&nbsp;del&nbsp;rango&nbsp;audible&nbsp;(&lt;&nbsp;20&nbsp;Hz)&nbsp;o&nbsp;por&nbsp;encima&nbsp;del&nbsp;45&nbsp;%&nbsp;de&nbsp;la&nbsp;frecuencia&nbsp;de<br>
+muestreo&nbsp;no&nbsp;se&nbsp;sintetizan&nbsp;(se&nbsp;cuentan&nbsp;en&nbsp;`<a href="#GuiaSintetizada">GuiaSintetizada</a>.omitidas`).<br>
+&nbsp;<br>
+Timbres&nbsp;(`timbre`):&nbsp;«seno»&nbsp;(por&nbsp;defecto,&nbsp;un&nbsp;seno&nbsp;puro&nbsp;por&nbsp;nota),&nbsp;«piano»&nbsp;(parciales<br>
+ligeramente&nbsp;inarmónicos&nbsp;que&nbsp;se&nbsp;apagan&nbsp;antes&nbsp;cuanto&nbsp;más&nbsp;agudos)&nbsp;y&nbsp;«guitarra»&nbsp;(cuerda&nbsp;pulsada:<br>
+parciales&nbsp;según&nbsp;el&nbsp;punto&nbsp;de&nbsp;pulsación,&nbsp;más&nbsp;brillante&nbsp;al&nbsp;principio&nbsp;y&nbsp;con&nbsp;caída&nbsp;rápida).&nbsp;Son<br>
+aproximaciones&nbsp;para&nbsp;distinguir&nbsp;de&nbsp;oído&nbsp;la&nbsp;referencia&nbsp;de&nbsp;cada&nbsp;instrumento,&nbsp;no&nbsp;muestras&nbsp;reales.<br>
+&nbsp;<br>
+Solo&nbsp;usa&nbsp;numpy&nbsp;y&nbsp;la&nbsp;biblioteca&nbsp;estándar&nbsp;(`wave`&nbsp;para&nbsp;escribir&nbsp;el&nbsp;archivo).</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="wave.html">wave</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="audio.guia.html#GuiaSintetizada">GuiaSintetizada</a>
+</dt><dt class="heading-text"><a href="audio.guia.html#SonidoGuia">SonidoGuia</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="GuiaSintetizada">class <strong>GuiaSintetizada</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#GuiaSintetizada">GuiaSintetizada</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;muestras:&nbsp;'np.ndarray',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;frecuencia_muestreo:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sonidos:&nbsp;'List[<a href="#SonidoGuia">SonidoGuia</a>]'&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;omitidas:&nbsp;'int'&nbsp;=&nbsp;0<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<a href="#GuiaSintetizada">GuiaSintetizada</a>(muestras:&nbsp;'np.ndarray',&nbsp;frecuencia_muestreo:&nbsp;'int',&nbsp;sonidos:&nbsp;'List[<a href="#SonidoGuia">SonidoGuia</a>]'&nbsp;=&nbsp;&lt;factory&gt;,&nbsp;omitidas:&nbsp;'int'&nbsp;=&nbsp;0)<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="GuiaSintetizada-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="GuiaSintetizada-__init__"><strong>__init__</strong></a>(
+    self,
+    muestras: 'np.ndarray',
+    frecuencia_muestreo: 'int',
+    sonidos: 'List[SonidoGuia]' = &lt;factory&gt;,
+    omitidas: 'int' = 0
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="GuiaSintetizada-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="GuiaSintetizada-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>duracion_s</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'frecuencia_muestreo': 'int', 'muestras': 'np.ndarray', 'omitidas': 'int', 'sonidos': 'List[SonidoGuia]'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'frecuencia_muestreo': Field(name='frecuencia_muestreo',type='int',defa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'muestras': Field(name='muestras',type='np.ndarray',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 'omitidas': Field(name='omitidas',type='int',default=0,defau...appingproxy({}),kw_only=False,_field_type=_FIELD), 'sonidos': Field(name='sonidos',type='List[SonidoGuia]',def...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__hash__</strong> = None</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('muestras', 'frecuencia_muestreo', 'sonidos', 'omitidas')</dl>
+
+<dl><dt><strong>omitidas</strong> = 0</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="SonidoGuia">class <strong>SonidoGuia</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#SonidoGuia">SonidoGuia</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicio_s:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;duracion_s:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;frecuencias_hz:&nbsp;'Tuple[float,&nbsp;...]'<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<a href="#SonidoGuia">SonidoGuia</a>(inicio_s:&nbsp;'float',&nbsp;duracion_s:&nbsp;'float',&nbsp;frecuencias_hz:&nbsp;'Tuple[float,&nbsp;...]')<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="SonidoGuia-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="SonidoGuia-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="SonidoGuia-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="SonidoGuia-__init__"><strong>__init__</strong></a>(
+    self,
+    inicio_s: 'float',
+    duracion_s: 'float',
+    frecuencias_hz: 'Tuple[float, ...]'
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="SonidoGuia-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="SonidoGuia-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="SonidoGuia-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'duracion_s': 'float', 'frecuencias_hz': 'Tuple[float, ...]', 'inicio_s': 'float'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'duracion_s': Field(name='duracion_s',type='float',default=&lt;da...appingproxy({}),kw_only=False,_field_type=_FIELD), 'frecuencias_hz': Field(name='frecuencias_hz',type='Tuple[float, ....appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicio_s': Field(name='inicio_s',type='float',default=&lt;data...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('inicio_s', 'duracion_s', 'frecuencias_hz')</dl>
+
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-escribir_wav"><strong>escribir_wav</strong></a>(ruta: 'str', guia: 'GuiaSintetizada') -&gt; 'str'</dt></dl>
+ <dl><dt><a name="-sintetizar"><strong>sintetizar</strong></a>(
+    sonidos: 'Sequence[SonidoGuia]',
+    frecuencia_muestreo: 'int' = 22050,
+    duracion_total_s: 'Optional[float]' = None,
+    timbre: 'str' = 'seno'
+) -&gt; 'GuiaSintetizada'</dt><dd><span class="code">Cada&nbsp;sonido&nbsp;con&nbsp;ataque&nbsp;de&nbsp;5&nbsp;ms,&nbsp;decaimiento&nbsp;y&nbsp;relajación&nbsp;de&nbsp;10&nbsp;ms;&nbsp;`timbre`&nbsp;elige&nbsp;el<br>
+contenido&nbsp;armónico&nbsp;(ver&nbsp;el&nbsp;docstring&nbsp;del&nbsp;módulo).</span></dd></dl>
+ <dl><dt><a name="-sonidos_de_notas"><strong>sonidos_de_notas</strong></a>(
+    notas: 'Iterable[dict]',
+    bpm: 'Optional[float]' = None,
+    factor_tempo: 'float' = 1.0
+) -&gt; 'List[SonidoGuia]'</dt><dd><span class="code">Sonidos&nbsp;de&nbsp;la&nbsp;lista&nbsp;de&nbsp;`cargar_partitura`.<br>
+&nbsp;<br>
+-&nbsp;Con&nbsp;`bpm`,&nbsp;tempo&nbsp;constante:&nbsp;inicio&nbsp;=&nbsp;offset_beats·60/bpm&nbsp;(los&nbsp;silencios&nbsp;se&nbsp;conservan<br>
+&nbsp;&nbsp;porque&nbsp;cuentan&nbsp;las&nbsp;posiciones,&nbsp;no&nbsp;la&nbsp;suma&nbsp;de&nbsp;duraciones).<br>
+-&nbsp;Sin&nbsp;`bpm`,&nbsp;se&nbsp;usan&nbsp;`inicio_s`/`duracion_s`&nbsp;(tempo&nbsp;de&nbsp;la&nbsp;partitura&nbsp;y&nbsp;sus&nbsp;cambios)&nbsp;y,&nbsp;si<br>
+&nbsp;&nbsp;faltan,&nbsp;120&nbsp;negras&nbsp;por&nbsp;minuto.&nbsp;`factor_tempo`&nbsp;&gt;&nbsp;1&nbsp;acelera.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>AMPLITUD</strong> = 0.5<br>
+<strong>ATAQUE_S</strong> = 0.005<br>
+<strong>FRECUENCIA_AUDIBLE_MINIMA_HZ</strong> = 20.0<br>
+<strong>FRECUENCIA_GUIA</strong> = 22050<br>
+<strong>INARMONICIDAD_PIANO</strong> = 0.0004<br>
+<strong>Iterable</strong> = typing.Iterable<br>
+<strong>List</strong> = typing.List<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>PARCIALES</strong> = 10<br>
+<strong>PUNTO_PULSACION</strong> = 0.18<br>
+<strong>RELAJACION_S</strong> = 0.01<br>
+<strong>Sequence</strong> = typing.Sequence<br>
+<strong>TIMBRES</strong> = ('seno', 'piano', 'guitarra')<br>
+<strong>Tuple</strong> = typing.Tuple</td></tr></table>
+</body>
+</html>

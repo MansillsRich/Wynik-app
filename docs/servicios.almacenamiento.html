@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module servicios.almacenamiento</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="servicios.html" class="white">servicios</a>.almacenamiento</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/servicios/almacenamiento.py">/home/benja/Documentos/WynikApp/Wynik-app/servicios/almacenamiento.py</a></td></tr></table>
+    <p><span class="code">Ubicación&nbsp;y&nbsp;escritura&nbsp;segura&nbsp;de&nbsp;los&nbsp;datos&nbsp;locales&nbsp;(ajustes&nbsp;y&nbsp;progreso).<br>
+&nbsp;<br>
+-&nbsp;Por&nbsp;defecto,&nbsp;la&nbsp;carpeta&nbsp;del&nbsp;proyecto&nbsp;(donde&nbsp;ya&nbsp;se&nbsp;guarda&nbsp;`historial_partituras.json`).<br>
+-&nbsp;`WYNIK_DATOS=&lt;carpeta&gt;`&nbsp;la&nbsp;cambia&nbsp;(pruebas,&nbsp;varias&nbsp;instalaciones).<br>
+-&nbsp;En&nbsp;Android&nbsp;la&nbsp;aplicación&nbsp;llama&nbsp;a&nbsp;`<a href="#-configurar_directorio">configurar_directorio</a>(app.user_data_dir)`.<br>
+&nbsp;<br>
+La&nbsp;escritura&nbsp;es&nbsp;atómica&nbsp;(archivo&nbsp;temporal&nbsp;+&nbsp;`os.replace`):&nbsp;un&nbsp;corte&nbsp;a&nbsp;mitad&nbsp;no&nbsp;deja&nbsp;un&nbsp;JSON<br>
+a&nbsp;medias.&nbsp;Un&nbsp;archivo&nbsp;ilegible&nbsp;se&nbsp;trata&nbsp;como&nbsp;vacío&nbsp;y&nbsp;se&nbsp;informa&nbsp;por&nbsp;consola.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+</td><td class="multicolumn"><a href="os.html">os</a><br>
+</td><td class="multicolumn"><a href="tempfile.html">tempfile</a><br>
+</td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-configurar_directorio"><strong>configurar_directorio</strong></a>(ruta: Optional[str]) -&gt; None</dt></dl>
+ <dl><dt><a name="-directorio_datos"><strong>directorio_datos</strong></a>() -&gt; str</dt></dl>
+ <dl><dt><a name="-escribir_json"><strong>escribir_json</strong></a>(nombre: str, datos: Any) -&gt; bool</dt></dl>
+ <dl><dt><a name="-leer_json"><strong>leer_json</strong></a>(nombre: str, por_defecto: Any) -&gt; Any</dt></dl>
+ <dl><dt><a name="-ruta_cache"><strong>ruta_cache</strong></a>(nombre: str) -&gt; str</dt><dd><span class="code">Devuelve&nbsp;la&nbsp;ruta&nbsp;dentro&nbsp;de&nbsp;la&nbsp;carpeta&nbsp;.cache&nbsp;de&nbsp;datos,&nbsp;creándola&nbsp;si&nbsp;no&nbsp;existe.</span></dd></dl>
+ <dl><dt><a name="-ruta_dato"><strong>ruta_dato</strong></a>(nombre: str) -&gt; str</dt></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>DIRECTORIO_RAIZ</strong> = '/home/benja/Documentos/WynikApp/Wynik-app'<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>__annotations__</strong> = {'_directorio': typing.Optional[str]}</td></tr></table>
+</body>
+</html>

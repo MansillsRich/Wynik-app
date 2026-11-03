@@ -1,0 +1,2354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Pydoc: module nucleo.musica</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head>
+<body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="nucleo.html" class="white">nucleo</a>.musica</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/benja/Documentos/WynikApp/Wynik-app/nucleo/musica.py">/home/benja/Documentos/WynikApp/Wynik-app/nucleo/musica.py</a></td></tr></table>
+    <p><span class="code">Modelo&nbsp;musical&nbsp;de&nbsp;Wynik.<br>
+&nbsp;<br>
+Representa&nbsp;alturas,&nbsp;eventos,&nbsp;partes,&nbsp;tempo&nbsp;y&nbsp;partituras&nbsp;con&nbsp;valores&nbsp;numéricos&nbsp;inequívocos<br>
+(número&nbsp;MIDI,&nbsp;hercios,&nbsp;pulsos&nbsp;y&nbsp;segundos)&nbsp;y&nbsp;conserva&nbsp;por&nbsp;separado&nbsp;la&nbsp;grafía&nbsp;original<br>
+(letra&nbsp;y&nbsp;alteración)&nbsp;para&nbsp;mostrar&nbsp;sostenidos&nbsp;y&nbsp;bemoles&nbsp;tal&nbsp;como&nbsp;están&nbsp;escritos.<br>
+&nbsp;<br>
+Solo&nbsp;usa&nbsp;la&nbsp;biblioteca&nbsp;estándar:&nbsp;importarlo&nbsp;no&nbsp;carga&nbsp;Kivy,&nbsp;librosa,&nbsp;sounddevice,&nbsp;numpy<br>
+ni&nbsp;music21.<br>
+&nbsp;<br>
+Convenciones<br>
+-&nbsp;Octava&nbsp;en&nbsp;notación&nbsp;científica:&nbsp;C4&nbsp;=&nbsp;do&nbsp;central&nbsp;=&nbsp;MIDI&nbsp;60;&nbsp;A4&nbsp;=&nbsp;440&nbsp;Hz&nbsp;=&nbsp;MIDI&nbsp;69.<br>
+-&nbsp;Los&nbsp;cálculos&nbsp;usan&nbsp;`<a href="#Altura">Altura</a>.midi`&nbsp;y&nbsp;`<a href="#Altura">Altura</a>.frecuencia`;&nbsp;el&nbsp;texto&nbsp;solo&nbsp;sirve&nbsp;para&nbsp;mostrar<br>
+&nbsp;&nbsp;o&nbsp;para&nbsp;leer&nbsp;nombres&nbsp;que&nbsp;llegan&nbsp;de&nbsp;otros&nbsp;componentes.&nbsp;`<a href="#Altura">Altura</a>.desde_nombre`&nbsp;acepta&nbsp;la<br>
+&nbsp;&nbsp;notación&nbsp;de&nbsp;music21&nbsp;('B-4',&nbsp;'E--4',&nbsp;'F##4'),&nbsp;la&nbsp;de&nbsp;librosa&nbsp;('A♯4',&nbsp;'B♭3'),&nbsp;ASCII<br>
+&nbsp;&nbsp;('Bb4',&nbsp;'C#4')&nbsp;y&nbsp;Unicode&nbsp;('C𝄪4',&nbsp;'D𝄫4').&nbsp;La&nbsp;octava&nbsp;de&nbsp;un&nbsp;nombre&nbsp;debe&nbsp;ser&nbsp;un&nbsp;entero&nbsp;&gt;=&nbsp;0:<br>
+&nbsp;&nbsp;un&nbsp;'-'&nbsp;entre&nbsp;la&nbsp;letra&nbsp;y&nbsp;la&nbsp;octava&nbsp;es&nbsp;siempre&nbsp;un&nbsp;bemol,&nbsp;como&nbsp;en&nbsp;music21.<br>
+-&nbsp;Tolerancias&nbsp;de&nbsp;afinación&nbsp;aprobadas&nbsp;(independientes&nbsp;de&nbsp;la&nbsp;octava&nbsp;y&nbsp;del&nbsp;tiempo):<br>
+&nbsp;&nbsp;hasta&nbsp;25&nbsp;cents,&nbsp;afinada;&nbsp;más&nbsp;de&nbsp;25&nbsp;y&nbsp;hasta&nbsp;50&nbsp;cents,&nbsp;la&nbsp;misma&nbsp;nota&nbsp;pero&nbsp;desafinada;<br>
+&nbsp;&nbsp;más&nbsp;de&nbsp;50&nbsp;cents,&nbsp;se&nbsp;evalúa&nbsp;la&nbsp;nota&nbsp;más&nbsp;cercana&nbsp;y&nbsp;se&nbsp;clasifica&nbsp;su&nbsp;identidad&nbsp;real.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="math.html">math</a><br>
+</td><td class="multicolumn"><a href="re.html">re</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#ValueError">builtins.ValueError</a>(<a href="builtins.html#Exception">builtins.Exception</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.musica.html#ErrorAltura">ErrorAltura</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.musica.html#Altura">Altura</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Armadura">Armadura</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Ataque">Ataque</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#CambioTempo">CambioTempo</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Clave">Clave</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Compas">Compas</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Evento">Evento</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#MapaTempo">MapaTempo</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#NotaEvento">NotaEvento</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Parte">Parte</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Partitura">Partitura</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#ResultadoAltura">ResultadoAltura</a>
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Transposicion">Transposicion</a>
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="builtins.html#str">builtins.str</a>(<a href="builtins.html#object">builtins.object</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.musica.html#EstadoAltura">EstadoAltura</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Ligadura">Ligadura</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt><dt class="heading-text"><a href="nucleo.musica.html#OrigenTransposicion">OrigenTransposicion</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt></dl>
+</dd>
+<dt class="heading-text"><a href="enum.html#Enum">enum.Enum</a>(<a href="builtins.html#object">builtins.object</a>)
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.musica.html#EstadoAltura">EstadoAltura</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt><dt class="heading-text"><a href="nucleo.musica.html#Ligadura">Ligadura</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt><dt class="heading-text"><a href="nucleo.musica.html#OrigenTransposicion">OrigenTransposicion</a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Altura">class <strong>Altura</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Altura">Altura</a>(paso:&nbsp;'<a href="builtins.html#str">str</a>',&nbsp;alteracion:&nbsp;'Numero'&nbsp;=&nbsp;0,&nbsp;octava:&nbsp;'int'&nbsp;=&nbsp;4)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<a href="#Altura">Altura</a>&nbsp;con&nbsp;su&nbsp;grafía:&nbsp;letra&nbsp;(`paso`),&nbsp;alteración&nbsp;en&nbsp;semitonos&nbsp;y&nbsp;octava&nbsp;científica.<br>
+&nbsp;<br>
+Dos&nbsp;alturas&nbsp;enarmónicas&nbsp;(A♯3&nbsp;y&nbsp;B♭3)&nbsp;son&nbsp;objetos&nbsp;distintos,&nbsp;porque&nbsp;se&nbsp;escriben&nbsp;distinto,<br>
+pero&nbsp;tienen&nbsp;el&nbsp;mismo&nbsp;`midi`&nbsp;y&nbsp;la&nbsp;misma&nbsp;`frecuencia`:&nbsp;compárense&nbsp;con&nbsp;`misma_altura_sonora`.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Altura-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Altura-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Altura-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Altura-__init__"><strong>__init__</strong></a>(self, paso: 'str', alteracion: 'Numero' = 0, octava: 'int' = 4) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Altura-__post_init__"><strong>__post_init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Altura-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Altura-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Altura-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<dl><dt><a name="Altura-__str__"><strong>__str__</strong></a>(self) -&gt; 'str'</dt><dd><span class="code">Return&nbsp;<a href="builtins.html#str">str</a>(self).</span></dd></dl>
+
+<dl><dt><a name="Altura-frecuencia_con"><strong>frecuencia_con</strong></a>(self, la4: 'float') -&gt; 'float'</dt></dl>
+
+<dl><dt><a name="Altura-misma_altura_sonora"><strong>misma_altura_sonora</strong></a>(self, otra: "'Altura'") -&gt; 'bool'</dt></dl>
+
+<hr>
+Class methods defined here:<br>
+<dl><dt><a name="Altura-desde_midi"><strong>desde_midi</strong></a>(midi: 'int', preferir_bemoles: 'bool' = False) -&gt; "'Altura'"</dt><dd><span class="code"><a href="#Altura">Altura</a>&nbsp;de&nbsp;un&nbsp;número&nbsp;MIDI&nbsp;entero,&nbsp;escrita&nbsp;con&nbsp;sostenidos&nbsp;(o&nbsp;bemoles&nbsp;si&nbsp;se&nbsp;prefiere).</span></dd></dl>
+
+<dl><dt><a name="Altura-desde_nombre"><strong>desde_nombre</strong></a>(texto: 'str') -&gt; "'Altura'"</dt><dd><span class="code">Lee&nbsp;un&nbsp;nombre&nbsp;de&nbsp;nota&nbsp;de&nbsp;music21,&nbsp;librosa,&nbsp;ASCII&nbsp;o&nbsp;Unicode&nbsp;(ver&nbsp;el&nbsp;módulo).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>clase</strong></dt>
+<dd><span class="code">Clase&nbsp;de&nbsp;altura&nbsp;(0&nbsp;=&nbsp;do,&nbsp;11&nbsp;=&nbsp;si),&nbsp;sin&nbsp;octava.</span></dd>
+</dl>
+<dl><dt><strong>frecuencia</strong></dt>
+<dd><span class="code">Frecuencia&nbsp;en&nbsp;hercios&nbsp;con&nbsp;A4&nbsp;=&nbsp;440&nbsp;Hz.</span></dd>
+</dl>
+<dl><dt><strong>midi</strong></dt>
+<dd><span class="code">Número&nbsp;MIDI&nbsp;(entero&nbsp;salvo&nbsp;microtonos):&nbsp;C4&nbsp;=&nbsp;60,&nbsp;B♭4&nbsp;=&nbsp;70,&nbsp;C♭4&nbsp;=&nbsp;59.</span></dd>
+</dl>
+<dl><dt><strong>midi_entero</strong></dt>
+</dl>
+<dl><dt><strong>nombre</strong></dt>
+<dd><span class="code">Nombre&nbsp;para&nbsp;mostrar&nbsp;con&nbsp;la&nbsp;alteración&nbsp;original:&nbsp;'B♭4',&nbsp;'C♯4',&nbsp;'E♭♭4'.</span></dd>
+</dl>
+<dl><dt><strong>nombre_ascii</strong></dt>
+<dd><span class="code">Nombre&nbsp;en&nbsp;ASCII&nbsp;('Bb4',&nbsp;'C#4'),&nbsp;útil&nbsp;para&nbsp;registros&nbsp;e&nbsp;intercambio.</span></dd>
+</dl>
+<dl><dt><strong>nombre_solfeo</strong></dt>
+<dd><span class="code">Nombre&nbsp;en&nbsp;solfeo&nbsp;con&nbsp;la&nbsp;alteración&nbsp;original:&nbsp;'Si♭4',&nbsp;'Do♯4'.</span></dd>
+</dl>
+<dl><dt><strong>paso_diatonico</strong></dt>
+<dd><span class="code">Posición&nbsp;vertical&nbsp;en&nbsp;el&nbsp;pentagrama:&nbsp;depende&nbsp;de&nbsp;la&nbsp;letra&nbsp;y&nbsp;la&nbsp;octava&nbsp;escritas.</span></dd>
+</dl>
+<dl><dt><strong>simbolo_alteracion</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'alteracion': 'Numero', 'octava': 'int', 'paso': 'str'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'alteracion': Field(name='alteracion',type='Numero',default=0,...appingproxy({}),kw_only=False,_field_type=_FIELD), 'octava': Field(name='octava',type='int',default=4,default...appingproxy({}),kw_only=False,_field_type=_FIELD), 'paso': Field(name='paso',type='str',default=&lt;dataclasse...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('paso', 'alteracion', 'octava')</dl>
+
+<dl><dt><strong>alteracion</strong> = 0</dl>
+
+<dl><dt><strong>octava</strong> = 4</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Armadura">class <strong>Armadura</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Armadura">Armadura</a>(inicio_negras:&nbsp;'float',&nbsp;quintas:&nbsp;'int')&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<a href="#Armadura">Armadura</a>&nbsp;desde&nbsp;`inicio_negras`:&nbsp;&gt;&nbsp;0&nbsp;sostenidos,&nbsp;&lt;&nbsp;0&nbsp;bemoles&nbsp;(círculo&nbsp;de&nbsp;quintas).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Armadura-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Armadura-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Armadura-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Armadura-__init__"><strong>__init__</strong></a>(self, inicio_negras: 'float', quintas: 'int') -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Armadura-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Armadura-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Armadura-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'inicio_negras': 'float', 'quintas': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'inicio_negras': Field(name='inicio_negras',type='float',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 'quintas': Field(name='quintas',type='int',default=&lt;datacla...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('inicio_negras', 'quintas')</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Ataque">class <strong>Ataque</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Ataque">Ataque</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicio_negras:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;duracion_negras:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;notas:&nbsp;'Tuple[<a href="#NotaEvento">NotaEvento</a>,&nbsp;...]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;parte_id:&nbsp;'<a href="builtins.html#str">str</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;compas:&nbsp;'Optional[int]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicio_s:&nbsp;'float'&nbsp;=&nbsp;0.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;duracion_s:&nbsp;'float'&nbsp;=&nbsp;0.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;acompanamiento:&nbsp;'Tuple[<a href="#NotaEvento">NotaEvento</a>,&nbsp;...]'&nbsp;=&nbsp;(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pentagrama:&nbsp;'int'&nbsp;=&nbsp;1<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Lo&nbsp;que&nbsp;se&nbsp;espera&nbsp;tocar&nbsp;a&nbsp;partir&nbsp;de&nbsp;un&nbsp;instante&nbsp;en&nbsp;la&nbsp;práctica&nbsp;nota&nbsp;a&nbsp;nota.<br>
+&nbsp;<br>
+Reúne&nbsp;todas&nbsp;las&nbsp;notas&nbsp;que&nbsp;empiezan&nbsp;juntas&nbsp;en&nbsp;la&nbsp;parte&nbsp;(acordes&nbsp;y&nbsp;voces&nbsp;simultáneas),<br>
+con&nbsp;las&nbsp;ligaduras&nbsp;ya&nbsp;sumadas.&nbsp;`principal`&nbsp;es&nbsp;la&nbsp;más&nbsp;aguda&nbsp;(altura&nbsp;sonora):&nbsp;la&nbsp;única&nbsp;que<br>
+evalúa&nbsp;el&nbsp;modo&nbsp;monofónico.&nbsp;Las&nbsp;demás&nbsp;se&nbsp;conservan&nbsp;para&nbsp;no&nbsp;perder&nbsp;el&nbsp;acorde.<br>
+&nbsp;<br>
+En&nbsp;una&nbsp;parte&nbsp;de&nbsp;varios&nbsp;pentagramas&nbsp;(piano)&nbsp;cada&nbsp;mano&nbsp;es&nbsp;un&nbsp;ataque&nbsp;distinto:&nbsp;`notas`&nbsp;son&nbsp;las<br>
+del&nbsp;pentagrama&nbsp;principal&nbsp;en&nbsp;ese&nbsp;instante&nbsp;(el&nbsp;de&nbsp;número&nbsp;menor&nbsp;que&nbsp;suena:&nbsp;la&nbsp;mano&nbsp;derecha)&nbsp;y<br>
+las&nbsp;de&nbsp;los&nbsp;demás&nbsp;pentagramas&nbsp;son&nbsp;`acompanamiento`&nbsp;(suenan&nbsp;y&nbsp;se&nbsp;muestran,&nbsp;pero&nbsp;no&nbsp;forman<br>
+parte&nbsp;del&nbsp;acorde&nbsp;que&nbsp;se&nbsp;evalúa).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Ataque-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Ataque-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Ataque-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Ataque-__init__"><strong>__init__</strong></a>(
+    self,
+    inicio_negras: 'float',
+    duracion_negras: 'float',
+    notas: 'Tuple[NotaEvento, ...]',
+    parte_id: 'str',
+    compas: 'Optional[int]' = None,
+    inicio_s: 'float' = 0.0,
+    duracion_s: 'float' = 0.0,
+    acompanamiento: 'Tuple[NotaEvento, ...]' = (),
+    pentagrama: 'int' = 1
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Ataque-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Ataque-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Ataque-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>es_acorde</strong></dt>
+</dl>
+<dl><dt><strong>principal</strong></dt>
+</dl>
+<dl><dt><strong>todas_las_notas</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'acompanamiento': 'Tuple[NotaEvento, ...]', 'compas': 'Optional[int]', 'duracion_negras': 'float', 'duracion_s': 'float', 'inicio_negras': 'float', 'inicio_s': 'float', 'notas': 'Tuple[NotaEvento, ...]', 'parte_id': 'str', 'pentagrama': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'acompanamiento': Field(name='acompanamiento',type='Tuple[NotaEven...appingproxy({}),kw_only=False,_field_type=_FIELD), 'compas': Field(name='compas',type='Optional[int]',default...appingproxy({}),kw_only=False,_field_type=_FIELD), 'duracion_negras': Field(name='duracion_negras',type='float',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD), 'duracion_s': Field(name='duracion_s',type='float',default=0.0...appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicio_negras': Field(name='inicio_negras',type='float',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicio_s': Field(name='inicio_s',type='float',default=0.0,d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'notas': Field(name='notas',type='Tuple[NotaEvento, ...]'...appingproxy({}),kw_only=False,_field_type=_FIELD), 'parte_id': Field(name='parte_id',type='str',default=&lt;datacl...appingproxy({}),kw_only=False,_field_type=_FIELD), 'pentagrama': Field(name='pentagrama',type='int',default=1,def...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('inicio_negras', 'duracion_negras', 'notas', 'parte_id', 'compas', 'inicio_s', 'duracion_s', 'acompanamiento', 'pentagrama')</dl>
+
+<dl><dt><strong>acompanamiento</strong> = ()</dl>
+
+<dl><dt><strong>compas</strong> = None</dl>
+
+<dl><dt><strong>duracion_s</strong> = 0.0</dl>
+
+<dl><dt><strong>inicio_s</strong> = 0.0</dl>
+
+<dl><dt><strong>pentagrama</strong> = 1</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="CambioTempo">class <strong>CambioTempo</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#CambioTempo">CambioTempo</a>(inicio_negras:&nbsp;'float',&nbsp;negras_por_minuto:&nbsp;'float')&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Tempo&nbsp;en&nbsp;negras&nbsp;por&nbsp;minuto&nbsp;a&nbsp;partir&nbsp;de&nbsp;un&nbsp;instante&nbsp;(en&nbsp;negras).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="CambioTempo-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="CambioTempo-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="CambioTempo-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="CambioTempo-__init__"><strong>__init__</strong></a>(self, inicio_negras: 'float', negras_por_minuto: 'float') -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="CambioTempo-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="CambioTempo-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="CambioTempo-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'inicio_negras': 'float', 'negras_por_minuto': 'float'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'inicio_negras': Field(name='inicio_negras',type='float',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 'negras_por_minuto': Field(name='negras_por_minuto',type='float',defa...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('inicio_negras', 'negras_por_minuto')</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Clave">class <strong>Clave</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Clave">Clave</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicio_negras:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pentagrama:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;signo:&nbsp;'<a href="builtins.html#str">str</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;linea:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cambio_octava:&nbsp;'int'&nbsp;=&nbsp;0<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<a href="#Clave">Clave</a>&nbsp;vigente&nbsp;en&nbsp;un&nbsp;pentagrama&nbsp;desde&nbsp;`inicio_negras`:&nbsp;signo&nbsp;('G',&nbsp;'F',&nbsp;'C'),&nbsp;línea&nbsp;(1&nbsp;=<br>
+la&nbsp;de&nbsp;abajo)&nbsp;y&nbsp;cambio&nbsp;de&nbsp;octava&nbsp;(−1&nbsp;=&nbsp;sol&nbsp;octava&nbsp;baja,&nbsp;la&nbsp;de&nbsp;la&nbsp;guitarra).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Clave-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Clave-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Clave-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Clave-__init__"><strong>__init__</strong></a>(
+    self,
+    inicio_negras: 'float',
+    pentagrama: 'int',
+    signo: 'str',
+    linea: 'int',
+    cambio_octava: 'int' = 0
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Clave-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Clave-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Clave-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'cambio_octava': 'int', 'inicio_negras': 'float', 'linea': 'int', 'pentagrama': 'int', 'signo': 'str'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'cambio_octava': Field(name='cambio_octava',type='int',default=0,...appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicio_negras': Field(name='inicio_negras',type='float',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 'linea': Field(name='linea',type='int',default=&lt;dataclass...appingproxy({}),kw_only=False,_field_type=_FIELD), 'pentagrama': Field(name='pentagrama',type='int',default=&lt;data...appingproxy({}),kw_only=False,_field_type=_FIELD), 'signo': Field(name='signo',type='str',default=&lt;dataclass...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('inicio_negras', 'pentagrama', 'signo', 'linea', 'cambio_octava')</dl>
+
+<dl><dt><strong>cambio_octava</strong> = 0</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Compas">class <strong>Compas</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Compas">Compas</a>(inicio_negras:&nbsp;'float',&nbsp;numerador:&nbsp;'int',&nbsp;denominador:&nbsp;'int')&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Indicación&nbsp;de&nbsp;compás&nbsp;desde&nbsp;`inicio_negras`.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Compas-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Compas-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Compas-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Compas-__init__"><strong>__init__</strong></a>(self, inicio_negras: 'float', numerador: 'int', denominador: 'int') -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Compas-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Compas-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Compas-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'denominador': 'int', 'inicio_negras': 'float', 'numerador': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'denominador': Field(name='denominador',type='int',default=&lt;dat...appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicio_negras': Field(name='inicio_negras',type='float',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 'numerador': Field(name='numerador',type='int',default=&lt;datac...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('inicio_negras', 'numerador', 'denominador')</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ErrorAltura">class <strong>ErrorAltura</strong></a>(<a href="builtins.html#ValueError">builtins.ValueError</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code">Nombre,&nbsp;número&nbsp;MIDI&nbsp;o&nbsp;frecuencia&nbsp;que&nbsp;no&nbsp;representa&nbsp;una&nbsp;altura&nbsp;válida.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="nucleo.musica.html#ErrorAltura">ErrorAltura</a></dd>
+<dd><a href="builtins.html#ValueError">builtins.ValueError</a></dd>
+<dd><a href="builtins.html#Exception">builtins.Exception</a></dd>
+<dd><a href="builtins.html#BaseException">builtins.BaseException</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Methods inherited from <a href="builtins.html#ValueError">builtins.ValueError</a>:<br>
+<dl><dt><a name="ErrorAltura-__init__"><strong>__init__</strong></a>(self, /, *args, **kwargs)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#ValueError">builtins.ValueError</a>:<br>
+<dl><dt><a name="ErrorAltura-__new__"><strong>__new__</strong></a>(*args, **kwargs)<span class="grey"><span class="heading-text"> class method of <a href="builtins.html#ValueError">builtins.ValueError</a></span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><a name="ErrorAltura-__getattribute__"><strong>__getattribute__</strong></a>(self, name, /)</dt><dd><span class="code">Return&nbsp;getattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="ErrorAltura-__reduce__"><strong>__reduce__</strong></a>(self, /)</dt><dd><span class="code">Helper&nbsp;for&nbsp;pickle.</span></dd></dl>
+
+<dl><dt><a name="ErrorAltura-__repr__"><strong>__repr__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="ErrorAltura-__setstate__"><strong>__setstate__</strong></a>(self, object, /)</dt></dl>
+
+<dl><dt><a name="ErrorAltura-__str__"><strong>__str__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;<a href="builtins.html#str">str</a>(self).</span></dd></dl>
+
+<dl><dt><a name="ErrorAltura-add_note"><strong>add_note</strong></a>(self, object, /)</dt><dd><span class="code">Exception.<a href="#ErrorAltura-add_note">add_note</a>(note)&nbsp;--<br>
+add&nbsp;a&nbsp;note&nbsp;to&nbsp;the&nbsp;exception</span></dd></dl>
+
+<dl><dt><a name="ErrorAltura-with_traceback"><strong>with_traceback</strong></a>(self, object, /)</dt><dd><span class="code">Exception.<a href="#ErrorAltura-with_traceback">with_traceback</a>(tb)&nbsp;--<br>
+set&nbsp;self.<strong>__traceback__</strong>&nbsp;to&nbsp;tb&nbsp;and&nbsp;return&nbsp;self.</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="builtins.html#BaseException">builtins.BaseException</a>:<br>
+<dl><dt><strong>__cause__</strong></dt>
+<dd><span class="code">exception&nbsp;cause</span></dd>
+</dl>
+<dl><dt><strong>__context__</strong></dt>
+<dd><span class="code">exception&nbsp;context</span></dd>
+</dl>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>__suppress_context__</strong></dt>
+</dl>
+<dl><dt><strong>__traceback__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="EstadoAltura">class <strong>EstadoAltura</strong></a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#EstadoAltura">EstadoAltura</a>(*values)<br>
+&nbsp;<br>
+Resultado&nbsp;de&nbsp;comparar&nbsp;la&nbsp;altura&nbsp;tocada&nbsp;con&nbsp;la&nbsp;esperada&nbsp;(sin&nbsp;considerar&nbsp;el&nbsp;tiempo).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="nucleo.musica.html#EstadoAltura">EstadoAltura</a></dd>
+<dd><a href="builtins.html#str">builtins.str</a></dd>
+<dd><a href="enum.html#Enum">enum.Enum</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="EstadoAltura-__format__"><strong>__format__</strong></a>(self, format_spec)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Default&nbsp;<a href="builtins.html#object">object</a>&nbsp;formatter.<br>
+&nbsp;<br>
+Return&nbsp;<a href="builtins.html#str">str</a>(self)&nbsp;if&nbsp;format_spec&nbsp;is&nbsp;empty.&nbsp;Raise&nbsp;TypeError&nbsp;otherwise.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__new__"><strong>__new__</strong></a>(cls, value)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__repr__"><strong>__repr__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__str__"><strong>__str__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;<a href="builtins.html#str">str</a>(self).</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>CORRECTA</strong> = &lt;EstadoAltura.CORRECTA: 'correcta'&gt;</dl>
+
+<dl><dt><strong>DESAFINADA</strong> = &lt;EstadoAltura.DESAFINADA: 'desafinada'&gt;</dl>
+
+<dl><dt><strong>NOTA_INCORRECTA</strong> = &lt;EstadoAltura.NOTA_INCORRECTA: 'nota_incorrecta'&gt;</dl>
+
+<dl><dt><strong>OCTAVA_INCORRECTA</strong> = &lt;EstadoAltura.OCTAVA_INCORRECTA: 'octava_incorrecta'&gt;</dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="EstadoAltura-__add__"><strong>__add__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self+value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__contains__"><strong>__contains__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;bool(key&nbsp;in&nbsp;self).</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__eq__"><strong>__eq__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__ge__"><strong>__ge__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;=value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__getitem__"><strong>__getitem__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;self[key].</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__getnewargs__"><strong>__getnewargs__</strong></a>(self, /)</dt></dl>
+
+<dl><dt><a name="EstadoAltura-__gt__"><strong>__gt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__hash__"><strong>__hash__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__iter__"><strong>__iter__</strong></a>(self, /)</dt><dd><span class="code">Implement&nbsp;iter(self).</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__le__"><strong>__le__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;=value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__len__"><strong>__len__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;len(self).</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__lt__"><strong>__lt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__mod__"><strong>__mod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self%value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__mul__"><strong>__mul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self*value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__ne__"><strong>__ne__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self!=value.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__rmod__"><strong>__rmod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value%self.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__rmul__"><strong>__rmul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value*self.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__sizeof__"><strong>__sizeof__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;string&nbsp;in&nbsp;memory,&nbsp;in&nbsp;bytes.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-capitalize"><strong>capitalize</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;capitalized&nbsp;version&nbsp;of&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;make&nbsp;the&nbsp;first&nbsp;character&nbsp;have&nbsp;upper&nbsp;case&nbsp;and&nbsp;the<br>
+rest&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-casefold"><strong>casefold</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;suitable&nbsp;for&nbsp;caseless&nbsp;comparisons.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-center"><strong>center</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;centered&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-count"><strong>count</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;number&nbsp;of&nbsp;non-overlapping&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;sub&nbsp;in&nbsp;string&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-encode"><strong>encode</strong></a>(self, /, encoding='utf-8', errors='strict')</dt><dd><span class="code">Encode&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;codec&nbsp;registered&nbsp;for&nbsp;encoding.<br>
+&nbsp;<br>
+encoding<br>
+&nbsp;&nbsp;The&nbsp;encoding&nbsp;in&nbsp;which&nbsp;to&nbsp;encode&nbsp;the&nbsp;string.<br>
+errors<br>
+&nbsp;&nbsp;The&nbsp;error&nbsp;handling&nbsp;scheme&nbsp;to&nbsp;use&nbsp;for&nbsp;encoding&nbsp;errors.<br>
+&nbsp;&nbsp;The&nbsp;default&nbsp;is&nbsp;'strict'&nbsp;meaning&nbsp;that&nbsp;encoding&nbsp;errors&nbsp;raise&nbsp;a<br>
+&nbsp;&nbsp;UnicodeEncodeError.&nbsp;&nbsp;Other&nbsp;possible&nbsp;values&nbsp;are&nbsp;'ignore',&nbsp;'replace'<br>
+&nbsp;&nbsp;and&nbsp;'xmlcharrefreplace'&nbsp;as&nbsp;well&nbsp;as&nbsp;any&nbsp;other&nbsp;name&nbsp;registered&nbsp;with<br>
+&nbsp;&nbsp;codecs.register_error&nbsp;that&nbsp;can&nbsp;handle&nbsp;UnicodeEncodeErrors.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-endswith"><strong>endswith</strong></a>(self, suffix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;specified&nbsp;suffix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+suffix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-expandtabs"><strong>expandtabs</strong></a>(self, /, tabsize=8)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;where&nbsp;all&nbsp;tab&nbsp;characters&nbsp;are&nbsp;expanded&nbsp;using&nbsp;spaces.<br>
+&nbsp;<br>
+If&nbsp;tabsize&nbsp;is&nbsp;not&nbsp;given,&nbsp;a&nbsp;tab&nbsp;size&nbsp;of&nbsp;8&nbsp;characters&nbsp;is&nbsp;assumed.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-find"><strong>find</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-format"><strong>format</strong></a>(self, /, *args, **kwargs)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;args&nbsp;and&nbsp;kwargs.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-format_map"><strong>format_map</strong></a>(self, mapping, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;mapping.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-index"><strong>index</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;<a href="builtins.html#ValueError">ValueError</a>&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isalnum"><strong>isalnum</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alpha-numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alpha-numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alpha-numeric&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isalpha"><strong>isalpha</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alphabetic&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alphabetic&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alphabetic&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isascii"><strong>isascii</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;ASCII,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+ASCII&nbsp;characters&nbsp;have&nbsp;code&nbsp;points&nbsp;in&nbsp;the&nbsp;range&nbsp;U+0000-U+007F.<br>
+Empty&nbsp;string&nbsp;is&nbsp;ASCII&nbsp;too.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isdecimal"><strong>isdecimal</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+decimal&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isdigit"><strong>isdigit</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+digits&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isidentifier"><strong>isidentifier</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;valid&nbsp;Python&nbsp;identifier,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+Call&nbsp;keyword.iskeyword(s)&nbsp;to&nbsp;test&nbsp;whether&nbsp;string&nbsp;s&nbsp;is&nbsp;a&nbsp;reserved<br>
+identifier,&nbsp;such&nbsp;as&nbsp;"def"&nbsp;or&nbsp;"class".</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-islower"><strong>islower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;lowercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;lowercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+lowercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isnumeric"><strong>isnumeric</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;numeric&nbsp;and<br>
+there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isprintable"><strong>isprintable</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;printable,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;character&nbsp;is&nbsp;printable&nbsp;if&nbsp;repr()&nbsp;may&nbsp;use&nbsp;it&nbsp;in&nbsp;its&nbsp;output.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isspace"><strong>isspace</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;whitespace&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;whitespace&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+whitespace&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-istitle"><strong>istitle</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+In&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;upper-&nbsp;and&nbsp;title-case&nbsp;characters&nbsp;may&nbsp;only<br>
+follow&nbsp;uncased&nbsp;characters&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;only&nbsp;cased&nbsp;ones.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-isupper"><strong>isupper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;uppercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;uppercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+uppercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-join"><strong>join</strong></a>(self, iterable, /)</dt><dd><span class="code">Concatenate&nbsp;any&nbsp;number&nbsp;of&nbsp;strings.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;whose&nbsp;method&nbsp;is&nbsp;called&nbsp;is&nbsp;inserted&nbsp;in&nbsp;between&nbsp;each&nbsp;given<br>
+string.&nbsp;&nbsp;The&nbsp;result&nbsp;is&nbsp;returned&nbsp;as&nbsp;a&nbsp;new&nbsp;string.<br>
+&nbsp;<br>
+Example:&nbsp;'.'.<a href="#EstadoAltura-join">join</a>(['ab',&nbsp;'pq',&nbsp;'rs'])&nbsp;-&gt;&nbsp;'ab.pq.rs'</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-ljust"><strong>ljust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;left-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-lower"><strong>lower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;lowercase.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-lstrip"><strong>lstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-partition"><strong>partition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string.&nbsp;&nbsp;If&nbsp;the&nbsp;separator<br>
+is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the&nbsp;part&nbsp;before&nbsp;the<br>
+separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after&nbsp;it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing<br>
+the&nbsp;original&nbsp;string&nbsp;and&nbsp;two&nbsp;empty&nbsp;strings.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-removeprefix"><strong>removeprefix</strong></a>(self, prefix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;prefix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;prefix&nbsp;string,&nbsp;return<br>
+string[len(prefix):].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;original<br>
+string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-removesuffix"><strong>removesuffix</strong></a>(self, suffix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;suffix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;suffix&nbsp;string&nbsp;and&nbsp;that&nbsp;suffix&nbsp;is&nbsp;not<br>
+empty,&nbsp;return&nbsp;string[:-len(suffix)].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of<br>
+the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-replace"><strong>replace</strong></a>(self, old, new, /, count=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;with&nbsp;all&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;old&nbsp;replaced&nbsp;by&nbsp;new.<br>
+&nbsp;<br>
+&nbsp;&nbsp;count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;occurrences&nbsp;to&nbsp;replace.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;replace&nbsp;all&nbsp;occurrences.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;optional&nbsp;argument&nbsp;count&nbsp;is&nbsp;given,&nbsp;only&nbsp;the&nbsp;first&nbsp;count&nbsp;occurrences&nbsp;are<br>
+replaced.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-rfind"><strong>rfind</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-rindex"><strong>rindex</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;<a href="builtins.html#ValueError">ValueError</a>&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-rjust"><strong>rjust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;right-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-rpartition"><strong>rpartition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string,&nbsp;starting&nbsp;at&nbsp;the<br>
+end.&nbsp;&nbsp;If&nbsp;the&nbsp;separator&nbsp;is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the<br>
+part&nbsp;before&nbsp;the&nbsp;separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after<br>
+it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;two<br>
+empty&nbsp;strings&nbsp;and&nbsp;the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-rsplit"><strong>rsplit</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;front.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-rstrip"><strong>rstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-split"><strong>split</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;front&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;end.<br>
+&nbsp;<br>
+Note,&nbsp;<a href="builtins.html#str">str</a>.<a href="#EstadoAltura-split">split</a>()&nbsp;is&nbsp;mainly&nbsp;useful&nbsp;for&nbsp;data&nbsp;that&nbsp;has&nbsp;been<br>
+intentionally&nbsp;delimited.&nbsp;&nbsp;With&nbsp;natural&nbsp;text&nbsp;that&nbsp;includes<br>
+punctuation,&nbsp;consider&nbsp;using&nbsp;the&nbsp;regular&nbsp;expression&nbsp;module.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-splitlines"><strong>splitlines</strong></a>(self, /, keepends=False)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;string,&nbsp;breaking&nbsp;at&nbsp;line&nbsp;boundaries.<br>
+&nbsp;<br>
+Line&nbsp;breaks&nbsp;are&nbsp;not&nbsp;included&nbsp;in&nbsp;the&nbsp;resulting&nbsp;list&nbsp;unless&nbsp;keepends<br>
+is&nbsp;given&nbsp;and&nbsp;true.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-startswith"><strong>startswith</strong></a>(self, prefix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;specified&nbsp;prefix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+prefix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-strip"><strong>strip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-swapcase"><strong>swapcase</strong></a>(self, /)</dt><dd><span class="code">Convert&nbsp;uppercase&nbsp;characters&nbsp;to&nbsp;lowercase&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-title"><strong>title</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;where&nbsp;each&nbsp;word&nbsp;is&nbsp;titlecased.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;words&nbsp;start&nbsp;with&nbsp;uppercased&nbsp;characters&nbsp;and&nbsp;all<br>
+remaining&nbsp;cased&nbsp;characters&nbsp;have&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-translate"><strong>translate</strong></a>(self, table, /)</dt><dd><span class="code">Replace&nbsp;each&nbsp;character&nbsp;in&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;given&nbsp;translation&nbsp;table.<br>
+&nbsp;<br>
+&nbsp;&nbsp;table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Translation&nbsp;table,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;mapping&nbsp;of&nbsp;Unicode&nbsp;ordinals<br>
+&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;Unicode&nbsp;ordinals,&nbsp;strings,&nbsp;or&nbsp;None.<br>
+&nbsp;<br>
+The&nbsp;table&nbsp;must&nbsp;implement&nbsp;lookup/indexing&nbsp;via&nbsp;__getitem__,&nbsp;for<br>
+instance&nbsp;a&nbsp;dictionary&nbsp;or&nbsp;list.&nbsp;&nbsp;If&nbsp;this&nbsp;operation&nbsp;raises<br>
+LookupError,&nbsp;the&nbsp;character&nbsp;is&nbsp;left&nbsp;untouched.&nbsp;&nbsp;Characters&nbsp;mapped&nbsp;to<br>
+None&nbsp;are&nbsp;deleted.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-upper"><strong>upper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-zfill"><strong>zfill</strong></a>(self, width, /)</dt><dd><span class="code">Pad&nbsp;a&nbsp;numeric&nbsp;string&nbsp;with&nbsp;zeros&nbsp;on&nbsp;the&nbsp;left,&nbsp;to&nbsp;fill&nbsp;a&nbsp;field&nbsp;of&nbsp;the&nbsp;given&nbsp;width.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;is&nbsp;never&nbsp;truncated.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="EstadoAltura-maketrans"><strong>maketrans</strong></a>(x, y=&lt;unrepresentable&gt;, z=&lt;unrepresentable&gt;, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;translation&nbsp;table&nbsp;usable&nbsp;for&nbsp;<a href="builtins.html#str">str</a>.<a href="#EstadoAltura-translate">translate</a>().<br>
+&nbsp;<br>
+If&nbsp;there&nbsp;is&nbsp;only&nbsp;one&nbsp;argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;mapping<br>
+Unicode&nbsp;ordinals&nbsp;(integers)&nbsp;or&nbsp;characters&nbsp;to&nbsp;Unicode&nbsp;ordinals,<br>
+strings&nbsp;or&nbsp;None.&nbsp;&nbsp;Character&nbsp;keys&nbsp;will&nbsp;be&nbsp;then&nbsp;converted&nbsp;to&nbsp;ordinals.<br>
+If&nbsp;there&nbsp;are&nbsp;two&nbsp;arguments,&nbsp;they&nbsp;must&nbsp;be&nbsp;strings&nbsp;of&nbsp;equal&nbsp;length,<br>
+and&nbsp;in&nbsp;the&nbsp;resulting&nbsp;dictionary,&nbsp;each&nbsp;character&nbsp;in&nbsp;x&nbsp;will&nbsp;be&nbsp;mapped<br>
+to&nbsp;the&nbsp;character&nbsp;at&nbsp;the&nbsp;same&nbsp;position&nbsp;in&nbsp;y.&nbsp;&nbsp;If&nbsp;there&nbsp;is&nbsp;a&nbsp;third<br>
+argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;string,&nbsp;whose&nbsp;characters&nbsp;will&nbsp;be&nbsp;mapped&nbsp;to<br>
+None&nbsp;in&nbsp;the&nbsp;result.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><a name="EstadoAltura-__dir__"><strong>__dir__</strong></a>(self)</dt><dd><span class="code">Returns&nbsp;public&nbsp;methods&nbsp;and&nbsp;other&nbsp;interesting&nbsp;attributes.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__init__"><strong>__init__</strong></a>(self, *args, **kwds)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="EstadoAltura-__reduce_ex__"><strong>__reduce_ex__</strong></a>(self, proto)</dt><dd><span class="code">Helper&nbsp;for&nbsp;pickle.</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><strong>name</strong></dt>
+<dd><span class="code">The&nbsp;name&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<dl><dt><strong>value</strong></dt>
+<dd><span class="code">The&nbsp;value&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<hr>
+Readonly properties inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><strong>__members__</strong></dt>
+<dd><span class="code">Returns&nbsp;a&nbsp;mapping&nbsp;of&nbsp;member&nbsp;name-&gt;value.<br>
+&nbsp;<br>
+This&nbsp;mapping&nbsp;lists&nbsp;all&nbsp;enum&nbsp;members,&nbsp;including&nbsp;aliases.&nbsp;&nbsp;Note&nbsp;that<br>
+this&nbsp;is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Evento">class <strong>Evento</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Evento">Evento</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicio_negras:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;duracion_negras:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;notas:&nbsp;'Tuple[<a href="#NotaEvento">NotaEvento</a>,&nbsp;...]'&nbsp;=&nbsp;(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;parte_id:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;'P1',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pentagrama:&nbsp;'int'&nbsp;=&nbsp;1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;voz:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;'1',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;compas:&nbsp;'Optional[int]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;adorno:&nbsp;'bool'&nbsp;=&nbsp;False,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicio_s:&nbsp;'Optional[float]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;duracion_s:&nbsp;'Optional[float]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;figura:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;'',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;puntillos:&nbsp;'int'&nbsp;=&nbsp;0<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Lo&nbsp;que&nbsp;empieza&nbsp;en&nbsp;un&nbsp;instante&nbsp;dentro&nbsp;de&nbsp;una&nbsp;voz:&nbsp;nota,&nbsp;acorde&nbsp;o&nbsp;silencio.<br>
+&nbsp;<br>
+-&nbsp;`notas`&nbsp;vacío:&nbsp;silencio.&nbsp;Más&nbsp;de&nbsp;una&nbsp;nota:&nbsp;acorde&nbsp;(notas&nbsp;simultáneas&nbsp;de&nbsp;la&nbsp;misma&nbsp;voz).<br>
+-&nbsp;Tiempos&nbsp;en&nbsp;negras&nbsp;desde&nbsp;el&nbsp;inicio&nbsp;de&nbsp;la&nbsp;partitura&nbsp;y,&nbsp;si&nbsp;se&nbsp;conoce&nbsp;el&nbsp;tempo,&nbsp;en&nbsp;segundos.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Evento-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Evento-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Evento-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Evento-__init__"><strong>__init__</strong></a>(
+    self,
+    inicio_negras: 'float',
+    duracion_negras: 'float',
+    notas: 'Tuple[NotaEvento, ...]' = (),
+    parte_id: 'str' = 'P1',
+    pentagrama: 'int' = 1,
+    voz: 'str' = '1',
+    compas: 'Optional[int]' = None,
+    adorno: 'bool' = False,
+    inicio_s: 'Optional[float]' = None,
+    duracion_s: 'Optional[float]' = None,
+    figura: 'str' = '',
+    puntillos: 'int' = 0
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Evento-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Evento-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Evento-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>es_acorde</strong></dt>
+</dl>
+<dl><dt><strong>es_silencio</strong></dt>
+</dl>
+<dl><dt><strong>fin_negras</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'adorno': 'bool', 'compas': 'Optional[int]', 'duracion_negras': 'float', 'duracion_s': 'Optional[float]', 'figura': 'str', 'inicio_negras': 'float', 'inicio_s': 'Optional[float]', 'notas': 'Tuple[NotaEvento, ...]', 'parte_id': 'str', 'pentagrama': 'int', ...}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'adorno': Field(name='adorno',type='bool',default=False,de...appingproxy({}),kw_only=False,_field_type=_FIELD), 'compas': Field(name='compas',type='Optional[int]',default...appingproxy({}),kw_only=False,_field_type=_FIELD), 'duracion_negras': Field(name='duracion_negras',type='float',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD), 'duracion_s': Field(name='duracion_s',type='Optional[float]',d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'figura': Field(name='figura',type='str',default='',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicio_negras': Field(name='inicio_negras',type='float',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicio_s': Field(name='inicio_s',type='Optional[float]',def...appingproxy({}),kw_only=False,_field_type=_FIELD), 'notas': Field(name='notas',type='Tuple[NotaEvento, ...]'...appingproxy({}),kw_only=False,_field_type=_FIELD), 'parte_id': Field(name='parte_id',type='str',default='P1',de...appingproxy({}),kw_only=False,_field_type=_FIELD), 'pentagrama': Field(name='pentagrama',type='int',default=1,def...appingproxy({}),kw_only=False,_field_type=_FIELD), ...}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('inicio_negras', 'duracion_negras', 'notas', 'parte_id', 'pentagrama', 'voz', 'compas', 'adorno', 'inicio_s', 'duracion_s', 'figura', 'puntillos')</dl>
+
+<dl><dt><strong>adorno</strong> = False</dl>
+
+<dl><dt><strong>compas</strong> = None</dl>
+
+<dl><dt><strong>duracion_s</strong> = None</dl>
+
+<dl><dt><strong>figura</strong> = ''</dl>
+
+<dl><dt><strong>inicio_s</strong> = None</dl>
+
+<dl><dt><strong>notas</strong> = ()</dl>
+
+<dl><dt><strong>parte_id</strong> = 'P1'</dl>
+
+<dl><dt><strong>pentagrama</strong> = 1</dl>
+
+<dl><dt><strong>puntillos</strong> = 0</dl>
+
+<dl><dt><strong>voz</strong> = '1'</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Ligadura">class <strong>Ligadura</strong></a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Ligadura">Ligadura</a>(*values)<br>
+&nbsp;<br>
+Papel&nbsp;de&nbsp;una&nbsp;nota&nbsp;en&nbsp;una&nbsp;ligadura&nbsp;de&nbsp;prolongación.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="nucleo.musica.html#Ligadura">Ligadura</a></dd>
+<dd><a href="builtins.html#str">builtins.str</a></dd>
+<dd><a href="enum.html#Enum">enum.Enum</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Ligadura-__format__"><strong>__format__</strong></a>(self, format_spec)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Default&nbsp;<a href="builtins.html#object">object</a>&nbsp;formatter.<br>
+&nbsp;<br>
+Return&nbsp;<a href="builtins.html#str">str</a>(self)&nbsp;if&nbsp;format_spec&nbsp;is&nbsp;empty.&nbsp;Raise&nbsp;TypeError&nbsp;otherwise.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__new__"><strong>__new__</strong></a>(cls, value)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__repr__"><strong>__repr__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__str__"><strong>__str__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;<a href="builtins.html#str">str</a>(self).</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>CONTINUACION</strong> = &lt;Ligadura.CONTINUACION: 'continuacion'&gt;</dl>
+
+<dl><dt><strong>FIN</strong> = &lt;Ligadura.FIN: 'fin'&gt;</dl>
+
+<dl><dt><strong>INICIO</strong> = &lt;Ligadura.INICIO: 'inicio'&gt;</dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="Ligadura-__add__"><strong>__add__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self+value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__contains__"><strong>__contains__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;bool(key&nbsp;in&nbsp;self).</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__eq__"><strong>__eq__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__ge__"><strong>__ge__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;=value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__getitem__"><strong>__getitem__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;self[key].</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__getnewargs__"><strong>__getnewargs__</strong></a>(self, /)</dt></dl>
+
+<dl><dt><a name="Ligadura-__gt__"><strong>__gt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__hash__"><strong>__hash__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__iter__"><strong>__iter__</strong></a>(self, /)</dt><dd><span class="code">Implement&nbsp;iter(self).</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__le__"><strong>__le__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;=value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__len__"><strong>__len__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;len(self).</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__lt__"><strong>__lt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__mod__"><strong>__mod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self%value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__mul__"><strong>__mul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self*value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__ne__"><strong>__ne__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self!=value.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__rmod__"><strong>__rmod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value%self.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__rmul__"><strong>__rmul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value*self.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__sizeof__"><strong>__sizeof__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;string&nbsp;in&nbsp;memory,&nbsp;in&nbsp;bytes.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-capitalize"><strong>capitalize</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;capitalized&nbsp;version&nbsp;of&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;make&nbsp;the&nbsp;first&nbsp;character&nbsp;have&nbsp;upper&nbsp;case&nbsp;and&nbsp;the<br>
+rest&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-casefold"><strong>casefold</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;suitable&nbsp;for&nbsp;caseless&nbsp;comparisons.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-center"><strong>center</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;centered&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="Ligadura-count"><strong>count</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;number&nbsp;of&nbsp;non-overlapping&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;sub&nbsp;in&nbsp;string&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-encode"><strong>encode</strong></a>(self, /, encoding='utf-8', errors='strict')</dt><dd><span class="code">Encode&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;codec&nbsp;registered&nbsp;for&nbsp;encoding.<br>
+&nbsp;<br>
+encoding<br>
+&nbsp;&nbsp;The&nbsp;encoding&nbsp;in&nbsp;which&nbsp;to&nbsp;encode&nbsp;the&nbsp;string.<br>
+errors<br>
+&nbsp;&nbsp;The&nbsp;error&nbsp;handling&nbsp;scheme&nbsp;to&nbsp;use&nbsp;for&nbsp;encoding&nbsp;errors.<br>
+&nbsp;&nbsp;The&nbsp;default&nbsp;is&nbsp;'strict'&nbsp;meaning&nbsp;that&nbsp;encoding&nbsp;errors&nbsp;raise&nbsp;a<br>
+&nbsp;&nbsp;UnicodeEncodeError.&nbsp;&nbsp;Other&nbsp;possible&nbsp;values&nbsp;are&nbsp;'ignore',&nbsp;'replace'<br>
+&nbsp;&nbsp;and&nbsp;'xmlcharrefreplace'&nbsp;as&nbsp;well&nbsp;as&nbsp;any&nbsp;other&nbsp;name&nbsp;registered&nbsp;with<br>
+&nbsp;&nbsp;codecs.register_error&nbsp;that&nbsp;can&nbsp;handle&nbsp;UnicodeEncodeErrors.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-endswith"><strong>endswith</strong></a>(self, suffix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;specified&nbsp;suffix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+suffix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-expandtabs"><strong>expandtabs</strong></a>(self, /, tabsize=8)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;where&nbsp;all&nbsp;tab&nbsp;characters&nbsp;are&nbsp;expanded&nbsp;using&nbsp;spaces.<br>
+&nbsp;<br>
+If&nbsp;tabsize&nbsp;is&nbsp;not&nbsp;given,&nbsp;a&nbsp;tab&nbsp;size&nbsp;of&nbsp;8&nbsp;characters&nbsp;is&nbsp;assumed.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-find"><strong>find</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-format"><strong>format</strong></a>(self, /, *args, **kwargs)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;args&nbsp;and&nbsp;kwargs.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="Ligadura-format_map"><strong>format_map</strong></a>(self, mapping, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;mapping.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="Ligadura-index"><strong>index</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;<a href="builtins.html#ValueError">ValueError</a>&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isalnum"><strong>isalnum</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alpha-numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alpha-numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alpha-numeric&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isalpha"><strong>isalpha</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alphabetic&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alphabetic&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alphabetic&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isascii"><strong>isascii</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;ASCII,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+ASCII&nbsp;characters&nbsp;have&nbsp;code&nbsp;points&nbsp;in&nbsp;the&nbsp;range&nbsp;U+0000-U+007F.<br>
+Empty&nbsp;string&nbsp;is&nbsp;ASCII&nbsp;too.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isdecimal"><strong>isdecimal</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+decimal&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isdigit"><strong>isdigit</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+digits&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isidentifier"><strong>isidentifier</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;valid&nbsp;Python&nbsp;identifier,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+Call&nbsp;keyword.iskeyword(s)&nbsp;to&nbsp;test&nbsp;whether&nbsp;string&nbsp;s&nbsp;is&nbsp;a&nbsp;reserved<br>
+identifier,&nbsp;such&nbsp;as&nbsp;"def"&nbsp;or&nbsp;"class".</span></dd></dl>
+
+<dl><dt><a name="Ligadura-islower"><strong>islower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;lowercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;lowercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+lowercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isnumeric"><strong>isnumeric</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;numeric&nbsp;and<br>
+there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isprintable"><strong>isprintable</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;printable,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;character&nbsp;is&nbsp;printable&nbsp;if&nbsp;repr()&nbsp;may&nbsp;use&nbsp;it&nbsp;in&nbsp;its&nbsp;output.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isspace"><strong>isspace</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;whitespace&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;whitespace&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+whitespace&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-istitle"><strong>istitle</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+In&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;upper-&nbsp;and&nbsp;title-case&nbsp;characters&nbsp;may&nbsp;only<br>
+follow&nbsp;uncased&nbsp;characters&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;only&nbsp;cased&nbsp;ones.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-isupper"><strong>isupper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;uppercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;uppercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+uppercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-join"><strong>join</strong></a>(self, iterable, /)</dt><dd><span class="code">Concatenate&nbsp;any&nbsp;number&nbsp;of&nbsp;strings.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;whose&nbsp;method&nbsp;is&nbsp;called&nbsp;is&nbsp;inserted&nbsp;in&nbsp;between&nbsp;each&nbsp;given<br>
+string.&nbsp;&nbsp;The&nbsp;result&nbsp;is&nbsp;returned&nbsp;as&nbsp;a&nbsp;new&nbsp;string.<br>
+&nbsp;<br>
+Example:&nbsp;'.'.<a href="#Ligadura-join">join</a>(['ab',&nbsp;'pq',&nbsp;'rs'])&nbsp;-&gt;&nbsp;'ab.pq.rs'</span></dd></dl>
+
+<dl><dt><a name="Ligadura-ljust"><strong>ljust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;left-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="Ligadura-lower"><strong>lower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;lowercase.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-lstrip"><strong>lstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-partition"><strong>partition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string.&nbsp;&nbsp;If&nbsp;the&nbsp;separator<br>
+is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the&nbsp;part&nbsp;before&nbsp;the<br>
+separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after&nbsp;it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing<br>
+the&nbsp;original&nbsp;string&nbsp;and&nbsp;two&nbsp;empty&nbsp;strings.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-removeprefix"><strong>removeprefix</strong></a>(self, prefix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;prefix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;prefix&nbsp;string,&nbsp;return<br>
+string[len(prefix):].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;original<br>
+string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-removesuffix"><strong>removesuffix</strong></a>(self, suffix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;suffix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;suffix&nbsp;string&nbsp;and&nbsp;that&nbsp;suffix&nbsp;is&nbsp;not<br>
+empty,&nbsp;return&nbsp;string[:-len(suffix)].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of<br>
+the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-replace"><strong>replace</strong></a>(self, old, new, /, count=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;with&nbsp;all&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;old&nbsp;replaced&nbsp;by&nbsp;new.<br>
+&nbsp;<br>
+&nbsp;&nbsp;count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;occurrences&nbsp;to&nbsp;replace.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;replace&nbsp;all&nbsp;occurrences.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;optional&nbsp;argument&nbsp;count&nbsp;is&nbsp;given,&nbsp;only&nbsp;the&nbsp;first&nbsp;count&nbsp;occurrences&nbsp;are<br>
+replaced.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-rfind"><strong>rfind</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-rindex"><strong>rindex</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;<a href="builtins.html#ValueError">ValueError</a>&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-rjust"><strong>rjust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;right-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="Ligadura-rpartition"><strong>rpartition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string,&nbsp;starting&nbsp;at&nbsp;the<br>
+end.&nbsp;&nbsp;If&nbsp;the&nbsp;separator&nbsp;is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the<br>
+part&nbsp;before&nbsp;the&nbsp;separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after<br>
+it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;two<br>
+empty&nbsp;strings&nbsp;and&nbsp;the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-rsplit"><strong>rsplit</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;front.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-rstrip"><strong>rstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-split"><strong>split</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;front&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;end.<br>
+&nbsp;<br>
+Note,&nbsp;<a href="builtins.html#str">str</a>.<a href="#Ligadura-split">split</a>()&nbsp;is&nbsp;mainly&nbsp;useful&nbsp;for&nbsp;data&nbsp;that&nbsp;has&nbsp;been<br>
+intentionally&nbsp;delimited.&nbsp;&nbsp;With&nbsp;natural&nbsp;text&nbsp;that&nbsp;includes<br>
+punctuation,&nbsp;consider&nbsp;using&nbsp;the&nbsp;regular&nbsp;expression&nbsp;module.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-splitlines"><strong>splitlines</strong></a>(self, /, keepends=False)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;string,&nbsp;breaking&nbsp;at&nbsp;line&nbsp;boundaries.<br>
+&nbsp;<br>
+Line&nbsp;breaks&nbsp;are&nbsp;not&nbsp;included&nbsp;in&nbsp;the&nbsp;resulting&nbsp;list&nbsp;unless&nbsp;keepends<br>
+is&nbsp;given&nbsp;and&nbsp;true.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-startswith"><strong>startswith</strong></a>(self, prefix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;specified&nbsp;prefix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+prefix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-strip"><strong>strip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-swapcase"><strong>swapcase</strong></a>(self, /)</dt><dd><span class="code">Convert&nbsp;uppercase&nbsp;characters&nbsp;to&nbsp;lowercase&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-title"><strong>title</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;where&nbsp;each&nbsp;word&nbsp;is&nbsp;titlecased.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;words&nbsp;start&nbsp;with&nbsp;uppercased&nbsp;characters&nbsp;and&nbsp;all<br>
+remaining&nbsp;cased&nbsp;characters&nbsp;have&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-translate"><strong>translate</strong></a>(self, table, /)</dt><dd><span class="code">Replace&nbsp;each&nbsp;character&nbsp;in&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;given&nbsp;translation&nbsp;table.<br>
+&nbsp;<br>
+&nbsp;&nbsp;table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Translation&nbsp;table,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;mapping&nbsp;of&nbsp;Unicode&nbsp;ordinals<br>
+&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;Unicode&nbsp;ordinals,&nbsp;strings,&nbsp;or&nbsp;None.<br>
+&nbsp;<br>
+The&nbsp;table&nbsp;must&nbsp;implement&nbsp;lookup/indexing&nbsp;via&nbsp;__getitem__,&nbsp;for<br>
+instance&nbsp;a&nbsp;dictionary&nbsp;or&nbsp;list.&nbsp;&nbsp;If&nbsp;this&nbsp;operation&nbsp;raises<br>
+LookupError,&nbsp;the&nbsp;character&nbsp;is&nbsp;left&nbsp;untouched.&nbsp;&nbsp;Characters&nbsp;mapped&nbsp;to<br>
+None&nbsp;are&nbsp;deleted.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-upper"><strong>upper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-zfill"><strong>zfill</strong></a>(self, width, /)</dt><dd><span class="code">Pad&nbsp;a&nbsp;numeric&nbsp;string&nbsp;with&nbsp;zeros&nbsp;on&nbsp;the&nbsp;left,&nbsp;to&nbsp;fill&nbsp;a&nbsp;field&nbsp;of&nbsp;the&nbsp;given&nbsp;width.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;is&nbsp;never&nbsp;truncated.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="Ligadura-maketrans"><strong>maketrans</strong></a>(x, y=&lt;unrepresentable&gt;, z=&lt;unrepresentable&gt;, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;translation&nbsp;table&nbsp;usable&nbsp;for&nbsp;<a href="builtins.html#str">str</a>.<a href="#Ligadura-translate">translate</a>().<br>
+&nbsp;<br>
+If&nbsp;there&nbsp;is&nbsp;only&nbsp;one&nbsp;argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;mapping<br>
+Unicode&nbsp;ordinals&nbsp;(integers)&nbsp;or&nbsp;characters&nbsp;to&nbsp;Unicode&nbsp;ordinals,<br>
+strings&nbsp;or&nbsp;None.&nbsp;&nbsp;Character&nbsp;keys&nbsp;will&nbsp;be&nbsp;then&nbsp;converted&nbsp;to&nbsp;ordinals.<br>
+If&nbsp;there&nbsp;are&nbsp;two&nbsp;arguments,&nbsp;they&nbsp;must&nbsp;be&nbsp;strings&nbsp;of&nbsp;equal&nbsp;length,<br>
+and&nbsp;in&nbsp;the&nbsp;resulting&nbsp;dictionary,&nbsp;each&nbsp;character&nbsp;in&nbsp;x&nbsp;will&nbsp;be&nbsp;mapped<br>
+to&nbsp;the&nbsp;character&nbsp;at&nbsp;the&nbsp;same&nbsp;position&nbsp;in&nbsp;y.&nbsp;&nbsp;If&nbsp;there&nbsp;is&nbsp;a&nbsp;third<br>
+argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;string,&nbsp;whose&nbsp;characters&nbsp;will&nbsp;be&nbsp;mapped&nbsp;to<br>
+None&nbsp;in&nbsp;the&nbsp;result.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><a name="Ligadura-__dir__"><strong>__dir__</strong></a>(self)</dt><dd><span class="code">Returns&nbsp;public&nbsp;methods&nbsp;and&nbsp;other&nbsp;interesting&nbsp;attributes.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__init__"><strong>__init__</strong></a>(self, *args, **kwds)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Ligadura-__reduce_ex__"><strong>__reduce_ex__</strong></a>(self, proto)</dt><dd><span class="code">Helper&nbsp;for&nbsp;pickle.</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><strong>name</strong></dt>
+<dd><span class="code">The&nbsp;name&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<dl><dt><strong>value</strong></dt>
+<dd><span class="code">The&nbsp;value&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<hr>
+Readonly properties inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><strong>__members__</strong></dt>
+<dd><span class="code">Returns&nbsp;a&nbsp;mapping&nbsp;of&nbsp;member&nbsp;name-&gt;value.<br>
+&nbsp;<br>
+This&nbsp;mapping&nbsp;lists&nbsp;all&nbsp;enum&nbsp;members,&nbsp;including&nbsp;aliases.&nbsp;&nbsp;Note&nbsp;that<br>
+this&nbsp;is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="MapaTempo">class <strong>MapaTempo</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#MapaTempo">MapaTempo</a>(cambios:&nbsp;'Tuple[<a href="#CambioTempo">CambioTempo</a>,&nbsp;...]'&nbsp;=&nbsp;(),&nbsp;por_defecto:&nbsp;'float'&nbsp;=&nbsp;120.0)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Tempo&nbsp;de&nbsp;la&nbsp;partitura&nbsp;a&nbsp;lo&nbsp;largo&nbsp;del&nbsp;tiempo.<br>
+&nbsp;<br>
+Sin&nbsp;cambios&nbsp;(`explicito`&nbsp;falso)&nbsp;o&nbsp;antes&nbsp;del&nbsp;primer&nbsp;cambio&nbsp;se&nbsp;usa&nbsp;`por_defecto`.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="MapaTempo-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="MapaTempo-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="MapaTempo-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="MapaTempo-__init__"><strong>__init__</strong></a>(
+    self,
+    cambios: 'Tuple[CambioTempo, ...]' = (),
+    por_defecto: 'float' = 120.0
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="MapaTempo-__post_init__"><strong>__post_init__</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="MapaTempo-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="MapaTempo-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="MapaTempo-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<dl><dt><a name="MapaTempo-duracion_segundos"><strong>duracion_segundos</strong></a>(self, inicio_negras: 'float', duracion_negras: 'float') -&gt; 'float'</dt></dl>
+
+<dl><dt><a name="MapaTempo-negras_por_minuto_en"><strong>negras_por_minuto_en</strong></a>(self, negras: 'float') -&gt; 'float'</dt></dl>
+
+<dl><dt><a name="MapaTempo-segundos"><strong>segundos</strong></a>(self, negras: 'float') -&gt; 'float'</dt><dd><span class="code">Instante&nbsp;en&nbsp;segundos&nbsp;del&nbsp;pulso&nbsp;`negras`,&nbsp;integrando&nbsp;los&nbsp;cambios&nbsp;de&nbsp;tempo.</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>explicito</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'cambios': 'Tuple[CambioTempo, ...]', 'por_defecto': 'float'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'cambios': Field(name='cambios',type='Tuple[CambioTempo, .....appingproxy({}),kw_only=False,_field_type=_FIELD), 'por_defecto': Field(name='por_defecto',type='float',default=12...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('cambios', 'por_defecto')</dl>
+
+<dl><dt><strong>cambios</strong> = ()</dl>
+
+<dl><dt><strong>por_defecto</strong> = 120.0</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="NotaEvento">class <strong>NotaEvento</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#NotaEvento">NotaEvento</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;escrita:&nbsp;'<a href="#Altura">Altura</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sonora:&nbsp;'<a href="#Altura">Altura</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ligadura:&nbsp;'Optional[<a href="#Ligadura">Ligadura</a>]'&nbsp;=&nbsp;None<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Una&nbsp;cabeza&nbsp;de&nbsp;nota:&nbsp;altura&nbsp;escrita,&nbsp;altura&nbsp;sonora&nbsp;y&nbsp;ligadura.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="NotaEvento-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="NotaEvento-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="NotaEvento-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="NotaEvento-__init__"><strong>__init__</strong></a>(
+    self,
+    escrita: 'Altura',
+    sonora: 'Altura',
+    ligadura: 'Optional[Ligadura]' = None
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="NotaEvento-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="NotaEvento-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="NotaEvento-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>frecuencia</strong></dt>
+</dl>
+<dl><dt><strong>midi</strong></dt>
+<dd><span class="code">MIDI&nbsp;sonoro:&nbsp;el&nbsp;que&nbsp;debe&nbsp;oír&nbsp;el&nbsp;micrófono.</span></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'escrita': 'Altura', 'ligadura': 'Optional[Ligadura]', 'sonora': 'Altura'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'escrita': Field(name='escrita',type='Altura',default=&lt;data...appingproxy({}),kw_only=False,_field_type=_FIELD), 'ligadura': Field(name='ligadura',type='Optional[Ligadura]',...appingproxy({}),kw_only=False,_field_type=_FIELD), 'sonora': Field(name='sonora',type='Altura',default=&lt;datac...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('escrita', 'sonora', 'ligadura')</dl>
+
+<dl><dt><strong>ligadura</strong> = None</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="OrigenTransposicion">class <strong>OrigenTransposicion</strong></a>(<a href="builtins.html#str">builtins.str</a>, <a href="enum.html#Enum">enum.Enum</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#OrigenTransposicion">OrigenTransposicion</a>(*values)<br>
+&nbsp;<br>
+De&nbsp;dónde&nbsp;sale&nbsp;la&nbsp;diferencia&nbsp;entre&nbsp;altura&nbsp;escrita&nbsp;y&nbsp;altura&nbsp;sonora&nbsp;de&nbsp;una&nbsp;parte.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt>Method resolution order:</dt>
+<dd><a href="nucleo.musica.html#OrigenTransposicion">OrigenTransposicion</a></dd>
+<dd><a href="builtins.html#str">builtins.str</a></dd>
+<dd><a href="enum.html#Enum">enum.Enum</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="OrigenTransposicion-__format__"><strong>__format__</strong></a>(self, format_spec)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Default&nbsp;<a href="builtins.html#object">object</a>&nbsp;formatter.<br>
+&nbsp;<br>
+Return&nbsp;<a href="builtins.html#str">str</a>(self)&nbsp;if&nbsp;format_spec&nbsp;is&nbsp;empty.&nbsp;Raise&nbsp;TypeError&nbsp;otherwise.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__new__"><strong>__new__</strong></a>(cls, value)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Create&nbsp;and&nbsp;return&nbsp;a&nbsp;new&nbsp;<a href="builtins.html#object">object</a>.&nbsp;&nbsp;See&nbsp;help(type)&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__repr__"><strong>__repr__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__str__"><strong>__str__</strong></a>(self)<span class="grey"><span class="heading-text"> from enum.Enum</span></span></dt><dd><span class="code">Return&nbsp;<a href="builtins.html#str">str</a>(self).</span></dd></dl>
+
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>CONFIGURADA</strong> = &lt;OrigenTransposicion.CONFIGURADA: 'configurada'&gt;</dl>
+
+<dl><dt><strong>DECLARADA</strong> = &lt;OrigenTransposicion.DECLARADA: 'declarada'&gt;</dl>
+
+<dl><dt><strong>DEDUCIDA_POR_RANGO</strong> = &lt;OrigenTransposicion.DEDUCIDA_POR_RANGO: 'deducida_por_rango'&gt;</dl>
+
+<dl><dt><strong>INDETERMINADA</strong> = &lt;OrigenTransposicion.INDETERMINADA: 'indeterminada'&gt;</dl>
+
+<dl><dt><strong>SIN_TRANSPOSICION</strong> = &lt;OrigenTransposicion.SIN_TRANSPOSICION: 'sin_transposicion'&gt;</dl>
+
+<hr>
+Methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="OrigenTransposicion-__add__"><strong>__add__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self+value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__contains__"><strong>__contains__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;bool(key&nbsp;in&nbsp;self).</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__eq__"><strong>__eq__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__ge__"><strong>__ge__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;=value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__getitem__"><strong>__getitem__</strong></a>(self, key, /)</dt><dd><span class="code">Return&nbsp;self[key].</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__getnewargs__"><strong>__getnewargs__</strong></a>(self, /)</dt></dl>
+
+<dl><dt><a name="OrigenTransposicion-__gt__"><strong>__gt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&gt;value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__hash__"><strong>__hash__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__iter__"><strong>__iter__</strong></a>(self, /)</dt><dd><span class="code">Implement&nbsp;iter(self).</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__le__"><strong>__le__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;=value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__len__"><strong>__len__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;len(self).</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__lt__"><strong>__lt__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self&lt;value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__mod__"><strong>__mod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self%value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__mul__"><strong>__mul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self*value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__ne__"><strong>__ne__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;self!=value.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__rmod__"><strong>__rmod__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value%self.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__rmul__"><strong>__rmul__</strong></a>(self, value, /)</dt><dd><span class="code">Return&nbsp;value*self.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__sizeof__"><strong>__sizeof__</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;the&nbsp;size&nbsp;of&nbsp;the&nbsp;string&nbsp;in&nbsp;memory,&nbsp;in&nbsp;bytes.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-capitalize"><strong>capitalize</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;capitalized&nbsp;version&nbsp;of&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;make&nbsp;the&nbsp;first&nbsp;character&nbsp;have&nbsp;upper&nbsp;case&nbsp;and&nbsp;the<br>
+rest&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-casefold"><strong>casefold</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;suitable&nbsp;for&nbsp;caseless&nbsp;comparisons.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-center"><strong>center</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;centered&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-count"><strong>count</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;number&nbsp;of&nbsp;non-overlapping&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;sub&nbsp;in&nbsp;string&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-encode"><strong>encode</strong></a>(self, /, encoding='utf-8', errors='strict')</dt><dd><span class="code">Encode&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;codec&nbsp;registered&nbsp;for&nbsp;encoding.<br>
+&nbsp;<br>
+encoding<br>
+&nbsp;&nbsp;The&nbsp;encoding&nbsp;in&nbsp;which&nbsp;to&nbsp;encode&nbsp;the&nbsp;string.<br>
+errors<br>
+&nbsp;&nbsp;The&nbsp;error&nbsp;handling&nbsp;scheme&nbsp;to&nbsp;use&nbsp;for&nbsp;encoding&nbsp;errors.<br>
+&nbsp;&nbsp;The&nbsp;default&nbsp;is&nbsp;'strict'&nbsp;meaning&nbsp;that&nbsp;encoding&nbsp;errors&nbsp;raise&nbsp;a<br>
+&nbsp;&nbsp;UnicodeEncodeError.&nbsp;&nbsp;Other&nbsp;possible&nbsp;values&nbsp;are&nbsp;'ignore',&nbsp;'replace'<br>
+&nbsp;&nbsp;and&nbsp;'xmlcharrefreplace'&nbsp;as&nbsp;well&nbsp;as&nbsp;any&nbsp;other&nbsp;name&nbsp;registered&nbsp;with<br>
+&nbsp;&nbsp;codecs.register_error&nbsp;that&nbsp;can&nbsp;handle&nbsp;UnicodeEncodeErrors.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-endswith"><strong>endswith</strong></a>(self, suffix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;specified&nbsp;suffix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+suffix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-expandtabs"><strong>expandtabs</strong></a>(self, /, tabsize=8)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;where&nbsp;all&nbsp;tab&nbsp;characters&nbsp;are&nbsp;expanded&nbsp;using&nbsp;spaces.<br>
+&nbsp;<br>
+If&nbsp;tabsize&nbsp;is&nbsp;not&nbsp;given,&nbsp;a&nbsp;tab&nbsp;size&nbsp;of&nbsp;8&nbsp;characters&nbsp;is&nbsp;assumed.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-find"><strong>find</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-format"><strong>format</strong></a>(self, /, *args, **kwargs)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;args&nbsp;and&nbsp;kwargs.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-format_map"><strong>format_map</strong></a>(self, mapping, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;string,&nbsp;using&nbsp;substitutions&nbsp;from&nbsp;mapping.<br>
+The&nbsp;substitutions&nbsp;are&nbsp;identified&nbsp;by&nbsp;braces&nbsp;('{'&nbsp;and&nbsp;'}').</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-index"><strong>index</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;lowest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;<a href="builtins.html#ValueError">ValueError</a>&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isalnum"><strong>isalnum</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alpha-numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alpha-numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alpha-numeric&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isalpha"><strong>isalpha</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;alphabetic&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;alphabetic&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+alphabetic&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isascii"><strong>isascii</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;ASCII,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+ASCII&nbsp;characters&nbsp;have&nbsp;code&nbsp;points&nbsp;in&nbsp;the&nbsp;range&nbsp;U+0000-U+007F.<br>
+Empty&nbsp;string&nbsp;is&nbsp;ASCII&nbsp;too.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isdecimal"><strong>isdecimal</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;decimal&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+decimal&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isdigit"><strong>isdigit</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;a&nbsp;digit&nbsp;string&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+digits&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isidentifier"><strong>isidentifier</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;valid&nbsp;Python&nbsp;identifier,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+Call&nbsp;keyword.iskeyword(s)&nbsp;to&nbsp;test&nbsp;whether&nbsp;string&nbsp;s&nbsp;is&nbsp;a&nbsp;reserved<br>
+identifier,&nbsp;such&nbsp;as&nbsp;"def"&nbsp;or&nbsp;"class".</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-islower"><strong>islower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;lowercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;lowercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+lowercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isnumeric"><strong>isnumeric</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;numeric&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;numeric&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;numeric&nbsp;and<br>
+there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isprintable"><strong>isprintable</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are&nbsp;printable,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;character&nbsp;is&nbsp;printable&nbsp;if&nbsp;repr()&nbsp;may&nbsp;use&nbsp;it&nbsp;in&nbsp;its&nbsp;output.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isspace"><strong>isspace</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;whitespace&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;whitespace&nbsp;if&nbsp;all&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+whitespace&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-istitle"><strong>istitle</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+In&nbsp;a&nbsp;title-cased&nbsp;string,&nbsp;upper-&nbsp;and&nbsp;title-case&nbsp;characters&nbsp;may&nbsp;only<br>
+follow&nbsp;uncased&nbsp;characters&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;only&nbsp;cased&nbsp;ones.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-isupper"><strong>isupper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;is&nbsp;an&nbsp;uppercase&nbsp;string,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+A&nbsp;string&nbsp;is&nbsp;uppercase&nbsp;if&nbsp;all&nbsp;cased&nbsp;characters&nbsp;in&nbsp;the&nbsp;string&nbsp;are<br>
+uppercase&nbsp;and&nbsp;there&nbsp;is&nbsp;at&nbsp;least&nbsp;one&nbsp;cased&nbsp;character&nbsp;in&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-join"><strong>join</strong></a>(self, iterable, /)</dt><dd><span class="code">Concatenate&nbsp;any&nbsp;number&nbsp;of&nbsp;strings.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;whose&nbsp;method&nbsp;is&nbsp;called&nbsp;is&nbsp;inserted&nbsp;in&nbsp;between&nbsp;each&nbsp;given<br>
+string.&nbsp;&nbsp;The&nbsp;result&nbsp;is&nbsp;returned&nbsp;as&nbsp;a&nbsp;new&nbsp;string.<br>
+&nbsp;<br>
+Example:&nbsp;'.'.<a href="#OrigenTransposicion-join">join</a>(['ab',&nbsp;'pq',&nbsp;'rs'])&nbsp;-&gt;&nbsp;'ab.pq.rs'</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-ljust"><strong>ljust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;left-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-lower"><strong>lower</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;lowercase.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-lstrip"><strong>lstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-partition"><strong>partition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string.&nbsp;&nbsp;If&nbsp;the&nbsp;separator<br>
+is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the&nbsp;part&nbsp;before&nbsp;the<br>
+separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after&nbsp;it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing<br>
+the&nbsp;original&nbsp;string&nbsp;and&nbsp;two&nbsp;empty&nbsp;strings.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-removeprefix"><strong>removeprefix</strong></a>(self, prefix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;prefix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;prefix&nbsp;string,&nbsp;return<br>
+string[len(prefix):].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;original<br>
+string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-removesuffix"><strong>removesuffix</strong></a>(self, suffix, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;<a href="builtins.html#str">str</a>&nbsp;with&nbsp;the&nbsp;given&nbsp;suffix&nbsp;string&nbsp;removed&nbsp;if&nbsp;present.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;string&nbsp;ends&nbsp;with&nbsp;the&nbsp;suffix&nbsp;string&nbsp;and&nbsp;that&nbsp;suffix&nbsp;is&nbsp;not<br>
+empty,&nbsp;return&nbsp;string[:-len(suffix)].&nbsp;&nbsp;Otherwise,&nbsp;return&nbsp;a&nbsp;copy&nbsp;of<br>
+the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-replace"><strong>replace</strong></a>(self, old, new, /, count=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;with&nbsp;all&nbsp;occurrences&nbsp;of&nbsp;substring&nbsp;old&nbsp;replaced&nbsp;by&nbsp;new.<br>
+&nbsp;<br>
+&nbsp;&nbsp;count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;occurrences&nbsp;to&nbsp;replace.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;replace&nbsp;all&nbsp;occurrences.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;optional&nbsp;argument&nbsp;count&nbsp;is&nbsp;given,&nbsp;only&nbsp;the&nbsp;first&nbsp;count&nbsp;occurrences&nbsp;are<br>
+replaced.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-rfind"><strong>rfind</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Return&nbsp;-1&nbsp;on&nbsp;failure.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-rindex"><strong>rindex</strong></a>(self, sub[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;the&nbsp;highest&nbsp;index&nbsp;in&nbsp;S&nbsp;where&nbsp;substring&nbsp;sub&nbsp;is&nbsp;found,&nbsp;such&nbsp;that&nbsp;sub&nbsp;is&nbsp;contained&nbsp;within&nbsp;S[start:end].<br>
+&nbsp;<br>
+Optional&nbsp;arguments&nbsp;start&nbsp;and&nbsp;end&nbsp;are&nbsp;interpreted&nbsp;as&nbsp;in&nbsp;slice<br>
+notation.&nbsp;&nbsp;Raises&nbsp;<a href="builtins.html#ValueError">ValueError</a>&nbsp;when&nbsp;the&nbsp;substring&nbsp;is&nbsp;not&nbsp;found.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-rjust"><strong>rjust</strong></a>(self, width, fillchar=' ', /)</dt><dd><span class="code">Return&nbsp;a&nbsp;right-justified&nbsp;string&nbsp;of&nbsp;length&nbsp;width.<br>
+&nbsp;<br>
+Padding&nbsp;is&nbsp;done&nbsp;using&nbsp;the&nbsp;specified&nbsp;fill&nbsp;character&nbsp;(default&nbsp;is<br>
+a&nbsp;space).</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-rpartition"><strong>rpartition</strong></a>(self, sep, /)</dt><dd><span class="code">Partition&nbsp;the&nbsp;string&nbsp;into&nbsp;three&nbsp;parts&nbsp;using&nbsp;the&nbsp;given&nbsp;separator.<br>
+&nbsp;<br>
+This&nbsp;will&nbsp;search&nbsp;for&nbsp;the&nbsp;separator&nbsp;in&nbsp;the&nbsp;string,&nbsp;starting&nbsp;at&nbsp;the<br>
+end.&nbsp;&nbsp;If&nbsp;the&nbsp;separator&nbsp;is&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;the<br>
+part&nbsp;before&nbsp;the&nbsp;separator,&nbsp;the&nbsp;separator&nbsp;itself,&nbsp;and&nbsp;the&nbsp;part&nbsp;after<br>
+it.<br>
+&nbsp;<br>
+If&nbsp;the&nbsp;separator&nbsp;is&nbsp;not&nbsp;found,&nbsp;returns&nbsp;a&nbsp;3-tuple&nbsp;containing&nbsp;two<br>
+empty&nbsp;strings&nbsp;and&nbsp;the&nbsp;original&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-rsplit"><strong>rsplit</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;front.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-rstrip"><strong>rstrip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-split"><strong>split</strong></a>(self, /, sep=None, maxsplit=-1)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;substrings&nbsp;in&nbsp;the&nbsp;string,&nbsp;using&nbsp;sep&nbsp;as&nbsp;the&nbsp;separator&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;sep<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;separator&nbsp;used&nbsp;to&nbsp;split&nbsp;the&nbsp;string.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;When&nbsp;set&nbsp;to&nbsp;None&nbsp;(the&nbsp;default&nbsp;value),&nbsp;will&nbsp;split&nbsp;on&nbsp;any<br>
+&nbsp;&nbsp;&nbsp;&nbsp;whitespace&nbsp;character&nbsp;(including&nbsp;\n&nbsp;\r&nbsp;\t&nbsp;\f&nbsp;and&nbsp;spaces)&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;will&nbsp;discard&nbsp;empty&nbsp;strings&nbsp;from&nbsp;the&nbsp;result.<br>
+&nbsp;&nbsp;maxsplit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Maximum&nbsp;number&nbsp;of&nbsp;splits.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-1&nbsp;(the&nbsp;default&nbsp;value)&nbsp;means&nbsp;no&nbsp;limit.<br>
+&nbsp;<br>
+Splitting&nbsp;starts&nbsp;at&nbsp;the&nbsp;front&nbsp;of&nbsp;the&nbsp;string&nbsp;and&nbsp;works&nbsp;to&nbsp;the&nbsp;end.<br>
+&nbsp;<br>
+Note,&nbsp;<a href="builtins.html#str">str</a>.<a href="#OrigenTransposicion-split">split</a>()&nbsp;is&nbsp;mainly&nbsp;useful&nbsp;for&nbsp;data&nbsp;that&nbsp;has&nbsp;been<br>
+intentionally&nbsp;delimited.&nbsp;&nbsp;With&nbsp;natural&nbsp;text&nbsp;that&nbsp;includes<br>
+punctuation,&nbsp;consider&nbsp;using&nbsp;the&nbsp;regular&nbsp;expression&nbsp;module.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-splitlines"><strong>splitlines</strong></a>(self, /, keepends=False)</dt><dd><span class="code">Return&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;string,&nbsp;breaking&nbsp;at&nbsp;line&nbsp;boundaries.<br>
+&nbsp;<br>
+Line&nbsp;breaks&nbsp;are&nbsp;not&nbsp;included&nbsp;in&nbsp;the&nbsp;resulting&nbsp;list&nbsp;unless&nbsp;keepends<br>
+is&nbsp;given&nbsp;and&nbsp;true.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-startswith"><strong>startswith</strong></a>(self, prefix[, start[, end]], /)</dt><dd><span class="code">Return&nbsp;True&nbsp;if&nbsp;the&nbsp;string&nbsp;starts&nbsp;with&nbsp;the&nbsp;specified&nbsp;prefix,&nbsp;False&nbsp;otherwise.<br>
+&nbsp;<br>
+prefix<br>
+&nbsp;&nbsp;A&nbsp;string&nbsp;or&nbsp;a&nbsp;tuple&nbsp;of&nbsp;strings&nbsp;to&nbsp;try.<br>
+start<br>
+&nbsp;&nbsp;Optional&nbsp;start&nbsp;position.&nbsp;Default:&nbsp;start&nbsp;of&nbsp;the&nbsp;string.<br>
+end<br>
+&nbsp;&nbsp;Optional&nbsp;stop&nbsp;position.&nbsp;Default:&nbsp;end&nbsp;of&nbsp;the&nbsp;string.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-strip"><strong>strip</strong></a>(self, chars=None, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;with&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;whitespace&nbsp;removed.<br>
+&nbsp;<br>
+If&nbsp;chars&nbsp;is&nbsp;given&nbsp;and&nbsp;not&nbsp;None,&nbsp;remove&nbsp;characters&nbsp;in&nbsp;chars&nbsp;instead.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-swapcase"><strong>swapcase</strong></a>(self, /)</dt><dd><span class="code">Convert&nbsp;uppercase&nbsp;characters&nbsp;to&nbsp;lowercase&nbsp;and&nbsp;lowercase&nbsp;characters&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-title"><strong>title</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;version&nbsp;of&nbsp;the&nbsp;string&nbsp;where&nbsp;each&nbsp;word&nbsp;is&nbsp;titlecased.<br>
+&nbsp;<br>
+More&nbsp;specifically,&nbsp;words&nbsp;start&nbsp;with&nbsp;uppercased&nbsp;characters&nbsp;and&nbsp;all<br>
+remaining&nbsp;cased&nbsp;characters&nbsp;have&nbsp;lower&nbsp;case.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-translate"><strong>translate</strong></a>(self, table, /)</dt><dd><span class="code">Replace&nbsp;each&nbsp;character&nbsp;in&nbsp;the&nbsp;string&nbsp;using&nbsp;the&nbsp;given&nbsp;translation&nbsp;table.<br>
+&nbsp;<br>
+&nbsp;&nbsp;table<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Translation&nbsp;table,&nbsp;which&nbsp;must&nbsp;be&nbsp;a&nbsp;mapping&nbsp;of&nbsp;Unicode&nbsp;ordinals<br>
+&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;Unicode&nbsp;ordinals,&nbsp;strings,&nbsp;or&nbsp;None.<br>
+&nbsp;<br>
+The&nbsp;table&nbsp;must&nbsp;implement&nbsp;lookup/indexing&nbsp;via&nbsp;__getitem__,&nbsp;for<br>
+instance&nbsp;a&nbsp;dictionary&nbsp;or&nbsp;list.&nbsp;&nbsp;If&nbsp;this&nbsp;operation&nbsp;raises<br>
+LookupError,&nbsp;the&nbsp;character&nbsp;is&nbsp;left&nbsp;untouched.&nbsp;&nbsp;Characters&nbsp;mapped&nbsp;to<br>
+None&nbsp;are&nbsp;deleted.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-upper"><strong>upper</strong></a>(self, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;string&nbsp;converted&nbsp;to&nbsp;uppercase.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-zfill"><strong>zfill</strong></a>(self, width, /)</dt><dd><span class="code">Pad&nbsp;a&nbsp;numeric&nbsp;string&nbsp;with&nbsp;zeros&nbsp;on&nbsp;the&nbsp;left,&nbsp;to&nbsp;fill&nbsp;a&nbsp;field&nbsp;of&nbsp;the&nbsp;given&nbsp;width.<br>
+&nbsp;<br>
+The&nbsp;string&nbsp;is&nbsp;never&nbsp;truncated.</span></dd></dl>
+
+<hr>
+Static methods inherited from <a href="builtins.html#str">builtins.str</a>:<br>
+<dl><dt><a name="OrigenTransposicion-maketrans"><strong>maketrans</strong></a>(x, y=&lt;unrepresentable&gt;, z=&lt;unrepresentable&gt;, /)</dt><dd><span class="code">Return&nbsp;a&nbsp;translation&nbsp;table&nbsp;usable&nbsp;for&nbsp;<a href="builtins.html#str">str</a>.<a href="#OrigenTransposicion-translate">translate</a>().<br>
+&nbsp;<br>
+If&nbsp;there&nbsp;is&nbsp;only&nbsp;one&nbsp;argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;dictionary&nbsp;mapping<br>
+Unicode&nbsp;ordinals&nbsp;(integers)&nbsp;or&nbsp;characters&nbsp;to&nbsp;Unicode&nbsp;ordinals,<br>
+strings&nbsp;or&nbsp;None.&nbsp;&nbsp;Character&nbsp;keys&nbsp;will&nbsp;be&nbsp;then&nbsp;converted&nbsp;to&nbsp;ordinals.<br>
+If&nbsp;there&nbsp;are&nbsp;two&nbsp;arguments,&nbsp;they&nbsp;must&nbsp;be&nbsp;strings&nbsp;of&nbsp;equal&nbsp;length,<br>
+and&nbsp;in&nbsp;the&nbsp;resulting&nbsp;dictionary,&nbsp;each&nbsp;character&nbsp;in&nbsp;x&nbsp;will&nbsp;be&nbsp;mapped<br>
+to&nbsp;the&nbsp;character&nbsp;at&nbsp;the&nbsp;same&nbsp;position&nbsp;in&nbsp;y.&nbsp;&nbsp;If&nbsp;there&nbsp;is&nbsp;a&nbsp;third<br>
+argument,&nbsp;it&nbsp;must&nbsp;be&nbsp;a&nbsp;string,&nbsp;whose&nbsp;characters&nbsp;will&nbsp;be&nbsp;mapped&nbsp;to<br>
+None&nbsp;in&nbsp;the&nbsp;result.</span></dd></dl>
+
+<hr>
+Methods inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><a name="OrigenTransposicion-__dir__"><strong>__dir__</strong></a>(self)</dt><dd><span class="code">Returns&nbsp;public&nbsp;methods&nbsp;and&nbsp;other&nbsp;interesting&nbsp;attributes.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__init__"><strong>__init__</strong></a>(self, *args, **kwds)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="OrigenTransposicion-__reduce_ex__"><strong>__reduce_ex__</strong></a>(self, proto)</dt><dd><span class="code">Helper&nbsp;for&nbsp;pickle.</span></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="enum.html#Enum">enum.Enum</a>:<br>
+<dl><dt><strong>name</strong></dt>
+<dd><span class="code">The&nbsp;name&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<dl><dt><strong>value</strong></dt>
+<dd><span class="code">The&nbsp;value&nbsp;of&nbsp;the&nbsp;Enum&nbsp;member.</span></dd>
+</dl>
+<hr>
+Readonly properties inherited from <a href="enum.html#EnumType">enum.EnumType</a>:<br>
+<dl><dt><strong>__members__</strong></dt>
+<dd><span class="code">Returns&nbsp;a&nbsp;mapping&nbsp;of&nbsp;member&nbsp;name-&gt;value.<br>
+&nbsp;<br>
+This&nbsp;mapping&nbsp;lists&nbsp;all&nbsp;enum&nbsp;members,&nbsp;including&nbsp;aliases.&nbsp;&nbsp;Note&nbsp;that<br>
+this&nbsp;is&nbsp;a&nbsp;read-only&nbsp;view&nbsp;of&nbsp;the&nbsp;internal&nbsp;mapping.</span></dd>
+</dl>
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Parte">class <strong>Parte</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Parte">Parte</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;id:&nbsp;'<a href="builtins.html#str">str</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nombre:&nbsp;'<a href="builtins.html#str">str</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;eventos:&nbsp;'Tuple[<a href="#Evento">Evento</a>,&nbsp;...]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pentagramas:&nbsp;'int'&nbsp;=&nbsp;1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;transposicion:&nbsp;'<a href="#Transposicion">Transposicion</a>'&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;perfil:&nbsp;'Optional[<a href="builtins.html#str">str</a>]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;clave_cambio_octava:&nbsp;'int'&nbsp;=&nbsp;0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;claves:&nbsp;'Tuple[<a href="#Clave">Clave</a>,&nbsp;...]'&nbsp;=&nbsp;(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;armaduras:&nbsp;'Tuple[<a href="#Armadura">Armadura</a>,&nbsp;...]'&nbsp;=&nbsp;(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;compases:&nbsp;'Tuple[<a href="#Compas">Compas</a>,&nbsp;...]'&nbsp;=&nbsp;(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inicios_compas:&nbsp;'Tuple[Tuple[int,&nbsp;float],&nbsp;...]'&nbsp;=&nbsp;()<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Una&nbsp;parte&nbsp;de&nbsp;la&nbsp;partitura&nbsp;(un&nbsp;instrumento),&nbsp;con&nbsp;todos&nbsp;sus&nbsp;pentagramas&nbsp;y&nbsp;voces.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Parte-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Parte-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Parte-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Parte-__init__"><strong>__init__</strong></a>(
+    self,
+    id: 'str',
+    nombre: 'str',
+    eventos: 'Tuple[Evento, ...]',
+    pentagramas: 'int' = 1,
+    transposicion: 'Transposicion' = &lt;factory&gt;,
+    perfil: 'Optional[str]' = None,
+    clave_cambio_octava: 'int' = 0,
+    claves: 'Tuple[Clave, ...]' = (),
+    armaduras: 'Tuple[Armadura, ...]' = (),
+    compases: 'Tuple[Compas, ...]' = (),
+    inicios_compas: 'Tuple[Tuple[int, float], ...]' = ()
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Parte-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Parte-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Parte-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>notas</strong></dt>
+</dl>
+<dl><dt><strong>voces</strong></dt>
+<dd><span class="code">Pares&nbsp;(pentagrama,&nbsp;voz)&nbsp;presentes&nbsp;en&nbsp;la&nbsp;parte.</span></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'armaduras': 'Tuple[Armadura, ...]', 'clave_cambio_octava': 'int', 'claves': 'Tuple[Clave, ...]', 'compases': 'Tuple[Compas, ...]', 'eventos': 'Tuple[Evento, ...]', 'id': 'str', 'inicios_compas': 'Tuple[Tuple[int, float], ...]', 'nombre': 'str', 'pentagramas': 'int', 'perfil': 'Optional[str]', ...}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'armaduras': Field(name='armaduras',type='Tuple[Armadura, ......appingproxy({}),kw_only=False,_field_type=_FIELD), 'clave_cambio_octava': Field(name='clave_cambio_octava',type='int',defa...appingproxy({}),kw_only=False,_field_type=_FIELD), 'claves': Field(name='claves',type='Tuple[Clave, ...]',def...appingproxy({}),kw_only=False,_field_type=_FIELD), 'compases': Field(name='compases',type='Tuple[Compas, ...]',...appingproxy({}),kw_only=False,_field_type=_FIELD), 'eventos': Field(name='eventos',type='Tuple[Evento, ...]',d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'id': Field(name='id',type='str',default=&lt;dataclasses....appingproxy({}),kw_only=False,_field_type=_FIELD), 'inicios_compas': Field(name='inicios_compas',type='Tuple[Tuple[in...appingproxy({}),kw_only=False,_field_type=_FIELD), 'nombre': Field(name='nombre',type='str',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD), 'pentagramas': Field(name='pentagramas',type='int',default=1,de...appingproxy({}),kw_only=False,_field_type=_FIELD), 'perfil': Field(name='perfil',type='Optional[str]',default...appingproxy({}),kw_only=False,_field_type=_FIELD), ...}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('id', 'nombre', 'eventos', 'pentagramas', 'transposicion', 'perfil', 'clave_cambio_octava', 'claves', 'armaduras', 'compases', 'inicios_compas')</dl>
+
+<dl><dt><strong>armaduras</strong> = ()</dl>
+
+<dl><dt><strong>clave_cambio_octava</strong> = 0</dl>
+
+<dl><dt><strong>claves</strong> = ()</dl>
+
+<dl><dt><strong>compases</strong> = ()</dl>
+
+<dl><dt><strong>inicios_compas</strong> = ()</dl>
+
+<dl><dt><strong>pentagramas</strong> = 1</dl>
+
+<dl><dt><strong>perfil</strong> = None</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Partitura">class <strong>Partitura</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Partitura">Partitura</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;partes:&nbsp;'Tuple[<a href="#Parte">Parte</a>,&nbsp;...]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tempo:&nbsp;'<a href="#MapaTempo">MapaTempo</a>'&nbsp;=&nbsp;&amp;lt;factory&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;titulo:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;'',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ruta:&nbsp;'Optional[<a href="builtins.html#str">str</a>]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;avisos:&nbsp;'Tuple[<a href="builtins.html#str">str</a>,&nbsp;...]'&nbsp;=&nbsp;()<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<a href="#Partitura">Partitura</a>&nbsp;completa:&nbsp;partes,&nbsp;tempo&nbsp;y&nbsp;avisos&nbsp;de&nbsp;importación.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Partitura-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Partitura-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Partitura-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Partitura-__init__"><strong>__init__</strong></a>(
+    self,
+    partes: 'Tuple[Parte, ...]',
+    tempo: 'MapaTempo' = &lt;factory&gt;,
+    titulo: 'str' = '',
+    ruta: 'Optional[str]' = None,
+    avisos: 'Tuple[str, ...]' = ()
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Partitura-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Partitura-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Partitura-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<dl><dt><a name="Partitura-eventos"><strong>eventos</strong></a>(self) -&gt; 'List[Evento]'</dt><dd><span class="code">Todos&nbsp;los&nbsp;eventos&nbsp;de&nbsp;todas&nbsp;las&nbsp;partes,&nbsp;ordenados&nbsp;por&nbsp;instante.</span></dd></dl>
+
+<dl><dt><a name="Partitura-linea_de_practica"><strong>linea_de_practica</strong></a>(self, parte_id: 'Optional[str]' = None) -&gt; 'Tuple[Ataque, ...]'</dt><dd><span class="code">Secuencia&nbsp;de&nbsp;ataques&nbsp;de&nbsp;una&nbsp;parte&nbsp;(por&nbsp;defecto,&nbsp;la&nbsp;primera)&nbsp;para&nbsp;practicar&nbsp;nota&nbsp;a&nbsp;nota.<br>
+&nbsp;<br>
+-&nbsp;Las&nbsp;notas&nbsp;ligadas&nbsp;se&nbsp;suman&nbsp;en&nbsp;un&nbsp;único&nbsp;ataque.<br>
+-&nbsp;Las&nbsp;notas&nbsp;que&nbsp;empiezan&nbsp;juntas&nbsp;en&nbsp;un&nbsp;mismo&nbsp;pentagrama&nbsp;(acordes&nbsp;o&nbsp;voces)&nbsp;forman&nbsp;un<br>
+&nbsp;&nbsp;solo&nbsp;ataque.&nbsp;En&nbsp;un&nbsp;piano&nbsp;de&nbsp;dos&nbsp;pentagramas,&nbsp;las&nbsp;del&nbsp;pentagrama&nbsp;principal&nbsp;forman&nbsp;el<br>
+&nbsp;&nbsp;ataque&nbsp;y&nbsp;las&nbsp;de&nbsp;los&nbsp;otros&nbsp;son&nbsp;su&nbsp;`acompanamiento`:&nbsp;las&nbsp;dos&nbsp;manos&nbsp;no&nbsp;se&nbsp;funden&nbsp;en&nbsp;un<br>
+&nbsp;&nbsp;acorde&nbsp;por&nbsp;sonar&nbsp;a&nbsp;la&nbsp;vez.<br>
+-&nbsp;Los&nbsp;silencios&nbsp;no&nbsp;generan&nbsp;ataques:&nbsp;quedan&nbsp;como&nbsp;huecos&nbsp;entre&nbsp;`inicio_negras`.<br>
+-&nbsp;Las&nbsp;notas&nbsp;de&nbsp;adorno&nbsp;no&nbsp;se&nbsp;incluyen&nbsp;(no&nbsp;tienen&nbsp;duración&nbsp;propia).</span></dd></dl>
+
+<dl><dt><a name="Partitura-parte"><strong>parte</strong></a>(self, parte_id: 'str') -&gt; 'Parte'</dt></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>duracion_negras</strong></dt>
+</dl>
+<dl><dt><strong>duracion_s</strong></dt>
+</dl>
+<dl><dt><strong>total_notas</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'avisos': 'Tuple[str, ...]', 'partes': 'Tuple[Parte, ...]', 'ruta': 'Optional[str]', 'tempo': 'MapaTempo', 'titulo': 'str'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'avisos': Field(name='avisos',type='Tuple[str, ...]',defau...appingproxy({}),kw_only=False,_field_type=_FIELD), 'partes': Field(name='partes',type='Tuple[Parte, ...]',def...appingproxy({}),kw_only=False,_field_type=_FIELD), 'ruta': Field(name='ruta',type='Optional[str]',default=N...appingproxy({}),kw_only=False,_field_type=_FIELD), 'tempo': Field(name='tempo',type='MapaTempo',default=&lt;dat...appingproxy({}),kw_only=False,_field_type=_FIELD), 'titulo': Field(name='titulo',type='str',default='',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('partes', 'tempo', 'titulo', 'ruta', 'avisos')</dl>
+
+<dl><dt><strong>avisos</strong> = ()</dl>
+
+<dl><dt><strong>ruta</strong> = None</dl>
+
+<dl><dt><strong>titulo</strong> = ''</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ResultadoAltura">class <strong>ResultadoAltura</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ResultadoAltura">ResultadoAltura</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;estado:&nbsp;'<a href="#EstadoAltura">EstadoAltura</a>',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;midi_esperado:&nbsp;'Numero',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;midi_identificado:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cents:&nbsp;'Optional[float]'&nbsp;=&nbsp;None<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Comparación&nbsp;de&nbsp;una&nbsp;altura&nbsp;detectada&nbsp;con&nbsp;la&nbsp;esperada.<br>
+&nbsp;<br>
+-&nbsp;`midi_identificado`:&nbsp;la&nbsp;nota&nbsp;que&nbsp;realmente&nbsp;sonó&nbsp;(la&nbsp;esperada&nbsp;si&nbsp;la&nbsp;desviación&nbsp;es&nbsp;de<br>
+&nbsp;&nbsp;50&nbsp;cents&nbsp;o&nbsp;menos;&nbsp;si&nbsp;no,&nbsp;la&nbsp;más&nbsp;cercana).<br>
+-&nbsp;`cents`:&nbsp;desviación&nbsp;respecto&nbsp;de&nbsp;`midi_identificado`,&nbsp;o&nbsp;`None`&nbsp;si&nbsp;la&nbsp;entrada&nbsp;ya&nbsp;era&nbsp;una<br>
+&nbsp;&nbsp;nota&nbsp;sin&nbsp;afinación&nbsp;(por&nbsp;ejemplo,&nbsp;un&nbsp;nombre).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="ResultadoAltura-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="ResultadoAltura-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="ResultadoAltura-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="ResultadoAltura-__init__"><strong>__init__</strong></a>(
+    self,
+    estado: 'EstadoAltura',
+    midi_esperado: 'Numero',
+    midi_identificado: 'int',
+    cents: 'Optional[float]' = None
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ResultadoAltura-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="ResultadoAltura-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="ResultadoAltura-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>afinada</strong></dt>
+</dl>
+<dl><dt><strong>altura_identificada</strong></dt>
+</dl>
+<dl><dt><strong>diferencia_octavas</strong></dt>
+</dl>
+<dl><dt><strong>diferencia_semitonos</strong></dt>
+</dl>
+<dl><dt><strong>es_acierto</strong></dt>
+<dd><span class="code">Nota&nbsp;y&nbsp;octava&nbsp;correctas&nbsp;(afinada&nbsp;o&nbsp;no).&nbsp;Es&nbsp;lo&nbsp;que&nbsp;exige&nbsp;el&nbsp;modo&nbsp;normal.</span></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'cents': 'Optional[float]', 'estado': 'EstadoAltura', 'midi_esperado': 'Numero', 'midi_identificado': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'cents': Field(name='cents',type='Optional[float]',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD), 'estado': Field(name='estado',type='EstadoAltura',default=...appingproxy({}),kw_only=False,_field_type=_FIELD), 'midi_esperado': Field(name='midi_esperado',type='Numero',default...appingproxy({}),kw_only=False,_field_type=_FIELD), 'midi_identificado': Field(name='midi_identificado',type='int',defaul...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('estado', 'midi_esperado', 'midi_identificado', 'cents')</dl>
+
+<dl><dt><strong>cents</strong> = None</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Transposicion">class <strong>Transposicion</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Transposicion">Transposicion</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;semitonos:&nbsp;'int'&nbsp;=&nbsp;0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;origen:&nbsp;'<a href="#OrigenTransposicion">OrigenTransposicion</a>'&nbsp;=&nbsp;&amp;lt;<a href="#OrigenTransposicion">OrigenTransposicion</a>.SIN_TRANSPOSICION:&nbsp;'sin_transposicion'&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;detalle:&nbsp;'<a href="builtins.html#str">str</a>'&nbsp;=&nbsp;''<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Semitonos&nbsp;que&nbsp;se&nbsp;suman&nbsp;a&nbsp;la&nbsp;altura&nbsp;escrita&nbsp;para&nbsp;obtener&nbsp;la&nbsp;sonora,&nbsp;y&nbsp;su&nbsp;origen.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Transposicion-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Transposicion-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Transposicion-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Transposicion-__init__"><strong>__init__</strong></a>(
+    self,
+    semitonos: 'int' = 0,
+    origen: 'OrigenTransposicion' = &lt;OrigenTransposicion.SIN_TRANSPOSICION: 'sin_transposicion'&gt;,
+    detalle: 'str' = ''
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Transposicion-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Transposicion-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Transposicion-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'detalle': 'str', 'origen': 'OrigenTransposicion', 'semitonos': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'detalle': Field(name='detalle',type='str',default='',defau...appingproxy({}),kw_only=False,_field_type=_FIELD), 'origen': Field(name='origen',type='OrigenTransposicion',d...appingproxy({}),kw_only=False,_field_type=_FIELD), 'semitonos': Field(name='semitonos',type='int',default=0,defa...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('semitonos', 'origen', 'detalle')</dl>
+
+<dl><dt><strong>detalle</strong> = ''</dl>
+
+<dl><dt><strong>origen</strong> = &lt;OrigenTransposicion.SIN_TRANSPOSICION: 'sin_transposicion'&gt;</dl>
+
+<dl><dt><strong>semitonos</strong> = 0</dl>
+
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-__getattr__"><strong>__getattr__</strong></a>(nombre: 'str')</dt></dl>
+ <dl><dt><a name="-a_midi"><strong>a_midi</strong></a>(valor: 'Union[Altura, Numero, str]') -&gt; 'Numero'</dt><dd><span class="code">Número&nbsp;MIDI&nbsp;de&nbsp;una&nbsp;`<a href="#Altura">Altura</a>`,&nbsp;de&nbsp;un&nbsp;número&nbsp;MIDI&nbsp;o&nbsp;de&nbsp;un&nbsp;nombre&nbsp;de&nbsp;nota.</span></dd></dl>
+ <dl><dt><a name="-cents_entre"><strong>cents_entre</strong></a>(frecuencia_hz: 'Numero', referencia_hz: 'Numero') -&gt; 'float'</dt><dd><span class="code">Distancia&nbsp;en&nbsp;cents&nbsp;de&nbsp;`frecuencia_hz`&nbsp;respecto&nbsp;de&nbsp;`referencia_hz`&nbsp;(positiva&nbsp;si&nbsp;es&nbsp;más&nbsp;aguda).</span></dd></dl>
+ <dl><dt><a name="-comparar_alturas"><strong>comparar_alturas</strong></a>(
+    detectada: 'Union[Altura, Numero, str]',
+    esperada: 'Union[Altura, Numero, str]'
+) -&gt; 'ResultadoAltura'</dt><dd><span class="code">Compara&nbsp;dos&nbsp;alturas&nbsp;ya&nbsp;identificadas&nbsp;(nombres,&nbsp;`<a href="#Altura">Altura</a>`&nbsp;o&nbsp;MIDI),&nbsp;sin&nbsp;afinación.<br>
+&nbsp;<br>
+Las&nbsp;notas&nbsp;enarmónicas&nbsp;coinciden&nbsp;(A♯3&nbsp;=&nbsp;B♭3);&nbsp;la&nbsp;octava&nbsp;debe&nbsp;ser&nbsp;la&nbsp;misma.</span></dd></dl>
+ <dl><dt><a name="-comparar_frecuencia"><strong>comparar_frecuencia</strong></a>(
+    frecuencia_hz: 'Numero',
+    esperada: 'Union[Altura, Numero, str]',
+    la4: 'float' = 440.0
+) -&gt; 'ResultadoAltura'</dt><dd><span class="code">Compara&nbsp;una&nbsp;frecuencia&nbsp;medida&nbsp;con&nbsp;la&nbsp;altura&nbsp;esperada&nbsp;aplicando&nbsp;las&nbsp;tolerancias&nbsp;aprobadas.<br>
+&nbsp;<br>
+-&nbsp;|desviación|&nbsp;&lt;=&nbsp;25&nbsp;cents&nbsp;respecto&nbsp;de&nbsp;la&nbsp;esperada:&nbsp;CORRECTA.<br>
+-&nbsp;25&nbsp;&lt;&nbsp;|desviación|&nbsp;&lt;=&nbsp;50&nbsp;cents:&nbsp;DESAFINADA&nbsp;(misma&nbsp;nota&nbsp;y&nbsp;octava).<br>
+-&nbsp;|desviación|&nbsp;&gt;&nbsp;50&nbsp;cents:&nbsp;se&nbsp;identifica&nbsp;la&nbsp;nota&nbsp;más&nbsp;cercana&nbsp;a&nbsp;la&nbsp;frecuencia&nbsp;y&nbsp;se<br>
+&nbsp;&nbsp;clasifica&nbsp;como&nbsp;OCTAVA_INCORRECTA&nbsp;(misma&nbsp;clase&nbsp;de&nbsp;altura)&nbsp;o&nbsp;NOTA_INCORRECTA.</span></dd></dl>
+ <dl><dt><a name="-frecuencia_a_midi"><strong>frecuencia_a_midi</strong></a>(frecuencia_hz: 'Numero', la4: 'float' = 440.0) -&gt; 'float'</dt><dd><span class="code">Número&nbsp;MIDI&nbsp;fraccionario&nbsp;de&nbsp;una&nbsp;frecuencia&nbsp;(69,5&nbsp;está&nbsp;50&nbsp;cents&nbsp;por&nbsp;encima&nbsp;de&nbsp;A4).</span></dd></dl>
+ <dl><dt><a name="-midi_a_frecuencia"><strong>midi_a_frecuencia</strong></a>(midi: 'Numero', la4: 'float' = 440.0) -&gt; 'float'</dt><dd><span class="code">Frecuencia&nbsp;en&nbsp;hercios&nbsp;de&nbsp;un&nbsp;número&nbsp;MIDI&nbsp;(admite&nbsp;valores&nbsp;fraccionarios).</span></dd></dl>
+ <dl><dt><a name="-midi_mas_cercano"><strong>midi_mas_cercano</strong></a>(midi: 'Numero') -&gt; 'int'</dt><dd><span class="code">Semitono&nbsp;más&nbsp;cercano.&nbsp;Un&nbsp;empate&nbsp;exacto&nbsp;(medio&nbsp;semitono)&nbsp;se&nbsp;resuelve&nbsp;hacia&nbsp;arriba.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Dict</strong> = typing.Dict<br>
+<strong>Iterator</strong> = typing.Iterator<br>
+<strong>LA4_HZ</strong> = 440.0<br>
+<strong>List</strong> = typing.List<br>
+<strong>MIDI_LA4</strong> = 69<br>
+<strong>Numero</strong> = typing.Union[int, float]<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>PASOS</strong> = ('C', 'D', 'E', 'F', 'G', 'A', 'B')<br>
+<strong>TOLERANCIA_AFINADA_CENTS</strong> = 25.0<br>
+<strong>TOLERANCIA_IDENTIDAD_CENTS</strong> = 50.0<br>
+<strong>Tuple</strong> = typing.Tuple<br>
+<strong>Union</strong> = typing.Union</td></tr></table>
+</body>
+</html>
