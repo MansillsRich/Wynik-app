@@ -1,0 +1,20 @@
+$ python -m unittest discover -s tests -v
+test_correccion_valores_fuera_de_rango (test_ajustes.TestAjustes.test_correccion_valores_fuera_de_rango) ... ok
+test_valores_por_defecto (test_ajustes.TestAjustes.test_valores_por_defecto) ... ok
+test_directorio_configurado (test_almacenamiento.TestAlmacenamiento.test_directorio_configurado) ... ok
+test_lectura_escritura_json (test_almacenamiento.TestAlmacenamiento.test_lectura_escritura_json) ... ok
+test_leer_archivo_inexistente (test_almacenamiento.TestAlmacenamiento.test_leer_archivo_inexistente) ... ok
+test_ruta_cache_crea_directorio (test_almacenamiento.TestAlmacenamiento.test_ruta_cache_crea_directorio) ... ok
+test_altura_desde_nombre (test_musica.TestMusica.test_altura_desde_nombre) ... ok
+test_comparar_alturas (test_musica.TestMusica.test_comparar_alturas) ... ok
+test_enarmonicos (test_musica.TestMusica.test_enarmonicos) ... ok
+test_nombre_invalido (test_musica.TestMusica.test_nombre_invalido) ... ok
+test_persistencia_sesion_con_to_dict (test_progreso.TestProgreso.test_persistencia_sesion_con_to_dict) ... ok
+test_registrar_sesion_practica (test_progreso.TestProgreso.test_registrar_sesion_practica) ... ok
+test_sesion_progreso_to_dict_y_from_dict (test_progreso.TestProgreso.test_sesion_progreso_to_dict_y_from_dict) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.008s
+
+OK
+[código de salida: 0]

@@ -1,0 +1,37 @@
+{
+  "imagen": "09_progreso.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Resumen de sesiones y precisión media",
+      "caja": [
+        344,
+        198,
+        420,
+        84
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Por partitura (mejor y última)",
+      "caja": [
+        28,
+        914,
+        768,
+        170
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Sesiones recientes",
+      "caja": [
+        28,
+        1108,
+        768,
+        149
+      ]
+    }
+  ]
+}

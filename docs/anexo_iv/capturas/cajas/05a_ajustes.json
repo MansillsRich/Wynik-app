@@ -1,0 +1,47 @@
+{
+  "imagen": "05a_ajustes.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Micrófono",
+      "caja": [
+        28,
+        132,
+        768,
+        329
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Ruido de fondo (calibración)",
+      "caja": [
+        28,
+        485,
+        768,
+        418
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Afinación de referencia (La4)",
+      "caja": [
+        28,
+        927,
+        768,
+        300
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Afinación de la guitarra",
+      "caja": [
+        28,
+        1251,
+        768,
+        442
+      ]
+    }
+  ]
+}

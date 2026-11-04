@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module nucleo.digitacion</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="nucleo.html" class="white">nucleo</a>.digitacion</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../nucleo/digitacion.py">nucleo/digitacion.py</a></td></tr></table>
+    <p><span class="code">Guía&nbsp;visual&nbsp;para&nbsp;tocar&nbsp;una&nbsp;nota&nbsp;o&nbsp;un&nbsp;acorde:&nbsp;posiciones&nbsp;en&nbsp;la&nbsp;guitarra&nbsp;y&nbsp;teclas&nbsp;del&nbsp;piano.<br>
+&nbsp;<br>
+Todo&nbsp;se&nbsp;calcula&nbsp;a&nbsp;partir&nbsp;de&nbsp;alturas&nbsp;sonoras&nbsp;(MIDI)&nbsp;y&nbsp;de&nbsp;la&nbsp;afinación&nbsp;configurada,&nbsp;de&nbsp;forma<br>
+verificable:&nbsp;la&nbsp;cuerda&nbsp;c&nbsp;al&nbsp;aire&nbsp;más&nbsp;el&nbsp;traste&nbsp;t&nbsp;suena&nbsp;exactamente&nbsp;afinacion[c]&nbsp;+&nbsp;t.<br>
+&nbsp;<br>
+Guitarra<br>
+-&nbsp;`posiciones_guitarra`:&nbsp;todas&nbsp;las&nbsp;posiciones&nbsp;(cuerda,&nbsp;traste)&nbsp;que&nbsp;producen&nbsp;una&nbsp;altura.<br>
+-&nbsp;`posicion_sugerida`:&nbsp;sin&nbsp;contexto,&nbsp;la&nbsp;del&nbsp;traste&nbsp;más&nbsp;bajo;&nbsp;con&nbsp;la&nbsp;posición&nbsp;anterior,&nbsp;la<br>
+&nbsp;&nbsp;más&nbsp;cercana&nbsp;a&nbsp;ella.&nbsp;Un&nbsp;dedo&nbsp;solo&nbsp;se&nbsp;indica&nbsp;cuando&nbsp;la&nbsp;convención&nbsp;es&nbsp;inequívoca:&nbsp;cuerda&nbsp;al<br>
+&nbsp;&nbsp;aire&nbsp;(0)&nbsp;o&nbsp;primera&nbsp;posición,&nbsp;un&nbsp;dedo&nbsp;por&nbsp;traste&nbsp;(trastes&nbsp;1–4&nbsp;→&nbsp;dedos&nbsp;1–4).&nbsp;En&nbsp;otras<br>
+&nbsp;&nbsp;posiciones&nbsp;depende&nbsp;de&nbsp;la&nbsp;mano&nbsp;y&nbsp;no&nbsp;se&nbsp;inventa.<br>
+-&nbsp;`acorde_guitarra`:&nbsp;si&nbsp;las&nbsp;alturas&nbsp;coinciden&nbsp;exactamente&nbsp;con&nbsp;una&nbsp;forma&nbsp;abierta&nbsp;estándar<br>
+&nbsp;&nbsp;(afinación&nbsp;estándar)&nbsp;o&nbsp;con&nbsp;una&nbsp;forma&nbsp;móvil&nbsp;con&nbsp;cejilla&nbsp;(Mi&nbsp;y&nbsp;La,&nbsp;mayor,&nbsp;menor&nbsp;y&nbsp;séptima,<br>
+&nbsp;&nbsp;del&nbsp;traste&nbsp;1&nbsp;al&nbsp;12),&nbsp;se&nbsp;devuelve&nbsp;con&nbsp;su&nbsp;digitación&nbsp;habitual&nbsp;y&nbsp;su&nbsp;cejilla&nbsp;(`validado=True`).<br>
+&nbsp;&nbsp;Una&nbsp;forma&nbsp;móvil&nbsp;solo&nbsp;se&nbsp;acepta&nbsp;si&nbsp;las&nbsp;alturas&nbsp;que&nbsp;produce,&nbsp;calculadas&nbsp;con&nbsp;la&nbsp;afinación,&nbsp;son<br>
+&nbsp;&nbsp;exactamente&nbsp;las&nbsp;del&nbsp;acorde:&nbsp;la&nbsp;digitación&nbsp;viene&nbsp;de&nbsp;una&nbsp;tabla&nbsp;curada,&nbsp;nunca&nbsp;se&nbsp;deduce.&nbsp;Si&nbsp;no,<br>
+&nbsp;&nbsp;se&nbsp;busca&nbsp;una&nbsp;colocación&nbsp;tocable&nbsp;(una&nbsp;nota&nbsp;por&nbsp;cuerda,&nbsp;cuerdas&nbsp;contiguas,&nbsp;a&nbsp;lo&nbsp;sumo&nbsp;cuatro<br>
+&nbsp;&nbsp;dedos&nbsp;y&nbsp;≤&nbsp;3&nbsp;trastes&nbsp;de&nbsp;apertura)&nbsp;sin&nbsp;digitación&nbsp;(`validado=False`).&nbsp;Si&nbsp;no&nbsp;existe,&nbsp;`None`:<br>
+&nbsp;&nbsp;la&nbsp;interfaz&nbsp;muestra&nbsp;las&nbsp;notas&nbsp;y&nbsp;avisa&nbsp;de&nbsp;que&nbsp;no&nbsp;hay&nbsp;propuesta&nbsp;validada.<br>
+&nbsp;<br>
+Piano<br>
+-&nbsp;`rango_teclado`:&nbsp;teclas&nbsp;que&nbsp;conviene&nbsp;dibujar&nbsp;para&nbsp;ver&nbsp;las&nbsp;notas&nbsp;en&nbsp;su&nbsp;octava.<br>
+-&nbsp;`digitacion_piano`:&nbsp;solo&nbsp;para&nbsp;tríadas&nbsp;en&nbsp;posición&nbsp;fundamental&nbsp;y&nbsp;cerrada&nbsp;(1-3-5&nbsp;con&nbsp;la&nbsp;mano<br>
+&nbsp;&nbsp;derecha,&nbsp;5-3-1&nbsp;con&nbsp;la&nbsp;izquierda),&nbsp;la&nbsp;digitación&nbsp;de&nbsp;los&nbsp;métodos&nbsp;de&nbsp;iniciación.&nbsp;En&nbsp;los&nbsp;demás<br>
+&nbsp;&nbsp;casos&nbsp;no&nbsp;se&nbsp;propone&nbsp;ninguna.<br>
+&nbsp;<br>
+Solo&nbsp;usa&nbsp;la&nbsp;biblioteca&nbsp;estándar.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="itertools.html">itertools</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="nucleo.digitacion.html#Cejilla">Cejilla</a>
+</dt><dt class="heading-text"><a href="nucleo.digitacion.html#DiagramaAcorde">DiagramaAcorde</a>
+</dt><dt class="heading-text"><a href="nucleo.digitacion.html#PosicionGuitarra">PosicionGuitarra</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Cejilla">class <strong>Cejilla</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Cejilla">Cejilla</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;traste:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cuerda_desde:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cuerda_hasta:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dedo:&nbsp;'int'&nbsp;=&nbsp;1<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Un&nbsp;dedo&nbsp;que&nbsp;pisa&nbsp;varias&nbsp;cuerdas&nbsp;contiguas&nbsp;en&nbsp;el&nbsp;mismo&nbsp;traste&nbsp;(de&nbsp;la&nbsp;más&nbsp;grave,&nbsp;`desde`,&nbsp;a<br>
+la&nbsp;más&nbsp;aguda,&nbsp;`hasta`;&nbsp;la&nbsp;6.ª&nbsp;es&nbsp;la&nbsp;más&nbsp;grave).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Cejilla-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="Cejilla-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="Cejilla-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="Cejilla-__init__"><strong>__init__</strong></a>(
+    self,
+    traste: 'int',
+    cuerda_desde: 'int',
+    cuerda_hasta: 'int',
+    dedo: 'int' = 1
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Cejilla-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="Cejilla-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="Cejilla-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<dl><dt><a name="Cejilla-cubre"><strong>cubre</strong></a>(self, cuerda: 'int', traste: 'int') -&gt; 'bool'</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'cuerda_desde': 'int', 'cuerda_hasta': 'int', 'dedo': 'int', 'traste': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'cuerda_desde': Field(name='cuerda_desde',type='int',default=&lt;da...appingproxy({}),kw_only=False,_field_type=_FIELD), 'cuerda_hasta': Field(name='cuerda_hasta',type='int',default=&lt;da...appingproxy({}),kw_only=False,_field_type=_FIELD), 'dedo': Field(name='dedo',type='int',default=1,default_f...appingproxy({}),kw_only=False,_field_type=_FIELD), 'traste': Field(name='traste',type='int',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('traste', 'cuerda_desde', 'cuerda_hasta', 'dedo')</dl>
+
+<dl><dt><strong>dedo</strong> = 1</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="DiagramaAcorde">class <strong>DiagramaAcorde</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#DiagramaAcorde">DiagramaAcorde</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;nombre:&nbsp;'str',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;trastes:&nbsp;'Tuple[Optional[int],&nbsp;...]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dedos:&nbsp;'Optional[Tuple[Optional[int],&nbsp;...]]',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;validado:&nbsp;'bool',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cejillas:&nbsp;'Tuple[<a href="#Cejilla">Cejilla</a>,&nbsp;...]'&nbsp;=&nbsp;(),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;traste_base:&nbsp;'Optional[int]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;fuente:&nbsp;'str'&nbsp;=&nbsp;'calculada'<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+Trastes&nbsp;y&nbsp;dedos&nbsp;por&nbsp;cuerda,&nbsp;de&nbsp;la&nbsp;6.ª&nbsp;(grave)&nbsp;a&nbsp;la&nbsp;1.ª&nbsp;(aguda).&nbsp;None&nbsp;=&nbsp;no&nbsp;se&nbsp;toca.<br>
+&nbsp;<br>
+-&nbsp;`cejillas`:&nbsp;las&nbsp;cejillas&nbsp;de&nbsp;la&nbsp;digitación&nbsp;(vacío&nbsp;si&nbsp;no&nbsp;hay&nbsp;o&nbsp;si&nbsp;no&nbsp;se&nbsp;conocen).<br>
+-&nbsp;`traste_base`:&nbsp;el&nbsp;traste&nbsp;más&nbsp;bajo&nbsp;que&nbsp;se&nbsp;pisa&nbsp;(None&nbsp;si&nbsp;todo&nbsp;es&nbsp;al&nbsp;aire).<br>
+-&nbsp;`fuente`:&nbsp;'forma_abierta'&nbsp;y&nbsp;'forma_movil'&nbsp;(tabla&nbsp;curada,&nbsp;con&nbsp;digitación),&nbsp;o&nbsp;'calculada'<br>
+&nbsp;&nbsp;(solo&nbsp;posiciones:&nbsp;no&nbsp;se&nbsp;afirma&nbsp;que&nbsp;sea&nbsp;la&nbsp;digitación&nbsp;habitual&nbsp;ni&nbsp;que&nbsp;esté&nbsp;verificada).<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="DiagramaAcorde-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="DiagramaAcorde-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="DiagramaAcorde-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="DiagramaAcorde-__init__"><strong>__init__</strong></a>(
+    self,
+    nombre: 'str',
+    trastes: 'Tuple[Optional[int], ...]',
+    dedos: 'Optional[Tuple[Optional[int], ...]]',
+    validado: 'bool',
+    cejillas: 'Tuple[Cejilla, ...]' = (),
+    traste_base: 'Optional[int]' = None,
+    fuente: 'str' = 'calculada'
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="DiagramaAcorde-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="DiagramaAcorde-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="DiagramaAcorde-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<dl><dt><a name="DiagramaAcorde-alturas"><strong>alturas</strong></a>(self, afinacion='estandar') -&gt; 'List[int]'</dt></dl>
+
+<dl><dt><a name="DiagramaAcorde-dedos_necesarios"><strong>dedos_necesarios</strong></a>(self) -&gt; 'int'</dt><dd><span class="code">Dedos&nbsp;distintos&nbsp;que&nbsp;pide&nbsp;la&nbsp;digitación&nbsp;(una&nbsp;cejilla&nbsp;cuenta&nbsp;como&nbsp;uno).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>origen</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'cejillas': 'Tuple[Cejilla, ...]', 'dedos': 'Optional[Tuple[Optional[int], ...]]', 'fuente': 'str', 'nombre': 'str', 'traste_base': 'Optional[int]', 'trastes': 'Tuple[Optional[int], ...]', 'validado': 'bool'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'cejillas': Field(name='cejillas',type='Tuple[Cejilla, ...]'...appingproxy({}),kw_only=False,_field_type=_FIELD), 'dedos': Field(name='dedos',type='Optional[Tuple[Optional...appingproxy({}),kw_only=False,_field_type=_FIELD), 'fuente': Field(name='fuente',type='str',default='calculad...appingproxy({}),kw_only=False,_field_type=_FIELD), 'nombre': Field(name='nombre',type='str',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD), 'traste_base': Field(name='traste_base',type='Optional[int]',de...appingproxy({}),kw_only=False,_field_type=_FIELD), 'trastes': Field(name='trastes',type='Tuple[Optional[int], ...appingproxy({}),kw_only=False,_field_type=_FIELD), 'validado': Field(name='validado',type='bool',default=&lt;datac...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('nombre', 'trastes', 'dedos', 'validado', 'cejillas', 'traste_base', 'fuente')</dl>
+
+<dl><dt><strong>cejillas</strong> = ()</dl>
+
+<dl><dt><strong>fuente</strong> = 'calculada'</dl>
+
+<dl><dt><strong>traste_base</strong> = None</dl>
+
+</td></tr></table> <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="PosicionGuitarra">class <strong>PosicionGuitarra</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#PosicionGuitarra">PosicionGuitarra</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;cuerda:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;traste:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;midi:&nbsp;'int',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;dedo:&nbsp;'Optional[int]'&nbsp;=&nbsp;None<br>
+)&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+<a href="#PosicionGuitarra">PosicionGuitarra</a>(cuerda:&nbsp;'int',&nbsp;traste:&nbsp;'int',&nbsp;midi:&nbsp;'int',&nbsp;dedo:&nbsp;'Optional[int]'&nbsp;=&nbsp;None)<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="PosicionGuitarra-__delattr__"><strong>__delattr__</strong></a>(self, name)</dt><dd><span class="code">Implement&nbsp;delattr(self,&nbsp;name).</span></dd></dl>
+
+<dl><dt><a name="PosicionGuitarra-__eq__"><strong>__eq__</strong></a>(self, other)</dt><dd><span class="code">Return&nbsp;self==value.</span></dd></dl>
+
+<dl><dt><a name="PosicionGuitarra-__hash__"><strong>__hash__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;hash(self).</span></dd></dl>
+
+<dl><dt><a name="PosicionGuitarra-__init__"><strong>__init__</strong></a>(
+    self,
+    cuerda: 'int',
+    traste: 'int',
+    midi: 'int',
+    dedo: 'Optional[int]' = None
+) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="PosicionGuitarra-__replace__"><strong>__replace__</strong></a> = _replace(self, /, **changes)<span class="grey"><span class="heading-text"> from <a href="dataclasses.html">dataclasses</a></span></span></dt></dl>
+
+<dl><dt><a name="PosicionGuitarra-__repr__"><strong>__repr__</strong></a>(self)</dt><dd><span class="code">Return&nbsp;repr(self).</span></dd></dl>
+
+<dl><dt><a name="PosicionGuitarra-__setattr__"><strong>__setattr__</strong></a>(self, name, value)</dt><dd><span class="code">Implement&nbsp;setattr(self,&nbsp;name,&nbsp;value).</span></dd></dl>
+
+<dl><dt><a name="PosicionGuitarra-descripcion"><strong>descripcion</strong></a>(self) -&gt; 'str'</dt></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>al_aire</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'cuerda': 'int', 'dedo': 'Optional[int]', 'midi': 'int', 'traste': 'int'}</dl>
+
+<dl><dt><strong>__dataclass_fields__</strong> = {'cuerda': Field(name='cuerda',type='int',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD), 'dedo': Field(name='dedo',type='Optional[int]',default=N...appingproxy({}),kw_only=False,_field_type=_FIELD), 'midi': Field(name='midi',type='int',default=&lt;dataclasse...appingproxy({}),kw_only=False,_field_type=_FIELD), 'traste': Field(name='traste',type='int',default=&lt;dataclas...appingproxy({}),kw_only=False,_field_type=_FIELD)}</dl>
+
+<dl><dt><strong>__dataclass_params__</strong> = _DataclassParams(init=True,repr=True,eq=True,ord...rue,kw_only=False,slots=False,weakref_slot=False)</dl>
+
+<dl><dt><strong>__match_args__</strong> = ('cuerda', 'traste', 'midi', 'dedo')</dl>
+
+<dl><dt><strong>dedo</strong> = None</dl>
+
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-acorde_guitarra"><strong>acorde_guitarra</strong></a>(
+    midis: 'Sequence[float]',
+    afinacion='estandar',
+    trastes: 'int' = 19
+) -&gt; 'Optional[DiagramaAcorde]'</dt><dd><span class="code">Diagrama&nbsp;para&nbsp;tocar&nbsp;exactamente&nbsp;estas&nbsp;alturas&nbsp;sonoras,&nbsp;o&nbsp;None&nbsp;si&nbsp;no&nbsp;hay&nbsp;uno&nbsp;tocable.</span></dd></dl>
+ <dl><dt><a name="-alternativas_guitarra"><strong>alternativas_guitarra</strong></a>(
+    midi,
+    afinacion='estandar',
+    trastes: 'int' = 19,
+    elegida: 'Optional[PosicionGuitarra]' = None
+) -&gt; 'List[PosicionGuitarra]'</dt></dl>
+ <dl><dt><a name="-digitacion_piano"><strong>digitacion_piano</strong></a>(midis: 'Sequence[float]', mano: 'str' = 'derecha') -&gt; 'Optional[Tuple[int, ...]]'</dt><dd><span class="code">Dedos&nbsp;(1&nbsp;=&nbsp;pulgar&nbsp;…&nbsp;5&nbsp;=&nbsp;meñique)&nbsp;para&nbsp;las&nbsp;notas&nbsp;ordenadas&nbsp;de&nbsp;grave&nbsp;a&nbsp;aguda,&nbsp;solo&nbsp;si&nbsp;es<br>
+una&nbsp;tríada&nbsp;cerrada&nbsp;en&nbsp;posición&nbsp;fundamental;&nbsp;None&nbsp;en&nbsp;cualquier&nbsp;otro&nbsp;caso.</span></dd></dl>
+ <dl><dt><a name="-es_tecla_negra"><strong>es_tecla_negra</strong></a>(midi: 'int') -&gt; 'bool'</dt></dl>
+ <dl><dt><a name="-formas_moviles"><strong>formas_moviles</strong></a>(afinacion='estandar') -&gt; 'List[DiagramaAcorde]'</dt><dd><span class="code">Todas&nbsp;las&nbsp;formas&nbsp;móviles&nbsp;con&nbsp;cejilla&nbsp;(traste&nbsp;1&nbsp;al&nbsp;12)&nbsp;que&nbsp;caben&nbsp;en&nbsp;el&nbsp;mástil.&nbsp;Cada&nbsp;una<br>
+lleva&nbsp;su&nbsp;cejilla&nbsp;y&nbsp;su&nbsp;digitación;&nbsp;las&nbsp;alturas&nbsp;se&nbsp;calculan&nbsp;con&nbsp;la&nbsp;afinación&nbsp;dada.</span></dd></dl>
+ <dl><dt><a name="-posicion_sugerida"><strong>posicion_sugerida</strong></a>(
+    midi,
+    afinacion='estandar',
+    trastes: 'int' = 19,
+    anterior: 'Optional[PosicionGuitarra]' = None
+) -&gt; 'Optional[PosicionGuitarra]'</dt><dd><span class="code">La&nbsp;posición&nbsp;más&nbsp;sencilla&nbsp;(traste&nbsp;más&nbsp;bajo)&nbsp;o,&nbsp;si&nbsp;se&nbsp;conoce&nbsp;la&nbsp;anterior,&nbsp;la&nbsp;más<br>
+cercana&nbsp;a&nbsp;ella.&nbsp;None&nbsp;si&nbsp;la&nbsp;nota&nbsp;no&nbsp;existe&nbsp;en&nbsp;la&nbsp;guitarra&nbsp;con&nbsp;esa&nbsp;afinación.</span></dd></dl>
+ <dl><dt><a name="-posiciones_guitarra"><strong>posiciones_guitarra</strong></a>(midi, afinacion='estandar', trastes: 'int' = 19) -&gt; 'List[PosicionGuitarra]'</dt><dd><span class="code">Posiciones&nbsp;que&nbsp;producen&nbsp;la&nbsp;altura&nbsp;sonora&nbsp;`midi`,&nbsp;del&nbsp;traste&nbsp;más&nbsp;bajo&nbsp;al&nbsp;más&nbsp;alto.</span></dd></dl>
+ <dl><dt><a name="-rango_teclado"><strong>rango_teclado</strong></a>(midis: 'Sequence[float]', octavas_minimas: 'int' = 2) -&gt; 'Tuple[int, int]'</dt><dd><span class="code">Primera&nbsp;y&nbsp;última&nbsp;tecla&nbsp;(MIDI)&nbsp;a&nbsp;dibujar:&nbsp;de&nbsp;un&nbsp;Do&nbsp;a&nbsp;un&nbsp;Si,&nbsp;con&nbsp;las&nbsp;notas&nbsp;dentro&nbsp;y&nbsp;al<br>
+menos&nbsp;`octavas_minimas`&nbsp;octavas,&nbsp;sin&nbsp;salir&nbsp;del&nbsp;piano&nbsp;(A0–C8).</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>AFINACIONES_GUITARRA</strong> = {'estandar': (64, 59, 55, 50, 45, 40), 'medio_tono_abajo': (63, 58, 54, 49, 44, 39), 're_abierta': (62, 57, 54, 50, 45, 38), 're_grave': (64, 59, 55, 50, 45, 38)}<br>
+<strong>APERTURA_MAXIMA_TRASTES</strong> = 3<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>FORMAS_ABIERTAS</strong> = {'Do mayor (C)': ((None, 3, 2, 0, 1, 0), (None, 3, 2, 0, 1, 0)), 'Do séptima (C7)': ((None, 3, 2, 3, 1, 0), (None, 3, 2, 4, 1, 0)), 'La mayor (A)': ((None, 0, 2, 2, 2, 0), (None, 0, 1, 2, 3, 0)), 'La menor (Am)': ((None, 0, 2, 2, 1, 0), (None, 0, 2, 3, 1, 0)), 'La séptima (A7)': ((None, 0, 2, 0, 2, 0), (None, 0, 2, 0, 3, 0)), 'Mi mayor (E)': ((0, 2, 2, 1, 0, 0), (0, 2, 3, 1, 0, 0)), 'Mi menor (Em)': ((0, 2, 2, 0, 0, 0), (0, 2, 3, 0, 0, 0)), 'Mi séptima (E7)': ((0, 2, 0, 1, 0, 0), (0, 2, 0, 1, 0, 0)), 'Re mayor (D)': ((None, None, 0, 2, 3, 2), (None, None, 0, 1, 3, 2)), 'Re menor (Dm)': ((None, None, 0, 2, 3, 1), (None, None, 0, 2, 3, 1)), ...}<br>
+<strong>FORMAS_MOVILES</strong> = {'mayor, forma de La': ((None, 0, 2, 2, 2, 0), (None, 1, 2, 3, 4, 1), 5, 5, 'mayor'), 'mayor, forma de Mi': ((0, 2, 2, 1, 0, 0), (1, 3, 4, 2, 1, 1), 6, 6, 'mayor'), 'menor, forma de La': ((None, 0, 2, 2, 1, 0), (None, 1, 3, 4, 2, 1), 5, 5, 'menor'), 'menor, forma de Mi': ((0, 2, 2, 0, 0, 0), (1, 3, 4, 1, 1, 1), 6, 6, 'menor'), 'séptima, forma de La': ((None, 0, 2, 0, 2, 0), (None, 1, 3, 1, 4, 1), 5, 5, 'séptima'), 'séptima, forma de Mi': ((0, 2, 0, 1, 0, 0), (1, 3, 1, 2, 1, 1), 6, 6, 'séptima')}<br>
+<strong>List</strong> = typing.List<br>
+<strong>MAXIMO_DEDOS</strong> = 4<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>PIANO_MIDI_MAX</strong> = 108<br>
+<strong>PIANO_MIDI_MIN</strong> = 21<br>
+<strong>Sequence</strong> = typing.Sequence<br>
+<strong>TRASTES_GUITARRA</strong> = 19<br>
+<strong>TRASTE_MAXIMO_FORMA_MOVIL</strong> = 12<br>
+<strong>Tuple</strong> = typing.Tuple<br>
+<strong>__annotations__</strong> = {'FORMAS_ABIERTAS': 'Dict[str, Tuple[Tuple[Optional[int], ...], Tuple[Optional[int], ...]]]', 'FORMAS_MOVILES': 'Dict[str, Tuple[Tuple[Optional[int], ...], Tuple[Optional[int], ...], int, int, str]]'}</td></tr></table>
+</body></html>

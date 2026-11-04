@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module servicios.reproductor_guia</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="servicios.html" class="white">servicios</a>.reproductor_guia</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../servicios/reproductor_guia.py">servicios/reproductor_guia.py</a></td></tr></table>
+    <p><span class="code">Estado&nbsp;del&nbsp;reproductor&nbsp;de&nbsp;la&nbsp;guía&nbsp;de&nbsp;audio,&nbsp;sin&nbsp;depender&nbsp;de&nbsp;Kivy.<br>
+&nbsp;<br>
+`<a href="#ReproductorGuia">ReproductorGuia</a>`&nbsp;envuelve&nbsp;el&nbsp;objeto&nbsp;de&nbsp;sonido&nbsp;que&nbsp;devuelve&nbsp;`SoundLoader`&nbsp;(o&nbsp;uno&nbsp;de&nbsp;prueba)&nbsp;y<br>
+decide&nbsp;qué&nbsp;puede&nbsp;mostrar&nbsp;la&nbsp;interfaz&nbsp;sin&nbsp;inventar&nbsp;nada:<br>
+&nbsp;<br>
+-&nbsp;La&nbsp;duración&nbsp;sale&nbsp;del&nbsp;sonido&nbsp;(`length`)&nbsp;o&nbsp;del&nbsp;WAV.<br>
+-&nbsp;Posición&nbsp;y&nbsp;búsqueda&nbsp;solo&nbsp;se&nbsp;ofrecen&nbsp;si&nbsp;el&nbsp;reproductor&nbsp;las&nbsp;implementa&nbsp;de&nbsp;verdad<br>
+&nbsp;&nbsp;(`admite_busqueda`).&nbsp;El&nbsp;reproductor&nbsp;SDL2&nbsp;de&nbsp;Kivy&nbsp;en&nbsp;escritorio&nbsp;no&nbsp;lo&nbsp;hace:&nbsp;`get_pos()`<br>
+&nbsp;&nbsp;devuelve&nbsp;siempre&nbsp;0&nbsp;y&nbsp;`seek()`&nbsp;no&nbsp;hace&nbsp;nada.&nbsp;En&nbsp;ese&nbsp;caso&nbsp;la&nbsp;posición&nbsp;que&nbsp;se&nbsp;muestra&nbsp;es&nbsp;el<br>
+&nbsp;&nbsp;tiempo&nbsp;transcurrido&nbsp;desde&nbsp;que&nbsp;empezó&nbsp;a&nbsp;sonar&nbsp;(siempre&nbsp;empieza&nbsp;desde&nbsp;el&nbsp;principio),&nbsp;y&nbsp;la<br>
+&nbsp;&nbsp;interfaz&nbsp;la&nbsp;presenta&nbsp;como&nbsp;una&nbsp;barra&nbsp;de&nbsp;solo&nbsp;lectura,&nbsp;sin&nbsp;pausa&nbsp;ni&nbsp;búsqueda.<br>
+-&nbsp;El&nbsp;fin&nbsp;natural&nbsp;del&nbsp;audio&nbsp;se&nbsp;detecta&nbsp;con&nbsp;el&nbsp;evento&nbsp;`on_stop`&nbsp;del&nbsp;sonido,&nbsp;si&nbsp;existe,&nbsp;y,&nbsp;como<br>
+&nbsp;&nbsp;respaldo,&nbsp;cuando&nbsp;el&nbsp;tiempo&nbsp;transcurrido&nbsp;supera&nbsp;la&nbsp;duración:&nbsp;la&nbsp;interfaz&nbsp;no&nbsp;se&nbsp;queda<br>
+&nbsp;&nbsp;mostrando&nbsp;«sonando»&nbsp;con&nbsp;el&nbsp;audio&nbsp;ya&nbsp;parado.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="time.html">time</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="servicios.reproductor_guia.html#ReproductorGuia">ReproductorGuia</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="ReproductorGuia">class <strong>ReproductorGuia</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#ReproductorGuia">ReproductorGuia</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sonido,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;duracion_s:&nbsp;'Optional[float]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;reloj:&nbsp;'Callable[[],&nbsp;float]'&nbsp;=&nbsp;&amp;lt;built-in&nbsp;function&nbsp;monotonic&amp;gt;,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;al_terminar:&nbsp;'Optional[Callable[[],&nbsp;None]]'&nbsp;=&nbsp;None<br>
+)<br>
+&nbsp;<br>
+<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="ReproductorGuia-__init__"><strong>__init__</strong></a>(
+    self,
+    sonido,
+    duracion_s: 'Optional[float]' = None,
+    reloj: 'Callable[[], float]' = &lt;built-in function monotonic&gt;,
+    al_terminar: 'Optional[Callable[[], None]]' = None
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="ReproductorGuia-actualizar"><strong>actualizar</strong></a>(self) -&gt; 'bool'</dt><dd><span class="code">Llamar&nbsp;periódicamente&nbsp;mientras&nbsp;suena.&nbsp;True&nbsp;si&nbsp;el&nbsp;audio&nbsp;acaba&nbsp;de&nbsp;terminar&nbsp;solo.</span></dd></dl>
+
+<dl><dt><a name="ReproductorGuia-buscar"><strong>buscar</strong></a>(self, segundos: 'float') -&gt; 'bool'</dt><dd><span class="code">Mueve&nbsp;la&nbsp;reproducción.&nbsp;False&nbsp;(y&nbsp;nada&nbsp;cambia)&nbsp;si&nbsp;el&nbsp;reproductor&nbsp;no&nbsp;lo&nbsp;admite.</span></dd></dl>
+
+<dl><dt><a name="ReproductorGuia-detener"><strong>detener</strong></a>(self) -&gt; 'None'</dt></dl>
+
+<dl><dt><a name="ReproductorGuia-pausar"><strong>pausar</strong></a>(self) -&gt; 'None'</dt><dd><span class="code">Con&nbsp;búsqueda:&nbsp;pausa&nbsp;real.&nbsp;Sin&nbsp;ella,&nbsp;equivale&nbsp;a&nbsp;detener&nbsp;(vuelve&nbsp;al&nbsp;principio).</span></dd></dl>
+
+<dl><dt><a name="ReproductorGuia-posicion"><strong>posicion</strong></a>(self) -&gt; 'float'</dt><dd><span class="code">#&nbsp;------------------------------------------------------------------&nbsp;consulta</span></dd></dl>
+
+<dl><dt><a name="ReproductorGuia-reproducir"><strong>reproducir</strong></a>(self) -&gt; 'None'</dt><dd><span class="code">#&nbsp;------------------------------------------------------------------&nbsp;acciones</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>admite_pausa</strong></dt>
+<dd><span class="code">Pausar&nbsp;exige&nbsp;reanudar&nbsp;en&nbsp;el&nbsp;mismo&nbsp;punto,&nbsp;es&nbsp;decir,&nbsp;búsqueda&nbsp;real.</span></dd>
+</dl>
+<dl><dt><strong>sonando</strong></dt>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-admite_busqueda"><strong>admite_busqueda</strong></a>(sonido) -&gt; 'bool'</dt><dd><span class="code">True&nbsp;si&nbsp;el&nbsp;reproductor&nbsp;implementa&nbsp;`seek`&nbsp;y&nbsp;`get_pos`&nbsp;(no&nbsp;los&nbsp;métodos&nbsp;vacíos&nbsp;de&nbsp;la&nbsp;clase<br>
+base&nbsp;de&nbsp;Kivy).</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Callable</strong> = typing.Callable<br>
+<strong>DETENIDO</strong> = 'detenido'<br>
+<strong>MARGEN_FIN_S</strong> = 0.25<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>PAUSADO</strong> = 'pausado'<br>
+<strong>SONANDO</strong> = 'sonando'</td></tr></table>
+</body></html>

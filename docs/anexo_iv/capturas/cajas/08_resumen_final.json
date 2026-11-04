@@ -1,0 +1,47 @@
+{
+  "imagen": "08_resumen_final.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Resultado global (anillo)",
+      "caja": [
+        72,
+        787,
+        232,
+        232
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Desglose de aciertos y errores",
+      "caja": [
+        332,
+        813,
+        420,
+        180
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Ver progreso",
+      "caja": [
+        72,
+        1047,
+        334,
+        104
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Repetir",
+      "caja": [
+        418,
+        1047,
+        334,
+        104
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+digraph flujo {
+  graph [rankdir=TB, fontname="Helvetica", fontsize=12, nodesep=0.3, ranksep=0.32, bgcolor="white", pad=0.2, dpi=200, compound=true];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, fillcolor="white", color="#0E5A62", penwidth=1.2, width=4.6];
+  edge  [color="#0E5A62", penwidth=1.2, arrowsize=0.7, fontname="Helvetica", fontsize=10];
+  subgraph cluster_pa { label="Hilo de PortAudio (callback del micrófono)"; style="rounded,filled"; fillcolor="#FBEFD6"; color="#A87110"; fontcolor="#5B3D08";
+    mic [label="Micrófono → sounddevice.InputStream\n(frecuencia del dispositivo, bloques de 1024 muestras, mono float32)"];
+    cb [label="CapturaBase._callback: copia el bloque, resta la componente continua,\nanota t_captura y su índice de muestra (audio/captura.py)"];
+    cola [label="ColaDeBloques (64 bloques, cerrojo; si se llena descarta el más antiguo)"];
+    mic -> cb -> cola; }
+  subgraph cluster_an { label="Hilo «wynik-analisis-N» (MotorDeEscucha._bucle, cada 5 ms)"; style="rounded,filled"; fillcolor="#D9EAE9"; color="#0E5A62"; fontcolor="#094148";
+    an [label="Analizador.alimentar: saltos de 10 ms → nivel dBFS, flujo espectral\ny YIN + refinamiento espectral (audio/analizador.py, estimador_yin.py)"];
+    seg [label="Segmentador: ataque → confirmación (3 tramas a ±50 cents) → EventoInterpretacion\n(NOTA, FIN, SENAL_DEBIL, BAJA_CONFIANZA, INESTABLE, FUERA_DE_RANGO)"];
+    an -> seg; }
+  subgraph cluster_ui { label="Hilo de la interfaz (Clock.schedule_interval(WynikApp._tick, 1/30 s))"; style="rounded,filled"; fillcolor="#E1F1E3"; color="#2A8641"; fontcolor="#1B5A2B";
+    q [label="ControladorPractica.encolar_evento → queue.SimpleQueue\n(solo se procesan los eventos de la sesión de captura vigente)"];
+    ses [label="SesionDePractica.procesar / actualizar: ventana ±150 ms, alineación,\ncomparar_frecuencia (±25 / ±50 cents) → Cambio (nucleo/sesion.py)"];
+    ui [label="WynikApp: propiedades Kivy → wynik.kv (pentagrama, teclado o diapasón,\nmedidor de cents, mensaje y progreso)"];
+    q -> ses -> ui; }
+  json [label="registrar_sesion → progreso_sesiones.json (servicios/progreso_service.py)", fillcolor="#F4F2EE"];
+  xml [label="Partitura MusicXML → importar_musicxml (music21) → Partitura.linea_de_practica\n→ notas_esperadas (nucleo/importador_musicxml.py, nucleo/musica.py)", fillcolor="#F4F2EE"];
+  cola -> an [label="  sacar_todos()"];
+  seg -> q [label="  al_evento"];
+  ui -> json [label="  al terminar"];
+  xml -> ses [style=dashed, label="  notas esperadas"];
+}

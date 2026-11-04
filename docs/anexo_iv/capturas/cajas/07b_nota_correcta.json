@@ -1,0 +1,97 @@
+{
+  "imagen": "07b_nota_correcta.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Barra: título, leyenda, vista y ajustes",
+      "caja": [
+        -4,
+        -4,
+        832,
+        128
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Nota esperada («Toca»)",
+      "caja": [
+        52,
+        164,
+        176,
+        144
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Nota oída («Oído»)",
+      "caja": [
+        270,
+        164,
+        280,
+        144
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Estado de la nota",
+      "caja": [
+        566,
+        200,
+        206,
+        72
+      ]
+    },
+    {
+      "n": 5,
+      "etiqueta": "Medidor de afinación (cents)",
+      "caja": [
+        52,
+        312,
+        720,
+        64
+      ]
+    },
+    {
+      "n": 6,
+      "etiqueta": "Mensaje de resultado",
+      "caja": [
+        52,
+        380,
+        720,
+        43
+      ]
+    },
+    {
+      "n": 7,
+      "etiqueta": "Pentagrama con estado por nota",
+      "caja": [
+        24,
+        463,
+        776,
+        576
+      ]
+    },
+    {
+      "n": 8,
+      "etiqueta": "Guía del instrumento (teclado)",
+      "caja": [
+        32,
+        1067,
+        760,
+        479
+      ]
+    },
+    {
+      "n": 9,
+      "etiqueta": "Progreso, estado y controles",
+      "caja": [
+        20,
+        1606,
+        784,
+        204
+      ]
+    }
+  ]
+}

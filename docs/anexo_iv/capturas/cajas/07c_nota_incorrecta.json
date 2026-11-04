@@ -1,0 +1,97 @@
+{
+  "imagen": "07c_nota_incorrecta.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Barra: título, leyenda, vista y ajustes",
+      "caja": [
+        -4,
+        -4,
+        832,
+        128
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Nota esperada («Toca»)",
+      "caja": [
+        52,
+        164,
+        176,
+        144
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Nota oída («Oído»)",
+      "caja": [
+        270,
+        164,
+        327,
+        144
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Estado de la nota",
+      "caja": [
+        613,
+        200,
+        159,
+        72
+      ]
+    },
+    {
+      "n": 5,
+      "etiqueta": "Medidor de afinación (cents)",
+      "caja": [
+        52,
+        312,
+        720,
+        64
+      ]
+    },
+    {
+      "n": 6,
+      "etiqueta": "Mensaje de resultado",
+      "caja": [
+        52,
+        380,
+        720,
+        78
+      ]
+    },
+    {
+      "n": 7,
+      "etiqueta": "Pentagrama con estado por nota",
+      "caja": [
+        24,
+        498,
+        776,
+        557
+      ]
+    },
+    {
+      "n": 8,
+      "etiqueta": "Guía del instrumento (teclado)",
+      "caja": [
+        32,
+        1083,
+        760,
+        463
+      ]
+    },
+    {
+      "n": 9,
+      "etiqueta": "Progreso, estado y controles",
+      "caja": [
+        20,
+        1606,
+        784,
+        204
+      ]
+    }
+  ]
+}

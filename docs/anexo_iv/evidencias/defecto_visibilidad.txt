@@ -1,0 +1,7 @@
+$ xvfb-run -a python docs/anexo_iv/diagnostico_visibilidad.py
+Pantalla actual: ajustes_inicio
+app.avisos_partitura no vacío: True
+app.convencion_elegible: True
+app.texto_afinacion: 'Afinación: Estándar (E A D G B E) (se cambia en Ajustes)'
+Etiquetas del aviso presentes en el árbol de widgets: 0
+ids.texto_avisos: ReferenceError (weakly-referenced object no longer exists)

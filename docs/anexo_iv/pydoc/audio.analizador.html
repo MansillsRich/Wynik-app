@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module audio.analizador</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="audio.html" class="white">audio</a>.analizador</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../audio/analizador.py">audio/analizador.py</a></td></tr></table>
+    <p><span class="code"><a href="#Analizador">Analizador</a>:&nbsp;convierte&nbsp;bloques&nbsp;de&nbsp;audio&nbsp;en&nbsp;eventos&nbsp;de&nbsp;interpretación.<br>
+&nbsp;<br>
+No&nbsp;abre&nbsp;dispositivos&nbsp;ni&nbsp;crea&nbsp;hilos:&nbsp;recibe&nbsp;bloques&nbsp;(de&nbsp;la&nbsp;captura&nbsp;real,&nbsp;de&nbsp;una&nbsp;prueba&nbsp;o&nbsp;de<br>
+un&nbsp;archivo)&nbsp;con&nbsp;`alimentar`&nbsp;y&nbsp;devuelve&nbsp;los&nbsp;eventos&nbsp;que&nbsp;producen.&nbsp;`audio.escucha`&nbsp;lo&nbsp;ejecuta<br>
+en&nbsp;un&nbsp;hilo&nbsp;propio,&nbsp;separado&nbsp;del&nbsp;callback&nbsp;del&nbsp;micrófono.<br>
+&nbsp;<br>
+Por&nbsp;cada&nbsp;salto&nbsp;de&nbsp;10&nbsp;ms&nbsp;calcula:<br>
+-&nbsp;el&nbsp;nivel&nbsp;RMS&nbsp;(dBFS)&nbsp;del&nbsp;salto&nbsp;y&nbsp;un&nbsp;nivel&nbsp;«largo»&nbsp;en&nbsp;una&nbsp;ventana&nbsp;de&nbsp;1,5&nbsp;periodos&nbsp;de&nbsp;la&nbsp;nota<br>
+&nbsp;&nbsp;más&nbsp;grave&nbsp;del&nbsp;instrumento&nbsp;(máximo&nbsp;60&nbsp;ms),&nbsp;que&nbsp;no&nbsp;oscila&nbsp;con&nbsp;las&nbsp;notas&nbsp;graves;<br>
+-&nbsp;el&nbsp;flujo&nbsp;espectral&nbsp;(ventana&nbsp;de&nbsp;Hann&nbsp;de&nbsp;20&nbsp;ms,&nbsp;magnitud&nbsp;comprimida&nbsp;con&nbsp;log10(1&nbsp;+&nbsp;1000·|X|),<br>
+&nbsp;&nbsp;filtro&nbsp;de&nbsp;máximos&nbsp;de&nbsp;3&nbsp;bandas&nbsp;y&nbsp;diferencia&nbsp;con&nbsp;el&nbsp;espectro&nbsp;de&nbsp;20&nbsp;ms&nbsp;antes);<br>
+-&nbsp;la&nbsp;altura&nbsp;y&nbsp;la&nbsp;aperiodicidad&nbsp;con&nbsp;YIN&nbsp;(`audio.estimador_yin`)&nbsp;sobre&nbsp;la&nbsp;trama&nbsp;que&nbsp;termina<br>
+&nbsp;&nbsp;en&nbsp;ese&nbsp;salto,&nbsp;en&nbsp;el&nbsp;rango&nbsp;de&nbsp;búsqueda&nbsp;del&nbsp;perfil&nbsp;de&nbsp;instrumento.<br>
+&nbsp;<br>
+Los&nbsp;instantes&nbsp;de&nbsp;los&nbsp;eventos&nbsp;se&nbsp;calculan&nbsp;a&nbsp;partir&nbsp;del&nbsp;número&nbsp;de&nbsp;muestra&nbsp;(sin&nbsp;acumular&nbsp;el<br>
+desfase&nbsp;de&nbsp;los&nbsp;callbacks):&nbsp;t&nbsp;=&nbsp;t_ref&nbsp;+&nbsp;muestra&nbsp;/&nbsp;frecuencia_de_muestreo,&nbsp;donde&nbsp;t_ref&nbsp;es&nbsp;la<br>
+cota&nbsp;inferior&nbsp;de&nbsp;(t_captura&nbsp;−&nbsp;muestras_recibidas&nbsp;/&nbsp;fs)&nbsp;de&nbsp;los&nbsp;bloques&nbsp;recibidos.&nbsp;Si&nbsp;faltan<br>
+muestras&nbsp;(bloques&nbsp;descartados),&nbsp;el&nbsp;análisis&nbsp;se&nbsp;reinicia&nbsp;en&nbsp;lugar&nbsp;de&nbsp;unir&nbsp;audio&nbsp;discontinuo.<br>
+&nbsp;<br>
+Solo&nbsp;usa&nbsp;numpy&nbsp;y&nbsp;el&nbsp;núcleo&nbsp;musical.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+</td><td class="multicolumn"><a href="time.html">time</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor index-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Classes</strong></td></tr>
+    
+<tr><td class="decor index-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl>
+<dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
+</dt><dd>
+<dl>
+<dt class="heading-text"><a href="audio.analizador.html#Analizador">Analizador</a>
+</dt></dl>
+</dd>
+</dl>
+ <p>
+<table class="section">
+<tr class="decor title-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><a name="Analizador">class <strong>Analizador</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
+    
+<tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Analizador">Analizador</a>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;frecuencia_muestreo:&nbsp;'float',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;perfil:&nbsp;'PerfilInstrumento',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ruido:&nbsp;'Optional[PerfilDeRuido]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;la4:&nbsp;'float'&nbsp;=&nbsp;440.0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;al_evento:&nbsp;'Optional[Callable[[EventoInterpretacion],&nbsp;None]]'&nbsp;=&nbsp;None,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sesion:&nbsp;'int'&nbsp;=&nbsp;0<br>
+)<br>
+&nbsp;<br>
+Bloques&nbsp;de&nbsp;audio&nbsp;(mono,&nbsp;float)&nbsp;→&nbsp;eventos&nbsp;de&nbsp;interpretación.<br>&nbsp;</span></td></tr>
+<tr><td>&nbsp;</td>
+<td class="singlecolumn">Methods defined here:<br>
+<dl><dt><a name="Analizador-__init__"><strong>__init__</strong></a>(
+    self,
+    frecuencia_muestreo: 'float',
+    perfil: 'PerfilInstrumento',
+    ruido: 'Optional[PerfilDeRuido]' = None,
+    la4: 'float' = 440.0,
+    al_evento: 'Optional[Callable[[EventoInterpretacion], None]]' = None,
+    sesion: 'int' = 0
+)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+
+<dl><dt><a name="Analizador-alimentar"><strong>alimentar</strong></a>(
+    self,
+    muestras,
+    indice_inicial: 'Optional[int]' = None,
+    t_captura: 'Optional[float]' = None
+) -&gt; 'List[EventoInterpretacion]'</dt><dd><span class="code">Procesa&nbsp;un&nbsp;bloque.&nbsp;`indice_inicial`:&nbsp;número&nbsp;de&nbsp;su&nbsp;primera&nbsp;muestra&nbsp;en&nbsp;la&nbsp;captura;<br>
+`t_captura`:&nbsp;instante&nbsp;(reloj&nbsp;de&nbsp;la&nbsp;sesión)&nbsp;en&nbsp;que&nbsp;terminó&nbsp;de&nbsp;capturarse.</span></dd></dl>
+
+<dl><dt><a name="Analizador-analizar_senal"><strong>analizar_senal</strong></a>(self, y, tam_bloque: 'int' = 1024) -&gt; 'List[EventoInterpretacion]'</dt><dd><span class="code">Analiza&nbsp;una&nbsp;señal&nbsp;completa&nbsp;en&nbsp;bloques&nbsp;(pruebas,&nbsp;archivos).</span></dd></dl>
+
+<dl><dt><a name="Analizador-configurar_ruido"><strong>configurar_ruido</strong></a>(self, ruido: 'PerfilDeRuido') -&gt; 'None'</dt></dl>
+
+<dl><dt><a name="Analizador-reiniciar"><strong>reiniciar</strong></a>(self, indice_muestra: 'int' = 0) -&gt; 'None'</dt><dd><span class="code">Olvida&nbsp;el&nbsp;audio&nbsp;anterior&nbsp;(inicio,&nbsp;o&nbsp;hueco&nbsp;en&nbsp;la&nbsp;captura).</span></dd></dl>
+
+<hr>
+Readonly properties defined here:<br>
+<dl><dt><strong>latencia_minima_s</strong></dt>
+<dd><span class="code">Audio&nbsp;necesario&nbsp;tras&nbsp;un&nbsp;ataque&nbsp;para&nbsp;poder&nbsp;confirmarlo&nbsp;(trama&nbsp;YIN&nbsp;+&nbsp;confirmación).</span></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><span class="code">list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object</span></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'_t_ref': 'Optional[float]'}</dl>
+
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>COMPRESION_FLUJO</strong> = 1000.0<br>
+<strong>Callable</strong> = typing.Callable<br>
+<strong>DURACION_SALTO_S</strong> = 0.01<br>
+<strong>FRECUENCIA_MAXIMA_FLUJO_HZ</strong> = 10000.0<br>
+<strong>LA4_HZ</strong> = 440.0<br>
+<strong>List</strong> = typing.List<br>
+<strong>NIVEL_MINIMO_REPRESENTABLE_DBFS</strong> = -120.0<br>
+<strong>Optional</strong> = typing.Optional<br>
+<strong>RETARDO_FLUJO_SALTOS</strong> = 2</td></tr></table>
+</body></html>

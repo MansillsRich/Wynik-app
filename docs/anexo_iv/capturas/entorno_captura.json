@@ -1,0 +1,22 @@
+{
+  "fecha": "2026-11-04 15:31:05 -0300",
+  "sistema": "Linux-6.18.44-fc-v233-x86_64-with-glibc2.39",
+  "python": "3.13.18",
+  "kivy": "2.3.1",
+  "kivymd": "2.0.0",
+  "ventana_px": [
+    824,
+    1830
+  ],
+  "ventana_dp": [
+    412,
+    915
+  ],
+  "densidad": 2,
+  "entrada": "simulada (CapturaManual + ondas senoidales)",
+  "plan": {
+    "1": "otra:65",
+    "3": "cents:35",
+    "6": "omitir"
+  }
+}

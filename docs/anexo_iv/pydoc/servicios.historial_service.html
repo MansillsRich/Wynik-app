@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module servicios.historial_service</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="servicios.html" class="white">servicios</a>.historial_service</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../servicios/historial_service.py">servicios/historial_service.py</a></td></tr></table>
+    <p><span class="code">Servicio&nbsp;para&nbsp;la&nbsp;persistencia&nbsp;del&nbsp;historial&nbsp;de&nbsp;partituras&nbsp;recientes&nbsp;en&nbsp;JSON.<br>
+&nbsp;<br>
+El&nbsp;archivo&nbsp;está&nbsp;en&nbsp;el&nbsp;directorio&nbsp;de&nbsp;datos&nbsp;(`servicios.almacenamiento`):&nbsp;por&nbsp;defecto&nbsp;la&nbsp;carpeta<br>
+del&nbsp;proyecto,&nbsp;como&nbsp;en&nbsp;la&nbsp;versión&nbsp;inicial;&nbsp;`WYNIK_DATOS`&nbsp;lo&nbsp;cambia&nbsp;(pruebas)&nbsp;y&nbsp;en&nbsp;Android&nbsp;es<br>
+el&nbsp;directorio&nbsp;de&nbsp;datos&nbsp;de&nbsp;la&nbsp;aplicación.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="json.html">json</a><br>
+</td><td class="multicolumn"><a href="os.html">os</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-agregar_al_historial"><strong>agregar_al_historial</strong></a>(
+    historial: List[Dict[str, str]],
+    nombre: str,
+    ruta: str,
+    ruta_archivo: Optional[str] = None
+) -&gt; List[Dict[str, str]]</dt><dd><span class="code">Agrega&nbsp;una&nbsp;partitura&nbsp;al&nbsp;historial&nbsp;si&nbsp;no&nbsp;se&nbsp;encuentra&nbsp;ya&nbsp;presente&nbsp;y&nbsp;guarda&nbsp;los&nbsp;cambios.</span></dd></dl>
+ <dl><dt><a name="-cargar_historial"><strong>cargar_historial</strong></a>(ruta_archivo: Optional[str] = None) -&gt; List[Dict[str, str]]</dt><dd><span class="code">Carga&nbsp;la&nbsp;lista&nbsp;de&nbsp;partituras&nbsp;guardadas&nbsp;en&nbsp;el&nbsp;historial.<br>
+Retorna&nbsp;una&nbsp;lista&nbsp;de&nbsp;diccionarios&nbsp;con&nbsp;formato:<br>
+[{"nombre":&nbsp;"the-entertainer",&nbsp;"ruta":&nbsp;"/ruta/al/archivo.mxl"},&nbsp;...]</span></dd></dl>
+ <dl><dt><a name="-detalle_de_entrada"><strong>detalle_de_entrada</strong></a>(ruta: str, progreso: Optional[Dict] = None) -&gt; str</dt><dd><span class="code">Texto&nbsp;secundario&nbsp;de&nbsp;una&nbsp;partitura&nbsp;en&nbsp;«Mis&nbsp;partituras»:&nbsp;la&nbsp;carpeta&nbsp;que&nbsp;la&nbsp;contiene&nbsp;(la<br>
+ruta&nbsp;completa&nbsp;no&nbsp;cabe&nbsp;en&nbsp;una&nbsp;pantalla&nbsp;de&nbsp;teléfono)&nbsp;y,&nbsp;si&nbsp;ya&nbsp;se&nbsp;practicó,&nbsp;las&nbsp;sesiones&nbsp;y&nbsp;la<br>
+mejor&nbsp;precisión&nbsp;(`progreso`,&nbsp;una&nbsp;entrada&nbsp;de&nbsp;`progreso_service.resumen_por_partitura`).</span></dd></dl>
+ <dl><dt><a name="-guardar_historial"><strong>guardar_historial</strong></a>(
+    historial: List[Dict[str, str]],
+    ruta_archivo: Optional[str] = None
+) -&gt; None</dt><dd><span class="code">Guarda&nbsp;la&nbsp;lista&nbsp;de&nbsp;partituras&nbsp;en&nbsp;el&nbsp;archivo&nbsp;de&nbsp;historial&nbsp;en&nbsp;formato&nbsp;JSON&nbsp;con&nbsp;indentación.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>DIRECTORIO_RAIZ</strong> = '&lt;raíz del repositorio&gt;'<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>HISTORIAL_PATH_DEFAULT</strong> = 'historial_partituras.json'<br>
+<strong>List</strong> = typing.List<br>
+<strong>NOMBRE_HISTORIAL</strong> = 'historial_partituras.json'<br>
+<strong>Optional</strong> = typing.Optional</td></tr></table>
+</body></html>

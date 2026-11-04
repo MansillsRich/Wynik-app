@@ -1,0 +1,67 @@
+{
+  "imagen": "01_menu_principal.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Ajustes generales",
+      "caja": [
+        716,
+        24,
+        96,
+        96
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Continuar la última partitura",
+      "caja": [
+        28,
+        148,
+        768,
+        630
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Importar",
+      "caja": [
+        28,
+        802,
+        376,
+        269
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Mis partituras",
+      "caja": [
+        420,
+        802,
+        376,
+        269
+      ]
+    },
+    {
+      "n": 5,
+      "etiqueta": "Progreso",
+      "caja": [
+        28,
+        1087,
+        376,
+        269
+      ]
+    },
+    {
+      "n": 6,
+      "etiqueta": "Ajustes",
+      "caja": [
+        420,
+        1087,
+        376,
+        269
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "imagen": "05b_ajustes_evaluacion.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Margen de tiempo por nota",
+      "caja": [
+        60,
+        639,
+        704,
+        37
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Cuenta previa",
+      "caja": [
+        60,
+        910,
+        704,
+        37
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Volumen de la referencia",
+      "caja": [
+        28,
+        1221,
+        768,
+        248
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Vista de partitura",
+      "caja": [
+        28,
+        1493,
+        768,
+        285
+      ]
+    }
+  ]
+}

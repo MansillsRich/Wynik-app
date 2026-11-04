@@ -1,0 +1,15 @@
+Sistema: Linux-6.18.44-fc-v233-x86_64-with-glibc2.39 (x86_64)
+Python: 3.13.18 (entorno virtual)
+kivy==2.3.1
+kivymd==2.0.0
+numpy==2.5.3
+sounddevice==0.5.6
+music21==10.5.0
+pycairo==1.29.1
+materialyoucolor==3.0.4
+materialshapes==0.3
+asynckivy==0.6.4
+pillow==12.3.0
+matplotlib==3.11.2
+ruff==0.17.3
+coverage==7.17.1

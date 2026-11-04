@@ -1,0 +1,10 @@
+Bloque de captura: 1024 muestras · cola de 64 bloques
+Salto de análisis: 10 ms
+Tolerancias de altura: afinada <= 25 cents; misma nota <= 50 cents
+Sesión por defecto: ConfiguracionSesion(modo=<ModoPractica.SEGUIR_TEMPO: 'seguir_tempo'>, tolerancia_s=0.15, alineacion_inicial_max_s=0.5, margen_cierre_s=0.35, confianza_min_error=0.9, refractario_acorde_s=0.3, la4=440.0)
+Piano a 44100 Hz: búsqueda 24.50–5274.0 Hz · trama YIN 3605 muestras (81.7 ms) · salto 441 muestras · latencia mínima 111.7 ms
+Piano a 48000 Hz: búsqueda 24.50–5274.0 Hz · trama YIN 3923 muestras (81.7 ms) · salto 480 muestras · latencia mínima 111.7 ms
+  Piano: umbral_yin=0.3 aperiodicidad_max=0.3 tramas_confirmacion=3 confirmacion_max_s=0.15 subida_ataque_db=6.0 refinar_fundamental=True nivel_silencio_dbfs=-65.0 nivel_minimo_dbfs=-50.0
+Guitarra a 44100 Hz: búsqueda 41.20–2637.0 Hz · trama YIN 2145 muestras (48.6 ms) · salto 441 muestras · latencia mínima 78.6 ms
+Guitarra a 48000 Hz: búsqueda 41.20–2637.0 Hz · trama YIN 2333 muestras (48.6 ms) · salto 480 muestras · latencia mínima 78.6 ms
+  Guitarra: umbral_yin=0.3 aperiodicidad_max=0.3 tramas_confirmacion=3 confirmacion_max_s=0.15 subida_ataque_db=6.0 refinar_fundamental=False nivel_silencio_dbfs=-65.0 nivel_minimo_dbfs=-50.0

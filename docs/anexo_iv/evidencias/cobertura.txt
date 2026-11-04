@@ -1,0 +1,61 @@
+$ coverage run --source=audio,nucleo,servicios,vistas -m unittest discover -s tests
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.008s
+
+OK
+[código de salida: 0]
+$ coverage report --skip-empty
+Name                                        Stmts   Miss  Cover
+---------------------------------------------------------------
+audio/analizador.py                           139    139     0%
+audio/captura.py                              175    175     0%
+audio/escucha.py                              121    121     0%
+audio/estimador_yin.py                        155    155     0%
+audio/guia.py                                 110    110     0%
+audio/segmentador.py                          191    191     0%
+audio/senal.py                                 91     91     0%
+nucleo/digitacion.py                          167    167     0%
+nucleo/eventos.py                              61     21    66%
+nucleo/importador_musicxml.py                 224    224     0%
+nucleo/instrumentos.py                         72     22    69%
+nucleo/musica.py                              402    150    63%
+nucleo/notacion.py                            369    369     0%
+nucleo/sesion.py                              323    196    39%
+servicios/__init__.py                          12      7    42%
+servicios/ajustes_service.py                   56     13    77%
+servicios/almacenamiento.py                    41      6    85%
+servicios/audio_service.py                     40     40     0%
+servicios/detector_service.py                  57     57     0%
+servicios/historial_service.py                 43     43     0%
+servicios/notacion_service.py                  23     23     0%
+servicios/partitura_service.py                 19     19     0%
+servicios/practica_service.py                 204    204     0%
+servicios/progreso_service.py                  37      9    76%
+servicios/reproductor_guia.py                 125    125     0%
+vistas/__init__.py                              5      5     0%
+vistas/app.py                                1111   1111     0%
+vistas/avisos.py                               16     16     0%
+vistas/componentes.py                         448    448     0%
+vistas/dialogs.py                              88     88     0%
+vistas/fuentes.py                              30     30     0%
+vistas/screens/__init__.py                      8      8     0%
+vistas/screens/ajustes_inicio_screen.py         2      2     0%
+vistas/screens/ajustes_screen.py                5      5     0%
+vistas/screens/elegir_partitura_screen.py       5      5     0%
+vistas/screens/interprete_screen.py             7      7     0%
+vistas/screens/menu_screen.py                   2      2     0%
+vistas/screens/partitura_simple_screen.py       7      7     0%
+vistas/screens/progreso_screen.py               5      5     0%
+vistas/tema.py                                 56     56     0%
+vistas/widgets/__init__.py                      4      4     0%
+vistas/widgets/dibujo.py                       41     41     0%
+vistas/widgets/guia_instrumento_widget.py     197    197     0%
+vistas/widgets/ilustraciones.py               148    148     0%
+vistas/widgets/partitura_simple_widget.py     105    105     0%
+vistas/widgets/partitura_widget.py            188    188     0%
+---------------------------------------------------------------
+TOTAL                                        5735   5155    10%
+
+2 empty files skipped.
+[código de salida: 0]

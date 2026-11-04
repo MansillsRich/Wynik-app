@@ -1,0 +1,24 @@
+digraph dependencias {
+  graph [rankdir=TB, fontname="Helvetica", fontsize=12, nodesep=0.5, ranksep=0.55, bgcolor="white", pad=0.2, dpi=200];
+  node  [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, fillcolor="#D9EAE9", color="#0E5A62", penwidth=1.4];
+  edge  [color="#0E5A62", penwidth=1.3, arrowsize=0.8, fontname="Helvetica", fontsize=10];
+  main [label="main.py\n(punto de entrada)", fillcolor="#0E5A62", fontcolor="white"];
+  vistas [label="vistas/\nWynikApp, pantallas, widgets, KV"];
+  servicios [label="servicios/\nfachadas, práctica, persistencia JSON"];
+  audio [label="audio/\ncaptura, YIN, segmentación, guía"];
+  nucleo [label="nucleo/\nmodelo musical, sesión, MusicXML"];
+  tests [label="tests/\n13 pruebas unittest", fillcolor="#F4F2EE", style="rounded,filled,dashed"];
+  node [shape=box, style="rounded,dashed", fillcolor="white", color="#6B7280", fontcolor="#374151", fontsize=11];
+  kivy [label="Kivy 2.3.1 · KivyMD 2.0.0"];
+  numpy [label="NumPy 2.5.3"];
+  sd [label="sounddevice 0.5.6\n(importación diferida)"];
+  m21 [label="music21 10.5.0\n(importación diferida)"];
+  main -> vistas;
+  vistas -> servicios; vistas -> audio; vistas -> nucleo;
+  servicios -> audio; servicios -> nucleo;
+  audio -> nucleo;
+  tests -> servicios [style=dashed]; tests -> nucleo [style=dashed];
+  edge [color="#6B7280", style=dashed, penwidth=1.0];
+  vistas -> kivy; audio -> numpy; audio -> sd; nucleo -> m21;
+  {rank=same; servicios; tests}
+}

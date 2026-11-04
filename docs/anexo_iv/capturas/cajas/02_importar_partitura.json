@@ -1,0 +1,57 @@
+{
+  "imagen": "02_importar_partitura.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Título e instrucción del diálogo",
+      "caja": [
+        72,
+        470,
+        680,
+        78
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Selector de archivos (filtro .musicxml/.xml/.mxl)",
+      "caja": [
+        84,
+        580,
+        656,
+        744
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Archivo seleccionado",
+      "caja": [
+        132,
+        736,
+        608,
+        104
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Cancelar",
+      "caja": [
+        72,
+        1356,
+        334,
+        104
+      ]
+    },
+    {
+      "n": 5,
+      "etiqueta": "Abrir",
+      "caja": [
+        418,
+        1356,
+        334,
+        104
+      ]
+    }
+  ]
+}

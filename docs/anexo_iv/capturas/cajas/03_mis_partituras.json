@@ -1,0 +1,47 @@
+{
+  "imagen": "03_mis_partituras.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Barra superior (volver)",
+      "caja": [
+        -4,
+        -4,
+        832,
+        128
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Importar otra partitura",
+      "caja": [
+        716,
+        12,
+        96,
+        96
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Partitura del historial (ruta y carpeta)",
+      "caja": [
+        28,
+        296,
+        768,
+        152
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Segunda partitura importada",
+      "caja": [
+        28,
+        132,
+        768,
+        152
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "imagen": "04c_preparar_guitarra.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Partitura de guitarra elegida",
+      "caja": [
+        200,
+        168,
+        564,
+        112
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Datos (sin el bloque de avisos)",
+      "caja": [
+        60,
+        296,
+        704,
+        152
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Instrumento detectado: guitarra",
+      "caja": [
+        60,
+        946,
+        348,
+        213
+      ]
+    }
+  ]
+}

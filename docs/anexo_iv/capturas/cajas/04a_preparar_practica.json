@@ -1,0 +1,57 @@
+{
+  "imagen": "04a_preparar_practica.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Partitura elegida",
+      "caja": [
+        200,
+        194,
+        564,
+        60
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Datos de la partitura",
+      "caja": [
+        60,
+        296,
+        704,
+        152
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Escuchar la referencia (guía de audio)",
+      "caja": [
+        28,
+        504,
+        768,
+        324
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Instrumento",
+      "caja": [
+        28,
+        852,
+        768,
+        339
+      ]
+    },
+    {
+      "n": 5,
+      "etiqueta": "Practicar",
+      "caja": [
+        28,
+        1702,
+        768,
+        104
+      ]
+    }
+  ]
+}

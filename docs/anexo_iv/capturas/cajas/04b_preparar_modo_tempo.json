@@ -1,0 +1,57 @@
+{
+  "imagen": "04b_preparar_modo_tempo.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Modo de práctica",
+      "caja": [
+        28,
+        454,
+        768,
+        562
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Tempo (factor sobre el de la partitura)",
+      "caja": [
+        60,
+        872,
+        704,
+        112
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Nombres de las notas",
+      "caja": [
+        28,
+        1040,
+        768,
+        223
+      ]
+    },
+    {
+      "n": 4,
+      "etiqueta": "Vista de partitura",
+      "caja": [
+        28,
+        1287,
+        768,
+        339
+      ]
+    },
+    {
+      "n": 5,
+      "etiqueta": "Practicar",
+      "caja": [
+        28,
+        1702,
+        768,
+        104
+      ]
+    }
+  ]
+}

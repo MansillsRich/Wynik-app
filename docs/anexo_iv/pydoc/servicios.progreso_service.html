@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module servicios.progreso_service</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="servicios.html" class="white">servicios</a>.progreso_service</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../servicios/progreso_service.py">servicios/progreso_service.py</a></td></tr></table>
+    <p><span class="code">Historial&nbsp;de&nbsp;sesiones&nbsp;de&nbsp;práctica&nbsp;(`progreso_sesiones.json`&nbsp;en&nbsp;el&nbsp;directorio&nbsp;de&nbsp;datos).<br>
+&nbsp;<br>
+Cada&nbsp;sesión&nbsp;terminada&nbsp;guarda&nbsp;su&nbsp;resumen:&nbsp;fecha,&nbsp;partitura,&nbsp;instrumento,&nbsp;modo,&nbsp;tempo,<br>
+aciertos&nbsp;por&nbsp;estado&nbsp;y&nbsp;precisión.&nbsp;Se&nbsp;conservan&nbsp;las&nbsp;500&nbsp;más&nbsp;recientes.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="datetime.html">datetime</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-cargar_progreso"><strong>cargar_progreso</strong></a>() -&gt; List[Dict]</dt><dd><span class="code">Carga&nbsp;la&nbsp;lista&nbsp;de&nbsp;diccionarios&nbsp;con&nbsp;el&nbsp;historial&nbsp;de&nbsp;progreso.</span></dd></dl>
+ <dl><dt><a name="-cargar_sesiones"><strong>cargar_sesiones</strong></a>() -&gt; List[nucleo.sesion.SesionProgreso]</dt><dd><span class="code">Carga&nbsp;el&nbsp;historial&nbsp;y&nbsp;deserializa&nbsp;cada&nbsp;elemento&nbsp;a&nbsp;instancias&nbsp;formales&nbsp;SesionProgreso&nbsp;(POO).</span></dd></dl>
+ <dl><dt><a name="-registrar_sesion"><strong>registrar_sesion</strong></a>(
+    partitura: str,
+    instrumento: str,
+    modo: str,
+    factor_tempo: float,
+    resumen: Dict
+) -&gt; Dict</dt><dd><span class="code">Registra&nbsp;una&nbsp;sesión&nbsp;de&nbsp;práctica&nbsp;instanciando&nbsp;la&nbsp;clase&nbsp;POO&nbsp;SesionProgreso&nbsp;y&nbsp;serializando&nbsp;con&nbsp;to_dict().</span></dd></dl>
+ <dl><dt><a name="-registrar_sesion_practica"><strong>registrar_sesion_practica</strong></a>(
+    nombre_partitura: str,
+    aciertos: int,
+    total: int,
+    instrumento: str = 'piano',
+    modo: str = 'seguir_tempo'
+) -&gt; nucleo.sesion.SesionProgreso</dt><dd><span class="code">Función&nbsp;de&nbsp;alto&nbsp;nivel&nbsp;para&nbsp;registrar&nbsp;una&nbsp;práctica&nbsp;retornando&nbsp;directamente&nbsp;el&nbsp;objeto&nbsp;POO&nbsp;SesionProgreso.</span></dd></dl>
+ <dl><dt><a name="-resumen_por_partitura"><strong>resumen_por_partitura</strong></a>(sesiones: List[Dict]) -&gt; List[Dict]</dt><dd><span class="code">Sesiones&nbsp;agrupadas&nbsp;por&nbsp;partitura:&nbsp;número&nbsp;de&nbsp;sesiones,&nbsp;mejor&nbsp;y&nbsp;última&nbsp;precisión.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>ARCHIVO_PROGRESO</strong> = 'progreso_sesiones.json'<br>
+<strong>Dict</strong> = typing.Dict<br>
+<strong>List</strong> = typing.List<br>
+<strong>MAXIMO_SESIONES</strong> = 500<br>
+<strong>Optional</strong> = typing.Optional</td></tr></table>
+</body></html>

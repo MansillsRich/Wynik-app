@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module vistas.widgets.dibujo</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="vistas.html" class="white">vistas</a>.<a href="vistas.widgets.html" class="white">widgets</a>.dibujo</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../vistas/widgets/dibujo.py">vistas/widgets/dibujo.py</a></td></tr></table>
+    <p><span class="code">Utilidades&nbsp;de&nbsp;dibujo&nbsp;para&nbsp;los&nbsp;widgets&nbsp;de&nbsp;Wynik:&nbsp;texto&nbsp;con&nbsp;la&nbsp;fuente&nbsp;de&nbsp;símbolos&nbsp;musicales&nbsp;y<br>
+colores&nbsp;de&nbsp;estado&nbsp;(siempre&nbsp;acompañados&nbsp;de&nbsp;un&nbsp;símbolo:&nbsp;el&nbsp;color&nbsp;nunca&nbsp;es&nbsp;la&nbsp;única&nbsp;señal).</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="vistas.tema.html">vistas.tema</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-texto"><strong>texto</strong></a>(
+    cadena: str,
+    x: float,
+    y: float,
+    tam: float,
+    color=(0.137, 0.153, 0.169, 1),
+    ancla: str = 'centro',
+    negrita: bool = False
+) -&gt; None</dt><dd><span class="code">Dibuja&nbsp;`cadena`&nbsp;en&nbsp;el&nbsp;canvas&nbsp;activo.&nbsp;`ancla`:&nbsp;centro,&nbsp;izquierda&nbsp;o&nbsp;derecha&nbsp;(vertical<br>
+siempre&nbsp;centrada&nbsp;en&nbsp;y).</span></dd></dl>
+ <dl><dt><a name="-textura"><strong>textura</strong></a>(texto: str, tam: float, negrita: bool = False)</dt></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>ACENTO</strong> = (0.851, 0.522, 0.192, 1)<br>
+<strong>ACTUAL</strong> = (0.055, 0.353, 0.384, 1)<br>
+<strong>ACTUAL_SUAVE</strong> = (0.851, 0.918, 0.914, 1)<br>
+<strong>CORRECTO</strong> = (0.165, 0.525, 0.255, 1)<br>
+<strong>DESAFINADO</strong> = (0.659, 0.443, 0.063, 1)<br>
+<strong>ESTILO_ESTADO</strong> = {'baja_confianza': ((0.42, 0.45, 0.48, 1), '?'), 'correcta': ((0.165, 0.525, 0.255, 1), '✓'), 'desafinada': ((0.659, 0.443, 0.063, 1), '≈'), 'fuera_de_rango': ((0.769, 0.227, 0.176, 1), '!'), 'nota_incorrecta': ((0.769, 0.227, 0.176, 1), '✗'), 'octava_incorrecta': ((0.769, 0.227, 0.176, 1), '✗'), 'omitida': ((0.42, 0.45, 0.48, 1), '–'), 'senal_insuficiente': ((0.42, 0.45, 0.48, 1), '?'), 'sin_evaluar': ((0.42, 0.45, 0.48, 1), '○')}<br>
+<strong>FONDO_SUAVE</strong> = (0.925, 0.937, 0.933, 1)<br>
+<strong>FUENTE_TEXTO</strong> = 'WynikTexto'<br>
+<strong>INCORRECTO</strong> = (0.769, 0.227, 0.176, 1)<br>
+<strong>PAPEL</strong> = (1, 1, 1, 1)<br>
+<strong>SIN_DATOS</strong> = (0.42, 0.45, 0.48, 1)<br>
+<strong>TINTA</strong> = (0.137, 0.153, 0.169, 1)<br>
+<strong>TINTA_SUAVE</strong> = (0.365, 0.396, 0.427, 1)</td></tr></table>
+</body></html>

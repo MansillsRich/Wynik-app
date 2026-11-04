@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module servicios.notacion_service</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="servicios.html" class="white">servicios</a>.notacion_service</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../servicios/notacion_service.py">servicios/notacion_service.py</a></td></tr></table>
+    <p><span class="code">Servicio&nbsp;de&nbsp;notación:&nbsp;fachada&nbsp;de&nbsp;compatibilidad&nbsp;sobre&nbsp;`nucleo.musica`.<br>
+&nbsp;<br>
+Mantiene&nbsp;las&nbsp;funciones&nbsp;que&nbsp;usa&nbsp;la&nbsp;interfaz&nbsp;(nombres&nbsp;para&nbsp;mostrar,&nbsp;posición&nbsp;en&nbsp;el&nbsp;pentagrama<br>
+y&nbsp;comparación&nbsp;de&nbsp;notas),&nbsp;pero&nbsp;todas&nbsp;las&nbsp;conversiones&nbsp;se&nbsp;hacen&nbsp;con&nbsp;números&nbsp;(MIDI)&nbsp;a&nbsp;partir&nbsp;de<br>
+`Altura.desde_nombre`,&nbsp;que&nbsp;entiende&nbsp;los&nbsp;nombres&nbsp;de&nbsp;music21&nbsp;('B-4')&nbsp;y&nbsp;de&nbsp;librosa&nbsp;('A♯4').<br>
+No&nbsp;depende&nbsp;de&nbsp;Kivy,&nbsp;librosa&nbsp;ni&nbsp;sounddevice.</span></p>
+<p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-nombre_para_mostrar"><strong>nombre_para_mostrar</strong></a>(nombre_nota: Optional[str], usar_solfeo: bool) -&gt; str</dt><dd><span class="code">Nombre&nbsp;legible&nbsp;con&nbsp;la&nbsp;alteración&nbsp;original:&nbsp;'B-3'&nbsp;-&gt;&nbsp;'B♭3'&nbsp;o,&nbsp;en&nbsp;solfeo,&nbsp;'Si♭3'.<br>
+&nbsp;<br>
+Un&nbsp;texto&nbsp;que&nbsp;no&nbsp;es&nbsp;un&nbsp;nombre&nbsp;de&nbsp;nota&nbsp;se&nbsp;devuelve&nbsp;sin&nbsp;cambios.</span></dd></dl>
+ <dl><dt><a name="-nota_coincide"><strong>nota_coincide</strong></a>(
+    nota_detectada: Optional[str],
+    nota_esperada: Optional[str],
+    tolerancia_semitonos: int = 0
+) -&gt; bool</dt><dd><span class="code">True&nbsp;si&nbsp;la&nbsp;nota&nbsp;detectada&nbsp;es&nbsp;la&nbsp;esperada:&nbsp;misma&nbsp;altura&nbsp;y&nbsp;misma&nbsp;octava.<br>
+&nbsp;<br>
+Las&nbsp;notas&nbsp;enarmónicas&nbsp;coinciden&nbsp;(A♯3&nbsp;=&nbsp;B♭3).&nbsp;`tolerancia_semitonos`&nbsp;admite&nbsp;una&nbsp;distancia<br>
+de&nbsp;hasta&nbsp;ese&nbsp;número&nbsp;de&nbsp;semitonos&nbsp;(0&nbsp;por&nbsp;defecto,&nbsp;el&nbsp;modo&nbsp;normal);&nbsp;se&nbsp;limita&nbsp;a&nbsp;11&nbsp;para&nbsp;no<br>
+equiparar&nbsp;nunca&nbsp;dos&nbsp;octavas.&nbsp;Para&nbsp;comparar&nbsp;frecuencias&nbsp;con&nbsp;la&nbsp;tolerancia&nbsp;de&nbsp;afinación&nbsp;en<br>
+cents,&nbsp;véase&nbsp;`nucleo.musica.comparar_frecuencia`.</span></dd></dl>
+ <dl><dt><a name="-paso_diatonico"><strong>paso_diatonico</strong></a>(nombre_nota: str) -&gt; int</dt><dd><span class="code">Posición&nbsp;vertical&nbsp;de&nbsp;una&nbsp;nota&nbsp;en&nbsp;el&nbsp;pentagrama&nbsp;(letra&nbsp;y&nbsp;octava&nbsp;escritas).<br>
+&nbsp;<br>
+Ejemplo:&nbsp;'C4'&nbsp;-&gt;&nbsp;4&nbsp;*&nbsp;7&nbsp;+&nbsp;0&nbsp;=&nbsp;28.&nbsp;La&nbsp;alteración&nbsp;no&nbsp;cambia&nbsp;la&nbsp;posición:&nbsp;'B-3'&nbsp;y&nbsp;'B3'<br>
+ocupan&nbsp;la&nbsp;misma&nbsp;línea.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>Optional</strong> = typing.Optional<br>
+<strong>PASO_B4</strong> = 34</td></tr></table>
+</body></html>

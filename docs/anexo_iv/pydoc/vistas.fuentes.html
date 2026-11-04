@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module vistas.fuentes</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="vistas.html" class="white">vistas</a>.fuentes</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../vistas/fuentes.py">vistas/fuentes.py</a></td></tr></table>
+    <p><span class="code">Fuente&nbsp;de&nbsp;la&nbsp;interfaz&nbsp;con&nbsp;los&nbsp;símbolos&nbsp;musicales.<br>
+&nbsp;<br>
+Roboto&nbsp;(la&nbsp;fuente&nbsp;por&nbsp;defecto&nbsp;de&nbsp;Kivy&nbsp;y&nbsp;KivyMD)&nbsp;no&nbsp;tiene&nbsp;♭,&nbsp;♯,&nbsp;♮,&nbsp;✓&nbsp;ni&nbsp;✗:&nbsp;se&nbsp;dibujaban&nbsp;como<br>
+un&nbsp;glifo&nbsp;vacío.&nbsp;DejaVu&nbsp;Sans,&nbsp;que&nbsp;Kivy&nbsp;incluye&nbsp;en&nbsp;`kivy/data/fonts`&nbsp;(también&nbsp;en&nbsp;Android),<br>
+sí&nbsp;los&nbsp;tiene.&nbsp;`<a href="#-registrar_fuentes">registrar_fuentes</a>()`&nbsp;la&nbsp;registra&nbsp;como&nbsp;«WynikTexto»&nbsp;y,&nbsp;si&nbsp;se&nbsp;le&nbsp;pasa&nbsp;el&nbsp;tema&nbsp;de<br>
+KivyMD,&nbsp;la&nbsp;asigna&nbsp;a&nbsp;todos&nbsp;los&nbsp;estilos&nbsp;de&nbsp;texto&nbsp;(no&nbsp;a&nbsp;los&nbsp;iconos).<br>
+&nbsp;<br>
+Para&nbsp;los&nbsp;rótulos&nbsp;fijos&nbsp;(botones,&nbsp;títulos&nbsp;de&nbsp;sección),&nbsp;que&nbsp;no&nbsp;llevan&nbsp;símbolos&nbsp;musicales,&nbsp;se<br>
+registran&nbsp;además&nbsp;Roboto&nbsp;Medium&nbsp;(«WynikRotulo»)&nbsp;y&nbsp;Roboto&nbsp;Bold&nbsp;(«WynikTitulo»),&nbsp;que&nbsp;vienen&nbsp;con<br>
+KivyMD.&nbsp;Si&nbsp;no&nbsp;se&nbsp;encuentran,&nbsp;ambos&nbsp;nombres&nbsp;apuntan&nbsp;a&nbsp;DejaVu&nbsp;Sans.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="os.html">os</a><br>
+</td><td class="multicolumn"></td><td class="multicolumn"></td><td class="multicolumn"></td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-registrar_fuentes"><strong>registrar_fuentes</strong></a>(tema=None) -&gt; str</dt></dl>
+ <dl><dt><a name="-ruta_dejavu"><strong>ruta_dejavu</strong></a>() -&gt; str</dt></dl>
+ <dl><dt><a name="-ruta_roboto"><strong>ruta_roboto</strong></a>(peso: str) -&gt; str</dt><dd><span class="code">Ruta&nbsp;de&nbsp;Roboto-&lt;peso&gt;.ttf&nbsp;de&nbsp;KivyMD&nbsp;(o&nbsp;""&nbsp;si&nbsp;no&nbsp;está).</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>FUENTE_ROTULO</strong> = 'WynikRotulo'<br>
+<strong>FUENTE_TEXTO</strong> = 'WynikTexto'<br>
+<strong>FUENTE_TITULO</strong> = 'WynikTitulo'</td></tr></table>
+</body></html>

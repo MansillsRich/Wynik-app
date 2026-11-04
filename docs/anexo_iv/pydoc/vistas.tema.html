@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module vistas.tema</title>
+<style>
+/*
+    CSS file for pydoc.
+
+    Contents of this file are subject to change without notice.
+
+*/
+
+body {
+    background-color: #f0f0f8;
+}
+
+table.heading tr {
+    background-color: #7799ee;
+}
+
+.decor {
+    color: #ffffff;
+}
+
+.title-decor {
+    background-color: #ffc8d8;
+    color: #000000;
+}
+
+.pkg-content-decor {
+    background-color: #aa55cc;
+}
+
+.index-decor {
+    background-color: #ee77aa;
+}
+
+.functions-decor {
+    background-color: #eeaa77;
+}
+
+.data-decor {
+    background-color: #55aa55;
+}
+
+.author-decor {
+    background-color: #7799ee;
+}
+
+.credits-decor {
+    background-color: #7799ee;
+}
+
+.error-decor {
+    background-color: #bb0000;
+}
+
+.grey {
+    color: #909090;
+}
+
+.white {
+    color: #ffffff;
+}
+
+.repr {
+    color: #c040c0;
+}
+
+table.heading tr td.title {
+    vertical-align: bottom;
+}
+
+table.heading tr td.extra {
+    vertical-align: bottom;
+    text-align: right;
+}
+
+.heading-text {
+    font-family: helvetica, arial;
+}
+
+.bigsection {
+    font-size: larger;
+}
+
+.title {
+    font-size: x-large;
+}
+
+.code {
+    font-family: monospace;
+}
+
+table {
+    width: 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    border: 0;
+}
+
+td {
+    padding: 2;
+}
+
+td.section-title {
+    vertical-align: bottom;
+}
+
+td.multicolumn {
+    width: 25%;
+    vertical-align: bottom;
+}
+
+td.singlecolumn {
+    width: 100%;
+}
+
+</style>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="vistas.html" class="white">vistas</a>.tema</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="../../../vistas/tema.py">vistas/tema.py</a></td></tr></table>
+    <p><span class="code">Sistema&nbsp;visual&nbsp;de&nbsp;Wynik:&nbsp;colores,&nbsp;tipografía,&nbsp;medidas&nbsp;y&nbsp;puntos&nbsp;de&nbsp;corte.<br>
+&nbsp;<br>
+Un&nbsp;único&nbsp;sitio&nbsp;para&nbsp;los&nbsp;valores&nbsp;que&nbsp;comparten&nbsp;`wynik.kv`,&nbsp;los&nbsp;componentes&nbsp;(`componentes.py`)<br>
+y&nbsp;los&nbsp;dibujos&nbsp;(`widgets/`).&nbsp;No&nbsp;importa&nbsp;Kivy:&nbsp;las&nbsp;medidas&nbsp;están&nbsp;en&nbsp;dp&nbsp;y&nbsp;los&nbsp;tamaños&nbsp;de&nbsp;letra&nbsp;en<br>
+sp,&nbsp;y&nbsp;quien&nbsp;los&nbsp;usa&nbsp;los&nbsp;convierte.<br>
+&nbsp;<br>
+Paleta:&nbsp;fondo&nbsp;claro&nbsp;cálido,&nbsp;superficies&nbsp;blancas,&nbsp;azul&nbsp;petróleo&nbsp;como&nbsp;color&nbsp;principal,&nbsp;grafito<br>
+para&nbsp;el&nbsp;texto&nbsp;y&nbsp;un&nbsp;ámbar&nbsp;discreto&nbsp;como&nbsp;acento.&nbsp;Los&nbsp;colores&nbsp;de&nbsp;evaluación&nbsp;(acierto,&nbsp;desafinada,<br>
+error,&nbsp;sin&nbsp;evaluar)&nbsp;van&nbsp;siempre&nbsp;acompañados&nbsp;de&nbsp;un&nbsp;símbolo:&nbsp;el&nbsp;color&nbsp;nunca&nbsp;es&nbsp;la&nbsp;única&nbsp;señal.</span></p>
+<p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-con_alfa"><strong>con_alfa</strong></a>(color, alfa)</dt></dl>
+ <dl><dt><a name="-modo_practica"><strong>modo_practica</strong></a>(ancho_dp: float, alto_dp: float) -&gt; str</dt><dd><span class="code">Reparto&nbsp;de&nbsp;la&nbsp;pantalla&nbsp;de&nbsp;práctica&nbsp;según&nbsp;el&nbsp;espacio&nbsp;disponible&nbsp;(en&nbsp;dp):<br>
+«apaisada»&nbsp;(baja&nbsp;y&nbsp;más&nbsp;ancha&nbsp;que&nbsp;alta),&nbsp;«amplia»&nbsp;(partitura&nbsp;arriba,&nbsp;guía&nbsp;a&nbsp;la&nbsp;derecha)&nbsp;o<br>
+«vertical»&nbsp;(todo&nbsp;apilado).</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>ACENTO</strong> = (0.851, 0.522, 0.192, 1)<br>
+<strong>ACENTO_SUAVE</strong> = (0.988, 0.925, 0.851, 1)<br>
+<strong>ALTO_BAJO</strong> = 480<br>
+<strong>ALTO_BARRA</strong> = 60<br>
+<strong>ALTO_BOTON</strong> = 48<br>
+<strong>ALTO_TOQUE</strong> = 44<br>
+<strong>ANCHO_AMPLIO</strong> = 900<br>
+<strong>ANCHO_CONTENIDO</strong> = 760<br>
+<strong>ANCHO_MEDIO</strong> = 600<br>
+<strong>BORDE</strong> = (0.855, 0.847, 0.827, 1)<br>
+<strong>BORDE_FUERTE</strong> = (0.7, 0.71, 0.7, 1)<br>
+<strong>CORRECTO</strong> = (0.165, 0.525, 0.255, 1)<br>
+<strong>CORRECTO_SUAVE</strong> = (0.882, 0.945, 0.89, 1)<br>
+<strong>DESAFINADO</strong> = (0.659, 0.443, 0.063, 1)<br>
+<strong>DESAFINADO_SUAVE</strong> = (0.984, 0.937, 0.839, 1)<br>
+<strong>DURACION_ANIMACION</strong> = 0.16<br>
+<strong>DURACION_TRANSICION</strong> = 0.22<br>
+<strong>ERROR</strong> = (0.769, 0.227, 0.176, 1)<br>
+<strong>ERROR_SUAVE</strong> = (0.98, 0.894, 0.882, 1)<br>
+<strong>ESTADOS</strong> = {'correcta': ((0.165, 0.525, 0.255, 1), (0.882, 0.945, 0.89, 1), 'check-circle', 'Correcta'), 'cuenta': ((0.851, 0.522, 0.192, 1), (0.988, 0.925, 0.851, 1), 'timer-sand', 'Prepárate'), 'desafinada': ((0.659, 0.443, 0.063, 1), (0.984, 0.937, 0.839, 1), 'approximately-equal', 'Desafinada'), 'error': ((0.769, 0.227, 0.176, 1), (0.98, 0.894, 0.882, 1), 'close-circle', 'Error'), 'escuchando': ((0.055, 0.353, 0.384, 1), (0.851, 0.918, 0.914, 1), 'microphone', 'Escuchando'), 'fuera_de_rango': ((0.769, 0.227, 0.176, 1), (0.98, 0.894, 0.882, 1), 'alert-circle-outline', 'Fuera de rango'), 'neutro': ((0.42, 0.45, 0.48, 1), (0.918, 0.922, 0.925, 1), 'music-note-outline', 'Pendiente'), 'omitida': ((0.42, 0.45, 0.48, 1), (0.918, 0.922, 0.925, 1), 'minus-circle-outline', 'Sin tocar'), 'sin_evaluar': ((0.42, 0.45, 0.48, 1), (0.918, 0.922, 0.925, 1), 'circle-outline', 'Sin evaluar'), 'terminada': ((0.055, 0.353, 0.384, 1), (0.851, 0.918, 0.914, 1), 'flag-checkered', 'Terminada')}<br>
+<strong>FONDO</strong> = (0.957, 0.949, 0.933, 1)<br>
+<strong>FUENTE_ROTULO</strong> = 'WynikRotulo'<br>
+<strong>FUENTE_TEXTO</strong> = 'WynikTexto'<br>
+<strong>FUENTE_TITULO</strong> = 'WynikTitulo'<br>
+<strong>HUECO</strong> = 12<br>
+<strong>MARGEN</strong> = 16<br>
+<strong>NEUTRO</strong> = (0.42, 0.45, 0.48, 1)<br>
+<strong>NEUTRO_SUAVE</strong> = (0.918, 0.922, 0.925, 1)<br>
+<strong>PRIMARIO</strong> = (0.055, 0.353, 0.384, 1)<br>
+<strong>PRIMARIO_OSCURO</strong> = (0.035, 0.255, 0.282, 1)<br>
+<strong>PRIMARIO_SUAVE</strong> = (0.851, 0.918, 0.914, 1)<br>
+<strong>RADIO</strong> = 16<br>
+<strong>RADIO_PEQUENO</strong> = 12<br>
+<strong>SOBRE_PRIMARIO</strong> = (1, 1, 1, 1)<br>
+<strong>SOMBRA</strong> = (0.1, 0.12, 0.14, 0.1)<br>
+<strong>SUPERFICIE</strong> = (1, 1, 1, 1)<br>
+<strong>SUPERFICIE_2</strong> = (0.925, 0.937, 0.933, 1)<br>
+<strong>TINTA</strong> = (0.137, 0.153, 0.169, 1)<br>
+<strong>TINTA_SUAVE</strong> = (0.365, 0.396, 0.427, 1)<br>
+<strong>TINTA_TENUE</strong> = (0.55, 0.57, 0.59, 1)<br>
+<strong>T_CUERPO</strong> = 15<br>
+<strong>T_ETIQUETA</strong> = 12<br>
+<strong>T_NOTA</strong> = 44<br>
+<strong>T_PANTALLA</strong> = 24<br>
+<strong>T_SECUNDARIO</strong> = 13<br>
+<strong>T_SUBTITULO</strong> = 16<br>
+<strong>T_TITULO</strong> = 20<br>
+<strong>VELO</strong> = (0.08, 0.1, 0.12, 0.45)</td></tr></table>
+</body></html>

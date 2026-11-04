@@ -1,0 +1,51 @@
+$ ruff --version
+ruff 0.17.3
+[código de salida: 0]
+$ ruff check . --statistics
+18	I001	[*] unsorted-imports
+14	F401	[*] unused-import
+ 3	W292	[*] missing-newline-at-end-of-file
+ 1	W291	[ ] trailing-whitespace
+ 1	F841	[ ] unused-variable
+Found 37 errors.
+[código de salida: 1]
+$ ruff check . --output-format concise
+main.py:2:6: W291 Trailing whitespace
+main.py:36:1: I001 [*] Import block is un-sorted or un-formatted
+nucleo/importador_musicxml.py:18:1: I001 [*] Import block is un-sorted or un-formatted
+nucleo/notacion.py:32:42: F401 [*] `typing.Sequence` imported but unused
+nucleo/notacion.py:304:5: F841 Local variable `notas_ligables` is assigned to but never used
+nucleo/sesion.py:63:1: I001 [*] Import block is un-sorted or un-formatted
+servicios/audio_service.py:14:1: I001 [*] Import block is un-sorted or un-formatted
+servicios/practica_service.py:20:1: I001 [*] Import block is un-sorted or un-formatted
+servicios/progreso_service.py:8:8: F401 [*] `datetime` imported but unused
+servicios/progreso_service.py:9:32: F401 [*] `typing.Optional` imported but unused
+tests/test_almacenamiento.py:16:5: F401 [*] `servicios.almacenamiento.ruta_dato` imported but unused
+vistas/__init__.py:6:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/__init__.py:33:2: W292 [*] No newline at end of file
+vistas/app.py:20:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/app.py:30:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/app.py:58:5: F401 [*] `.screens.MenuScreen` imported but unused
+vistas/app.py:59:5: F401 [*] `.screens.ElegirPartituraScreen` imported but unused
+vistas/app.py:60:5: F401 [*] `.screens.AjustesInicioScreen` imported but unused
+vistas/app.py:61:5: F401 [*] `.screens.InterpreteScreen` imported but unused
+vistas/app.py:62:5: F401 [*] `.screens.AjustesScreen` imported but unused
+vistas/app.py:63:5: F401 [*] `.screens.ProgresoScreen` imported but unused
+vistas/app.py:64:5: F401 [*] `.screens.PartituraSimpleScreen` imported but unused
+vistas/app.py:66:22: F401 [*] `.widgets.PartituraWidget` imported but unused
+vistas/app.py:66:39: F401 [*] `.widgets.GuiaInstrumentoWidget` imported but unused
+vistas/app.py:66:62: F401 [*] `.widgets.PartituraSimpleWidget` imported but unused
+vistas/app.py:184:9: I001 [*] Import block is un-sorted or un-formatted
+vistas/app.py:1274:13: I001 [*] Import block is un-sorted or un-formatted
+vistas/app.py:1303:13: I001 [*] Import block is un-sorted or un-formatted
+vistas/componentes.py:21:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/fuentes.py:14:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/screens/__init__.py:5:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/screens/partitura_simple_screen.py:17:28: W292 [*] No newline at end of file
+vistas/widgets/__init__.py:5:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/widgets/ilustraciones.py:11:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/widgets/partitura_simple_widget.py:9:1: I001 [*] Import block is un-sorted or un-formatted
+vistas/widgets/partitura_simple_widget.py:214:25: W292 [*] No newline at end of file
+vistas/widgets/partitura_widget.py:20:1: I001 [*] Import block is un-sorted or un-formatted
+Found 37 errors.
+[código de salida: 1]

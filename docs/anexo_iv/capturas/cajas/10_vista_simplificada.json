@@ -1,0 +1,37 @@
+{
+  "imagen": "10_vista_simplificada.png",
+  "ancho": 824,
+  "alto": 1830,
+  "cajas": [
+    {
+      "n": 1,
+      "etiqueta": "Cinta de notas (vista simplificada)",
+      "caja": [
+        60,
+        226,
+        704,
+        288
+      ]
+    },
+    {
+      "n": 2,
+      "etiqueta": "Nota esperada",
+      "caja": [
+        60,
+        693,
+        104,
+        115
+      ]
+    },
+    {
+      "n": 3,
+      "etiqueta": "Guía del instrumento",
+      "caja": [
+        60,
+        1105,
+        704,
+        8
+      ]
+    }
+  ]
+}
