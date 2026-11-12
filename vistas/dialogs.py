@@ -103,21 +103,103 @@ def mostrar_dialogo(titulo: str, mensaje: str = "", icono: str = "", color_icono
     return vista
 
 
+def _abrir_selector_android(callback_ruta_seleccionada: Callable[[Optional[str]], None]) -> bool:
+    """Abre el selector nativo de documentos de Android (SAF) mediante PyJNIus."""
+    try:
+        from android import activity
+        from jnius import autoclass
+        from kivymd.app import MDApp
+
+        Intent = autoclass("android.content.Intent")
+        PythonActivity = autoclass("org.kivy.android.PythonActivity")
+        Activity = autoclass("android.app.Activity")
+
+        CODIGO_SOLICITUD = 7042
+
+        def al_recibir_resultado(request_code, result_code, intent_datos):
+            if request_code != CODIGO_SOLICITUD:
+                return
+            activity.unbind(on_activity_result=al_recibir_resultado)
+            if result_code == Activity.RESULT_OK and intent_datos is not None:
+                uri = intent_datos.getData()
+                if uri is not None:
+                    try:
+                        actividad = PythonActivity.mActivity
+                        resolver = actividad.getContentResolver()
+                        stream_entrada = resolver.openInputStream(uri)
+
+                        nombre_archivo = "partitura_importada.musicxml"
+                        try:
+                            cursor = resolver.query(uri, None, None, None, None)
+                            if cursor is not None and cursor.moveToFirst():
+                                col = cursor.getColumnIndex("_display_name")
+                                if col >= 0:
+                                    val = cursor.getString(col)
+                                    if val:
+                                        nombre_archivo = val
+                                cursor.close()
+                        except Exception:  # noqa: BLE001
+                            pass
+
+                        app = MDApp.get_running_app()
+                        directorio_destino = app.user_data_dir if app else "/data/data/org.wynik.wynik/files"
+                        os.makedirs(directorio_destino, exist_ok=True)
+                        ruta_destino = os.path.join(directorio_destino, nombre_archivo)
+
+                        with open(ruta_destino, "wb") as f_out:
+                            tam = 16384
+                            buffer = bytearray(tam)
+                            while True:
+                                leidos = stream_entrada.read(buffer)
+                                if leidos <= 0:
+                                    break
+                                f_out.write(buffer[:leidos])
+                        stream_entrada.close()
+                        callback_ruta_seleccionada(ruta_destino)
+                        return
+                    except Exception as err:  # noqa: BLE001
+                        print(f"[Wynik] Error importando archivo desde URI: {err}")
+
+            callback_ruta_seleccionada(None)
+
+        activity.bind(on_activity_result=al_recibir_resultado)
+        intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.setType("*/*")
+        PythonActivity.mActivity.startActivityForResult(intent, CODIGO_SOLICITUD)
+        return True
+    except Exception as error:  # noqa: BLE001
+        print(f"[Wynik] No se pudo lanzar el selector nativo Android: {error}")
+        return False
+
+
 def abrir_selector_de_archivo(callback_ruta_seleccionada: Callable[[Optional[str]], None]) -> None:
     """
     Abre el selector de archivos MusicXML (.xml, .musicxml, .mxl).
     Llama a `callback_ruta_seleccionada` con la ruta absoluta o None si se cancela.
     """
+    from kivy.utils import platform
+    if platform == "android":
+        if _abrir_selector_android(callback_ruta_seleccionada):
+            return
+
     from kivy.core.window import Window
     from kivy.metrics import dp
     from kivy.uix.filechooser import FileChooserListView
 
     from .componentes import Superficie
 
+    ruta_inicial = os.path.expanduser("~")
+    if platform == "android":
+        for pos in ("/storage/emulated/0/Download", "/storage/emulated/0/Documents", "/sdcard/Download", "/sdcard"):
+            if os.path.isdir(pos):
+                ruta_inicial = pos
+                break
+
     elegido = {"ruta": None, "hecho": False}
     panel = Superficie(size_hint_y=None, height=min(dp(380), max(dp(160), Window.height * 0.5)),
                        padding=dp(6), fondo=list(tema.TINTA), borde=list(tema.TINTA), radio=dp(14))
-    selector = FileChooserListView(filters=["*.xml", "*.musicxml", "*.mxl"], path=os.path.expanduser("~"))
+    selector = FileChooserListView(filters=["*.xml", "*.musicxml", "*.mxl"], path=ruta_inicial)
     panel.add_widget(selector)
 
     def aceptar():

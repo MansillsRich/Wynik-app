@@ -242,9 +242,48 @@ class WynikApp(MDApp):
     def on_start(self):
         from kivy.core.window import Window
         Window.bind(on_keyboard=self._tecla)
+        from kivy.utils import platform
+        if platform == "android":
+            self._solicitar_permisos_android()
         self._refrescar_lista_partituras()
         self._actualizar_textos_configuracion()
         self.refrescar_inicio()
+
+    def _solicitar_permisos_android(self, callback=None):
+        try:
+            from android.permissions import Permission, request_permissions
+
+            def _on_resultado(perms, results):
+                if callback:
+                    callback(perms, results)
+
+            request_permissions([
+                Permission.RECORD_AUDIO,
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE,
+            ], _on_resultado if callback else None)
+        except Exception as error:  # noqa: BLE001
+            print(f"[Wynik] Solicitud de permisos Android: {error}")
+
+    def _asegurar_permiso_microfono(self, al_conceder=None) -> bool:
+        from kivy.utils import platform
+        if platform != "android":
+            return True
+        try:
+            from android.permissions import Permission, check_permission
+            if check_permission(Permission.RECORD_AUDIO):
+                return True
+            self._mensaje("Se requiere permiso de micrófono para continuar.")
+
+            def _on_resultado(perms, results):
+                if any(results) and al_conceder:
+                    Clock.schedule_once(lambda dt: al_conceder(), 0)
+
+            self._solicitar_permisos_android(callback=_on_resultado)
+            return False
+        except Exception as error:  # noqa: BLE001
+            print(f"[Wynik] Comprobación de permiso: {error}")
+            return True
 
     def on_stop(self):
         self.detener_escucha()
@@ -526,10 +565,16 @@ class WynikApp(MDApp):
     def _crear_captura(self):
         if self.fabrica_captura is not None:
             return self.fabrica_captura()
+        from kivy.utils import platform
+        if platform == "android":
+            from audio.captura import CapturaAndroid
+            return CapturaAndroid(reloj=self.reloj)
         from audio.captura import CapturaSounddevice
         return CapturaSounddevice(dispositivo=self.dispositivo_entrada, reloj=self.reloj)
 
     def calibrar_ahora(self):
+        if not self._asegurar_permiso_microfono(al_conceder=self.calibrar_ahora):
+            return
         from audio.captura import MicrofonoNoDisponibleError
         from audio.escucha import MotorDeEscucha
         if self.controlador is not None and self.controlador.escuchando:
@@ -1019,6 +1064,8 @@ class WynikApp(MDApp):
 
     def iniciar_escucha(self):
         """Empieza a escuchar: detiene la guía, abre el micrófono y arranca la secuencia."""
+        if not self._asegurar_permiso_microfono(al_conceder=self.iniciar_escucha):
+            return
         from servicios.practica_service import ControladorPractica, MicrofonoNoDisponibleError
         if not self.notas_partitura:
             self.texto_estado = "No hay partitura cargada."

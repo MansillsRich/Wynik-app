@@ -33,11 +33,21 @@ def cargar_historial(ruta_archivo: Optional[str] = None) -> List[Dict[str, str]]
             with open(ruta, "r", encoding="utf-8") as archivo:
                 datos = json.load(archivo)
                 if isinstance(datos, list):
-                    return [d for d in datos if isinstance(d, dict) and "ruta" in d and "nombre" in d]
+                    validos = [d for d in datos if isinstance(d, dict) and "ruta" in d and "nombre" in d and os.path.exists(d["ruta"])]
+                    if validos:
+                        return validos
         except (json.JSONDecodeError, OSError) as error:
             print(f"[HistorialService] Error al leer historial: {error}")
-            return []
-    return []
+
+    # Sembrar con canciones de ejemplos incluidas con la app si no hay historial
+    ejemplos_dir = os.path.join(DIRECTORIO_RAIZ, "ejemplos")
+    resultado = []
+    if os.path.isdir(ejemplos_dir):
+        for nombre in sorted(os.listdir(ejemplos_dir)):
+            if nombre.lower().endswith((".xml", ".musicxml", ".mxl")):
+                nombre_base = os.path.splitext(nombre)[0]
+                resultado.append({"nombre": nombre_base, "ruta": os.path.join(ejemplos_dir, nombre)})
+    return resultado
 
 
 def guardar_historial(historial: List[Dict[str, str]], ruta_archivo: Optional[str] = None) -> None:

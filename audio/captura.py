@@ -245,9 +245,110 @@ class CapturaSounddevice(CapturaBase):
         return bool(getattr(flujo, "active", True))
 
 
+class CapturaAndroid(CapturaBase):
+    """Micrófono en Android con AudioRecord vía PyJNIus."""
+
+    def __init__(self, frecuencia_muestreo: Optional[float] = None, **kwargs):
+        super().__init__(**kwargs)
+        self.frecuencia_solicitada = int(frecuencia_muestreo or 44100)
+        self.nombre_dispositivo: Optional[str] = "Micrófono Android"
+        self._record = None
+        self._hilo: Optional[threading.Thread] = None
+        self._activo = False
+
+    def abrir(self) -> None:
+        try:
+            from jnius import autoclass
+            AudioRecord = autoclass("android.media.AudioRecord")
+            AudioFormat = autoclass("android.media.AudioFormat")
+            try:
+                AudioSource = autoclass("android.media.MediaRecorder$AudioSource")
+                audio_source = int(AudioSource.MIC)
+            except Exception:
+                # 1 es el valor constante de MediaRecorder.AudioSource.MIC en el SDK de Android
+                audio_source = 1
+
+            frecuencia = self.frecuencia_solicitada
+            channel_config = AudioFormat.CHANNEL_IN_MONO
+            audio_format = AudioFormat.ENCODING_PCM_16BIT
+
+            min_buf = AudioRecord.getMinBufferSize(frecuencia, channel_config, audio_format)
+            if min_buf <= 0:
+                frecuencia = 48000 if frecuencia != 48000 else 44100
+                min_buf = AudioRecord.getMinBufferSize(frecuencia, channel_config, audio_format)
+                if min_buf <= 0:
+                    raise RuntimeError("AudioRecord.getMinBufferSize devolvió error")
+
+            buf_size = max(min_buf, self.tam_bloque * 2 * 4)
+            record = AudioRecord(audio_source, frecuencia, channel_config, audio_format, buf_size)
+
+            if record.getState() != AudioRecord.STATE_INITIALIZED:
+                record.release()
+                raise RuntimeError("AudioRecord no inicializado (verifique permisos de micrófono)")
+
+            self.frecuencia_muestreo = float(frecuencia)
+            self.reiniciar_indices()
+            self._record = record
+            self._activo = True
+            record.startRecording()
+
+            self._hilo = threading.Thread(target=self._bucle_lectura, daemon=True)
+            self._hilo.start()
+        except Exception as error:  # noqa: BLE001
+            self._record = None
+            self._activo = False
+            self.estadisticas.errores.append(f"{type(error).__name__}: {error}")
+            raise MicrofonoNoDisponibleError(f"No se pudo abrir el micrófono Android ({error}).") from error
+
+    def _bucle_lectura(self) -> None:
+        record = self._record
+        tam_muestras = self.tam_bloque
+        tam_bytes = tam_muestras * 2
+        buffer_bytes = bytearray(tam_bytes)
+
+        while self._activo and record is not None:
+            try:
+                leidos = record.read(buffer_bytes, 0, tam_bytes)
+                if leidos > 0:
+                    i16 = np.frombuffer(buffer_bytes[:leidos], dtype=np.int16)
+                    f32 = i16.astype(np.float32) / 32768.0
+                    self._callback(f32, len(f32), None, None)
+                elif leidos < 0:
+                    self.estadisticas.errores.append(f"Lectura Android error ({leidos})")
+                    time.sleep(0.02)
+            except Exception as error:  # noqa: BLE001
+                self.estadisticas.errores.append(f"Lectura Android: {error}")
+                break
+
+    def cerrar(self) -> None:
+        self._activo = False
+        record = self._record
+        self._record = None
+        if record is not None:
+            try:
+                record.stop()
+                record.release()
+            except Exception as error:  # noqa: BLE001
+                self.estadisticas.errores.append(f"Cerrar Android: {error}")
+        if self._hilo is not None and self._hilo.is_alive():
+            self._hilo.join(timeout=0.5)
+            self._hilo = None
+
+    @property
+    def activa(self) -> bool:
+        return self._activo and self._record is not None
+
+
 def dispositivos_de_entrada(modulo_sounddevice=None) -> List[dict]:
     """Dispositivos con canales de entrada: índice, nombre, frecuencia y si es el
     predeterminado. Lista vacía si el sistema de audio no está disponible."""
+    try:
+        from kivy.utils import platform
+        if platform == "android":
+            return [{"indice": 0, "nombre": "Micrófono Android", "frecuencia": 44100.0,
+                     "predeterminado": True}]
+    except Exception:  # noqa: BLE001
+        pass
     try:
         sd = modulo_sounddevice
         if sd is None:
