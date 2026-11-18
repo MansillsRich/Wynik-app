@@ -79,6 +79,32 @@ def agregar_al_historial(
     return historial
 
 
+def eliminar_del_historial(
+    historial: List[Dict[str, str]],
+    ruta: str,
+    ruta_archivo: Optional[str] = None,
+    borrar_archivo_fisico: bool = True
+) -> List[Dict[str, str]]:
+    """
+    Elimina una partitura del historial y guarda los cambios en JSON.
+    Si `borrar_archivo_fisico` es True y el archivo no pertenece a la carpeta de
+    ejemplos empaquetada con la app, se elimina el archivo del almacenamiento local.
+    """
+    nuevo_historial = [entrada for entrada in historial if entrada.get("ruta") != ruta]
+    guardar_historial(nuevo_historial, ruta_archivo)
+
+    if borrar_archivo_fisico and ruta and os.path.isfile(ruta):
+        ejemplos_dir = os.path.abspath(os.path.join(DIRECTORIO_RAIZ, "ejemplos"))
+        ruta_abs = os.path.abspath(ruta)
+        if not ruta_abs.startswith(ejemplos_dir):
+            try:
+                os.remove(ruta)
+            except OSError as error:
+                print(f"[HistorialService] No se pudo borrar el archivo físico {ruta}: {error}")
+
+    return nuevo_historial
+
+
 def detalle_de_entrada(ruta: str, progreso: Optional[Dict] = None) -> str:
     """Texto secundario de una partitura en «Mis partituras»: la carpeta que la contiene (la
     ruta completa no cabe en una pantalla de teléfono) y, si ya se practicó, las sesiones y la

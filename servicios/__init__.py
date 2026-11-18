@@ -24,6 +24,7 @@ _ORIGEN = {
     "cargar_historial": "historial_service",
     "guardar_historial": "historial_service",
     "agregar_al_historial": "historial_service",
+    "eliminar_del_historial": "historial_service",
     "detalle_de_entrada": "historial_service",
     "HISTORIAL_PATH_DEFAULT": "historial_service",
     "paso_diatonico": "notacion_service",

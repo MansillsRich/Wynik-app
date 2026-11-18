@@ -288,6 +288,11 @@ class WynikApp(MDApp):
     def on_stop(self):
         self.detener_escucha()
         self._cancelar_calibracion()
+        self._guardar_ajustes(inmediato=True)
+
+    def on_pause(self):
+        self._guardar_ajustes(inmediato=True)
+        return True
 
     def change_screen(self, screen_name: str):
         actual = self.root.current
@@ -418,7 +423,21 @@ class WynikApp(MDApp):
 
         self._actualizar_textos_configuracion()
 
-    def _guardar_ajustes(self):
+    def _guardar_ajustes(self, inmediato: bool = False):
+        if inmediato:
+            trigger = getattr(self, "_trigger_guardar_ajustes", None)
+            if trigger is not None:
+                trigger.cancel()
+            self._guardar_ajustes_efectivo()
+            return
+
+        if getattr(self, "_trigger_guardar_ajustes", None) is None:
+            self._trigger_guardar_ajustes = Clock.create_trigger(
+                lambda _dt: self._guardar_ajustes_efectivo(), 0.4
+            )
+        self._trigger_guardar_ajustes()
+
+    def _guardar_ajustes_efectivo(self):
         from servicios.ajustes_service import AjustesPractica
         guardar_ajustes(AjustesPractica(
             instrumento=self.instrumento, afinacion_guitarra=self.afinacion_guitarra,
@@ -459,10 +478,22 @@ class WynikApp(MDApp):
         self.controlador = None
         if self.notas_partitura:
             self._mostrar_nota(int(self.indice_actual))
-        if self.sonido_guia is not None:
-            self.preparar_audio_guia()
-        else:
-            self._actualizar_info_audio()
+        # Generación perezosa (lazy) de la guía de audio:
+        # En Android, invocar preparar_audio_guia() en cada cambio satura OpenSLES y CPU.
+        # En su lugar, se descarga la guía existente; se generará a demanda cuando el
+        # usuario pulse Play o al iniciar la práctica.
+        if self.sonido_guia is not None or self.reproductor is not None:
+            if self.reproductor is not None:
+                self.reproductor.detener()
+            if self.sonido_guia is not None:
+                self.sonido_guia.stop()
+                self.sonido_guia.unload()
+            self.sonido_guia = None
+            self.reproductor = None
+            self._timbre_cargado = None
+            self.reproduciendo_audio = False
+            self.audio_pausado = False
+        self._actualizar_info_audio()
 
     def cambiar_instrumento(self, clave: str):
         from nucleo.instrumentos import PERFILES
@@ -806,7 +837,38 @@ class WynikApp(MDApp):
                 instrumento=instrumento if instrumento in ("guitarra", "piano") else "partitura")
             fila.bind(on_release=lambda _fila, ruta=entrada["ruta"], nombre=entrada["nombre"]: (
                 self._elegir_partitura_del_historial(ruta, nombre)))
+            fila.bind(on_borrar=lambda _fila, ruta=entrada["ruta"], nombre=entrada["nombre"]: (
+                self.confirmar_eliminar_partitura(ruta, nombre)))
             lista_widget.add_widget(fila)
+
+    def confirmar_eliminar_partitura(self, ruta: str, nombre: str):
+        from servicios.historial_service import eliminar_del_historial
+        from vistas.dialogs import mostrar_dialogo
+
+        nombre_mostrar = nombre or os.path.splitext(os.path.basename(ruta))[0]
+        mensaje = f"¿Deseas eliminar «{nombre_mostrar}» de tu lista de partituras?"
+
+        def accion_eliminar():
+            self.historial_partituras = eliminar_del_historial(
+                self.historial_partituras, ruta, borrar_archivo_fisico=True
+            )
+            if getattr(self, "_ruta_actual", None) == ruta:
+                self._ruta_actual = None
+            if getattr(self, "_ultima_ruta", None) == ruta:
+                self._ultima_ruta = None
+                self.ultima_partitura = ""
+            self._refrescar_lista_partituras()
+
+        mostrar_dialogo(
+            titulo="Eliminar partitura",
+            mensaje=mensaje,
+            icono="trash-can-outline",
+            color_icono=tema.ERROR,
+            botones=(
+                ("Cancelar", "texto", None),
+                ("Eliminar", "primario", accion_eliminar),
+            ),
+        )
 
     def _elegir_partitura_del_historial(self, ruta: str, nombre: str):
         if not os.path.exists(ruta):
@@ -1002,11 +1064,6 @@ class WynikApp(MDApp):
         self.volumen_audio = max(0.0, min(1.0, float(valor)))
         if self.sonido_guia:
             self.sonido_guia.volume = self.volumen_audio
-        self._guardar_volumen = getattr(self, "_guardar_volumen", None) or Clock.schedule_once(
-            lambda dt: self._volumen_guardado(), 0.6)
-
-    def _volumen_guardado(self):
-        self._guardar_volumen = None
         self._guardar_ajustes()
 
     def _actualizar_progreso_ui(self, dt):

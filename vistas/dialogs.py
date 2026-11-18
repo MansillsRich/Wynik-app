@@ -108,13 +108,19 @@ def _abrir_selector_android(callback_ruta_seleccionada: Callable[[Optional[str]]
     try:
         from android import activity
         from jnius import autoclass
+        from kivy.clock import Clock
         from kivymd.app import MDApp
 
         Intent = autoclass("android.content.Intent")
         PythonActivity = autoclass("org.kivy.android.PythonActivity")
         Activity = autoclass("android.app.Activity")
+        FileOutputStream = autoclass("java.io.FileOutputStream")
 
         CODIGO_SOLICITUD = 7042
+
+        def responder(ruta_resultado: Optional[str]) -> None:
+            """Despacha la respuesta al bucle principal de Kivy de forma segura."""
+            Clock.schedule_once(lambda _dt: callback_ruta_seleccionada(ruta_resultado), 0)
 
         def al_recibir_resultado(request_code, result_code, intent_datos):
             if request_code != CODIGO_SOLICITUD:
@@ -127,45 +133,100 @@ def _abrir_selector_android(callback_ruta_seleccionada: Callable[[Optional[str]]
                         actividad = PythonActivity.mActivity
                         resolver = actividad.getContentResolver()
                         stream_entrada = resolver.openInputStream(uri)
+                        if stream_entrada is None:
+                            print(f"[Wynik] No se pudo abrir InputStream para URI: {uri}")
+                            responder(None)
+                            return
 
-                        nombre_archivo = "partitura_importada.musicxml"
+                        nombre_archivo = "partitura_importada.mxl"
                         try:
                             cursor = resolver.query(uri, None, None, None, None)
-                            if cursor is not None and cursor.moveToFirst():
-                                col = cursor.getColumnIndex("_display_name")
-                                if col >= 0:
-                                    val = cursor.getString(col)
-                                    if val:
-                                        nombre_archivo = val
+                            if cursor is not None:
+                                if cursor.moveToFirst():
+                                    col = cursor.getColumnIndex("_display_name")
+                                    if col >= 0:
+                                        val = cursor.getString(col)
+                                        if val:
+                                            nombre_archivo = val
                                 cursor.close()
-                        except Exception:  # noqa: BLE001
-                            pass
+                        except Exception as e_cursor:  # noqa: BLE001
+                            print(f"[Wynik] Error obteniendo nombre del archivo: {e_cursor}")
+
+                        # Asegurar extension admitida (.musicxml, .xml o .mxl)
+                        extensiones_validas = (".musicxml", ".xml", ".mxl")
+                        if not any(nombre_archivo.lower().endswith(ext) for ext in extensiones_validas):
+                            nombre_archivo = f"{nombre_archivo}.mxl"
 
                         app = MDApp.get_running_app()
                         directorio_destino = app.user_data_dir if app else "/data/data/org.wynik.wynik/files"
                         os.makedirs(directorio_destino, exist_ok=True)
                         ruta_destino = os.path.join(directorio_destino, nombre_archivo)
 
-                        with open(ruta_destino, "wb") as f_out:
-                            tam = 16384
-                            buffer = bytearray(tam)
-                            while True:
-                                leidos = stream_entrada.read(buffer)
-                                if leidos <= 0:
-                                    break
-                                f_out.write(buffer[:leidos])
-                        stream_entrada.close()
-                        callback_ruta_seleccionada(ruta_destino)
-                        return
+                        stream_salida = None
+                        try:
+                            stream_salida = FileOutputStream(ruta_destino)
+                            copiado = False
+
+                            # Metodo 1: android.os.FileUtils.copy (API 29+, Samsung S24 / Android 14)
+                            try:
+                                FileUtils = autoclass("android.os.FileUtils")
+                                FileUtils.copy(stream_entrada, stream_salida)
+                                copiado = True
+                            except Exception as e_fu:
+                                print(f"[Wynik] FileUtils.copy no disponible o falló: {e_fu}")
+
+                            # Metodo 2: java.nio.file.Files.copy (API 26+)
+                            if not copiado:
+                                try:
+                                    stream_salida.flush()
+                                    stream_salida.close()
+                                    stream_salida = None
+                                    Paths = autoclass("java.nio.file.Paths")
+                                    Files = autoclass("java.nio.file.Files")
+                                    StandardCopyOption = autoclass("java.nio.file.StandardCopyOption")
+                                    Files.copy(stream_entrada, Paths.get(ruta_destino), StandardCopyOption.REPLACE_EXISTING)
+                                    copiado = True
+                                except Exception as e_nio:
+                                    print(f"[Wynik] Files.copy falló: {e_nio}")
+
+                            # Metodo 3: Fallback lectura byte a byte
+                            if not copiado:
+                                if stream_salida is None:
+                                    stream_salida = FileOutputStream(ruta_destino)
+                                b = stream_entrada.read()
+                                while b != -1:
+                                    stream_salida.write(b)
+                                    b = stream_entrada.read()
+
+                            if stream_salida is not None:
+                                stream_salida.flush()
+
+                            tamano = os.path.getsize(ruta_destino) if os.path.isfile(ruta_destino) else 0
+                            print(f"[Wynik] Partitura copiada exitosamente: {ruta_destino} ({tamano} bytes)")
+                            if tamano > 0:
+                                responder(ruta_destino)
+                                return
+                            print("[Wynik] Advertencia: Archivo copiado con 0 bytes")
+                        finally:
+                            if stream_salida is not None:
+                                try:
+                                    stream_salida.close()
+                                except Exception:
+                                    pass
+                            try:
+                                stream_entrada.close()
+                            except Exception:
+                                pass
                     except Exception as err:  # noqa: BLE001
                         print(f"[Wynik] Error importando archivo desde URI: {err}")
 
-            callback_ruta_seleccionada(None)
+            responder(None)
 
         activity.bind(on_activity_result=al_recibir_resultado)
         intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.setType("*/*")
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         PythonActivity.mActivity.startActivityForResult(intent, CODIGO_SOLICITUD)
         return True
     except Exception as error:  # noqa: BLE001

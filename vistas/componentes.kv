@@ -447,6 +447,12 @@
             text: root.detalle
             lineas: 2
             color: T.TINTA_SUAVE if root.existe else T.ERROR
+    BotonIcono:
+        icono: "trash-can-outline"
+        variante: "plano"
+        color: T.TINTA_TENUE
+        pos_hint: {"center_y": .5}
+        on_release: root.dispatch('on_borrar')
     Icono:
         icono: "chevron-right" if root.existe else "alert-circle-outline"
         color: T.TINTA_TENUE if root.existe else T.ERROR

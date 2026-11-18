@@ -264,10 +264,15 @@ class TarjetaPulsable(Pulsable, Superficie):
 
 class FilaPartitura(TarjetaPulsable):
     """Partitura de la biblioteca (se crea desde Python con sus datos)."""
+    __events__ = ("on_borrar",)
+
     titulo = StringProperty("")
     detalle = StringProperty("")
     existe = BooleanProperty(True)
     instrumento = StringProperty("partitura")
+
+    def on_borrar(self):
+        pass
 
 
 class FilaSesion(Superficie):
