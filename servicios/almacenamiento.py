@@ -45,7 +45,7 @@ def leer_json(nombre: str, por_defecto: Any) -> Any:
     if not os.path.exists(ruta):
         return por_defecto
     try:
-        with open(ruta, encoding="utf-8") as archivo:
+        with open(ruta, "r", encoding="utf-8", errors="replace") as archivo:
             return json.load(archivo)
     except (OSError, json.JSONDecodeError) as error:
         print(f"[Wynik] No se pudo leer {nombre}: {error}")

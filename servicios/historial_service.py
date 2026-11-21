@@ -8,6 +8,7 @@ el directorio de datos de la aplicación.
 
 import json
 import os
+import unicodedata
 from typing import Dict, List, Optional
 
 from .almacenamiento import DIRECTORIO_RAIZ, ruta_dato
@@ -46,7 +47,8 @@ def cargar_historial(ruta_archivo: Optional[str] = None) -> List[Dict[str, str]]
         for nombre in sorted(os.listdir(ejemplos_dir)):
             if nombre.lower().endswith((".xml", ".musicxml", ".mxl")):
                 nombre_base = os.path.splitext(nombre)[0]
-                resultado.append({"nombre": nombre_base, "ruta": os.path.join(ejemplos_dir, nombre)})
+                nombre_norm = unicodedata.normalize("NFC", nombre_base)
+                resultado.append({"nombre": nombre_norm, "ruta": os.path.join(ejemplos_dir, nombre)})
     return resultado
 
 
@@ -69,11 +71,14 @@ def agregar_al_historial(
 ) -> List[Dict[str, str]]:
     """
     Agrega una partitura al historial si no se encuentra ya presente y guarda los cambios.
+    Normaliza el nombre y ruta a formato canónico Unicode (NFC).
     """
-    ya_estaba = any(entrada.get("ruta") == ruta for entrada in historial)
+    nombre_norm = unicodedata.normalize("NFC", str(nombre))
+    ruta_norm = unicodedata.normalize("NFC", str(ruta))
+    ya_estaba = any(unicodedata.normalize("NFC", str(entrada.get("ruta", ""))) == ruta_norm for entrada in historial)
     if not ya_estaba:
         nuevo_historial = list(historial)
-        nuevo_historial.append({"nombre": nombre, "ruta": ruta})
+        nuevo_historial.append({"nombre": nombre_norm, "ruta": ruta_norm})
         guardar_historial(nuevo_historial, ruta_archivo)
         return nuevo_historial
     return historial

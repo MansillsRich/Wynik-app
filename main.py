@@ -3,8 +3,20 @@ Wynik
 Punto de entrada de la aplicación de práctica musical con reconocimiento en tiempo real.
 """
 
+import os
 import sys
 from pathlib import Path
+
+# Forzar codificación UTF-8 en todo el entorno de ejecución
+os.environ["PYTHONIOENCODING"] = "utf-8"
+os.environ["PYTHONUTF8"] = "1"
+if hasattr(sys, "reconfigure"):
+    try:
+        sys.stdin.reconfigure(encoding="utf-8")
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 # Garantiza que el directorio raíz del proyecto forme parte de sys.path
 RAIZ_PROYECTO = Path(__file__).resolve().parent

@@ -200,8 +200,8 @@ class WynikApp(MDApp):
         Clock.max_iteration = 40
         for ruta in (KV_COMPONENTES, KV_PATH):
             Builder.unload_file(ruta)        # por si build() se llama dos veces (pruebas)
-        Builder.load_file(KV_COMPONENTES)
-        return Builder.load_file(KV_PATH)
+        Builder.load_file(KV_COMPONENTES, encoding="utf-8")
+        return Builder.load_file(KV_PATH, encoding="utf-8")
 
     def _configurar_directorio_datos(self):
         try:

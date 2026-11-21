@@ -75,6 +75,21 @@ class TestHistorialService(unittest.TestCase):
         nuevo = eliminar_del_historial(historial, "/otra/ruta.mxl", self.archivo_historial)
         self.assertEqual(len(nuevo), 1)
 
+    def test_historial_utf8_caracteres_especiales(self):
+        # Verificar soporte correcto de Ñ, ñ y acentos
+        ruta_cancion = os.path.join(self.temp_dir.name, "mira-niñita.musicxml")
+        with open(ruta_cancion, "w", encoding="utf-8") as f:
+            f.write("<xml>mira-niñita</xml>")
+
+        historial = []
+        nombre_original = "mira-niñita con Ñ"
+        historial = agregar_al_historial(historial, nombre_original, ruta_cancion, self.archivo_historial)
+
+        leido = cargar_historial(self.archivo_historial)
+        self.assertEqual(len(leido), 1)
+        self.assertEqual(leido[0]["nombre"], nombre_original)
+        self.assertEqual(leido[0]["ruta"], ruta_cancion)
+
 
 if __name__ == "__main__":
     unittest.main()

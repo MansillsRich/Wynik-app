@@ -41,6 +41,8 @@ def registrar_fuentes(tema=None) -> str:
         medio, negrita = ruta_roboto("Medium") or ruta, ruta_roboto("Bold") or ruta
         LabelBase.register(name=FUENTE_ROTULO, fn_regular=medio, fn_bold=negrita)
         LabelBase.register(name=FUENTE_TITULO, fn_regular=negrita, fn_bold=negrita)
+        # Garantiza compatibilidad UTF-8 completa (Ñ, tildes y símbolos) en componentes predeterminados
+        LabelBase.register(name="Roboto", fn_regular=ruta, fn_bold=negrita)
         _registrada = True
     if tema is not None:
         for estilo, roles in tema.font_styles.items():
