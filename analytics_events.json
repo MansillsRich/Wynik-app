@@ -1,0 +1,133 @@
+[
+  {
+    "event_id": "evt-f81b9600-7fce-48c9-990e-6b442282a85e",
+    "event_name": "partitura_cargada",
+    "timestamp": "2026-11-23T11:56:13-03:00",
+    "funnel_id": "fnl-5073022b-02d0-4d36-9892-c99b93cb7a18",
+    "practice_id": null,
+    "data": {
+      "formato": "mxl",
+      "cantidad_notas": 121,
+      "cantidad_acordes": 38,
+      "compases": 33,
+      "tempo_bpm": 120.0,
+      "duracion_partitura_s": 49.25,
+      "instrumento_detectado": null,
+      "instrumento_activo": "piano",
+      "origen": "historial"
+    }
+  },
+  {
+    "event_id": "evt-7626bb48-d8ad-4b58-bb65-2c02a71c606e",
+    "event_name": "practica_iniciada",
+    "timestamp": "2026-11-23T11:56:45-03:00",
+    "funnel_id": "fnl-5073022b-02d0-4d36-9892-c99b93cb7a18",
+    "practice_id": "prc-18e2e20c-7606-456b-842b-dba23473a8f3",
+    "data": {
+      "instrumento": "piano",
+      "modalidad": "esperar_nota",
+      "factor_tempo": 1.0,
+      "tolerancia_ms": 150,
+      "calibrar_al_iniciar": false,
+      "pulsos_cuenta": 3,
+      "vista_simple": true,
+      "cantidad_notas": 121,
+      "estado_inicial": "cuenta",
+      "numero_sesion_controlador": 1
+    }
+  },
+  {
+    "event_id": "evt-3328c757-df44-45bc-90a9-3ac043d2c29d",
+    "event_name": "sesion_finalizada",
+    "timestamp": "2026-11-23T12:04:11-03:00",
+    "funnel_id": "fnl-5073022b-02d0-4d36-9892-c99b93cb7a18",
+    "practice_id": "prc-18e2e20c-7606-456b-842b-dba23473a8f3",
+    "data": {
+      "duracion_s": 445.89,
+      "notas_acertadas": 83,
+      "total_notas_evaluadas": 83,
+      "total_notas_evaluables": 83,
+      "precision_porcentaje": 100.0,
+      "errores_altura": 0,
+      "notas_omitidas_o_sin_senal": 0,
+      "instrumento": "piano",
+      "modalidad": "esperar_nota",
+      "factor_tempo": 1.0
+    }
+  },
+  {
+    "event_id": "evt-5835fef7-f16f-402f-b999-4d1f5d3ba7ba",
+    "event_name": "partitura_cargada",
+    "timestamp": "2026-11-23T12:04:32-03:00",
+    "funnel_id": "fnl-67dff39e-7ae7-4666-9070-387a42d03198",
+    "practice_id": null,
+    "data": {
+      "formato": "mxl",
+      "cantidad_notas": 121,
+      "cantidad_acordes": 38,
+      "compases": 33,
+      "tempo_bpm": 120.0,
+      "duracion_partitura_s": 49.25,
+      "instrumento_detectado": null,
+      "instrumento_activo": "piano",
+      "origen": "historial"
+    }
+  },
+  {
+    "event_id": "evt-52ec6f41-5d19-458d-97fb-99c7dc0fbf29",
+    "event_name": "practica_iniciada",
+    "timestamp": "2026-11-23T12:04:45-03:00",
+    "funnel_id": "fnl-67dff39e-7ae7-4666-9070-387a42d03198",
+    "practice_id": "prc-a3c3647e-3260-450e-97ca-e5fc472407e5",
+    "data": {
+      "instrumento": "piano",
+      "modalidad": "seguir_tempo",
+      "factor_tempo": 0.7,
+      "tolerancia_ms": 150,
+      "calibrar_al_iniciar": false,
+      "pulsos_cuenta": 3,
+      "vista_simple": true,
+      "cantidad_notas": 121,
+      "estado_inicial": "cuenta",
+      "numero_sesion_controlador": 2
+    }
+  },
+  {
+    "event_id": "evt-7529348e-facb-4e8f-9954-fde6a0eeb86a",
+    "event_name": "practica_iniciada",
+    "timestamp": "2026-11-23T12:05:45-03:00",
+    "funnel_id": "fnl-67dff39e-7ae7-4666-9070-387a42d03198",
+    "practice_id": "prc-e28a7c3b-a8b0-4e70-8037-e66f4b9b9000",
+    "data": {
+      "instrumento": "piano",
+      "modalidad": "seguir_tempo",
+      "factor_tempo": 0.5,
+      "tolerancia_ms": 150,
+      "calibrar_al_iniciar": false,
+      "pulsos_cuenta": 3,
+      "vista_simple": false,
+      "cantidad_notas": 121,
+      "estado_inicial": "cuenta",
+      "numero_sesion_controlador": 3
+    }
+  },
+  {
+    "event_id": "evt-c38137a9-40e2-4814-8b8d-3bba42dadaba",
+    "event_name": "sesion_finalizada",
+    "timestamp": "2026-11-23T12:07:24-03:00",
+    "funnel_id": "fnl-67dff39e-7ae7-4666-9070-387a42d03198",
+    "practice_id": "prc-e28a7c3b-a8b0-4e70-8037-e66f4b9b9000",
+    "data": {
+      "duracion_s": 99.66,
+      "notas_acertadas": 0,
+      "total_notas_evaluadas": 83,
+      "total_notas_evaluables": 83,
+      "precision_porcentaje": 0.0,
+      "errores_altura": 14,
+      "notas_omitidas_o_sin_senal": 69,
+      "instrumento": "piano",
+      "modalidad": "seguir_tempo",
+      "factor_tempo": 0.5
+    }
+  }
+]

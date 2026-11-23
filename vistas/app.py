@@ -35,6 +35,7 @@ from kivymd.app import MDApp
 
 # Servicios y núcleo (sin Kivy)
 from servicios.reproductor_guia import ReproductorGuia
+from servicios.analytics_service import generar_id as generar_id_analitica, registrar_evento
 from servicios import (
     cargar_partitura_estructurada,
     ErrorPartitura,
@@ -237,6 +238,10 @@ class WynikApp(MDApp):
         self._ruta_actual = None
         self.reproductor = None         # servicios.reproductor_guia.ReproductorGuia
         self._con_interfaz = False      # True con la interfaz Kivy real (no en simulaciones)
+        self._analytics_funnel_id = None
+        self._analytics_practice_id = None
+        self._analytics_practice_started_at = None
+        self._analytics_practice_completed = False
         self._actualizar_textos_configuracion()
 
     def on_start(self):
@@ -683,7 +688,8 @@ class WynikApp(MDApp):
         for icono, texto in getattr(self, "_datos_partitura", []):
             contenedor.add_widget(Chip(icono=icono, texto=texto))
 
-    def _cargar_partitura(self, ruta: str, nombre: str = None, agregar: bool = False) -> bool:
+    def _cargar_partitura(self, ruta: str, nombre: str = None, agregar: bool = False,
+                          registrar_analitica: bool = True) -> bool:
         from servicios.partitura_service import ataque_a_nota
         convencion = self._convenciones.get(ruta, "auto")
         try:
@@ -754,6 +760,28 @@ class WynikApp(MDApp):
         self._actualizar_textos_configuracion()
         self._actualizar_info_audio()
         self._mostrar_nota(0)
+        if registrar_analitica:
+            self._analytics_funnel_id = generar_id_analitica("fnl")
+            self._analytics_practice_id = None
+            self._analytics_practice_started_at = None
+            self._analytics_practice_completed = False
+            formato = os.path.splitext(ruta)[1].lstrip(".").lower() or "desconocido"
+            duracion_s = getattr(partitura, "duracion_s", None)
+            registrar_evento(
+                "partitura_cargada",
+                {
+                    "formato": formato,
+                    "cantidad_notas": len(linea),
+                    "cantidad_acordes": acordes,
+                    "compases": compases,
+                    "tempo_bpm": round(float(self.tempo_partitura), 2),
+                    "duracion_partitura_s": round(float(duracion_s), 2) if duracion_s is not None else None,
+                    "instrumento_detectado": parte.perfil,
+                    "instrumento_activo": self.instrumento,
+                    "origen": "archivo_nuevo" if agregar else "historial",
+                },
+                self._analytics_funnel_id,
+            )
         return True
 
     def cambiar_convencion_guitarra(self, convencion: str):
@@ -765,7 +793,7 @@ class WynikApp(MDApp):
         if not ruta or convencion not in ("sonora", "escrita_octava_alta"):
             return
         self._convenciones[ruta] = convencion
-        self._cargar_partitura(ruta, nombre=self.nombre_partitura)
+        self._cargar_partitura(ruta, nombre=self.nombre_partitura, registrar_analitica=False)
 
     def _actualizar_ultima(self, ruta: str = None):
         if ruta is None and self.historial_partituras:
@@ -1157,6 +1185,28 @@ class WynikApp(MDApp):
         self._mostrar_nota(0)
         self._aplicar_estado(controlador.estado)
         self._programar_tick()
+        if not getattr(self, "_analytics_funnel_id", None):
+            self._analytics_funnel_id = generar_id_analitica("fnl")
+        self._analytics_practice_id = generar_id_analitica("prc")
+        self._analytics_practice_started_at = self.reloj()
+        self._analytics_practice_completed = False
+        registrar_evento(
+            "practica_iniciada",
+            {
+                "instrumento": self.instrumento,
+                "modalidad": "seguir_tempo" if self.seguir_de_largo else "esperar_nota",
+                "factor_tempo": round(float(self.factor_tempo), 2),
+                "tolerancia_ms": int(self.tolerancia_ms),
+                "calibrar_al_iniciar": bool(self.calibrar_al_iniciar),
+                "pulsos_cuenta": int(self.pulsos_cuenta),
+                "vista_simple": bool(self.usar_vista_simple),
+                "cantidad_notas": len(self.notas_partitura),
+                "estado_inicial": controlador.estado,
+                "numero_sesion_controlador": int(controlador.numero_sesion),
+            },
+            self._analytics_funnel_id,
+            practice_id=self._analytics_practice_id,
+        )
 
     def _programar_tick(self):
         if self._evento_tick is None:
@@ -1369,6 +1419,43 @@ class WynikApp(MDApp):
                              float(self.factor_tempo), resumen)
         except Exception as error:  # noqa: BLE001
             print(f"[Wynik] No se pudo guardar el progreso: {error}")
+        if not getattr(self, "_analytics_practice_completed", False):
+            self._analytics_practice_completed = True
+            funnel_id = getattr(self, "_analytics_funnel_id", None) or generar_id_analitica("fnl")
+            practice_id = getattr(self, "_analytics_practice_id", None)
+            inicio_s = getattr(self, "_analytics_practice_started_at", None)
+            duracion_s = (
+                round(max(0.0, float(self.reloj() - inicio_s)), 2)
+                if inicio_s is not None
+                else None
+            )
+            evaluables = resumen.get("evaluables")
+            evaluadas = resumen.get("evaluadas")
+            aciertos_real = resumen.get("aciertos")
+            precision_real = resumen.get("precision")
+            registrar_evento(
+                "sesion_finalizada",
+                {
+                    "duracion_s": duracion_s,
+                    "notas_acertadas": int(aciertos_real) if aciertos_real is not None else None,
+                    "total_notas_evaluadas": int(evaluadas) if evaluadas is not None else (
+                        int(evaluables) if evaluables is not None else None
+                    ),
+                    "total_notas_evaluables": int(evaluables) if evaluables is not None else None,
+                    "precision_porcentaje": (
+                        round(float(precision_real) * 100.0, 2)
+                        if precision_real is not None
+                        else None
+                    ),
+                    "errores_altura": int(errores) if estados else None,
+                    "notas_omitidas_o_sin_senal": int(omitidas) if estados else None,
+                    "instrumento": self.instrumento,
+                    "modalidad": "seguir_tempo" if self.seguir_de_largo else "esperar_nota",
+                    "factor_tempo": round(float(self.factor_tempo), 2),
+                },
+                funnel_id,
+                practice_id=practice_id,
+            )
 
     def _mostrar_resumen_final(self, aciertos, total, errores, omitidas, sin_evaluar):
         """Diálogo al terminar: porcentaje, desglose y qué hacer ahora."""
